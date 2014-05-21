@@ -32,7 +32,7 @@ function addMarker (location) {
             map: userLocation.map,
             position: new google.maps.LatLng(latitude, longitude),
             title: location.label,
-            icon: "/static/stadtgedaechtnis/img/marker_" + entryCount + ".png",
+            icon: "/static/stadtgedaechtnis_frontend/img/marker_" + entryCount + ".png",
             animation: google.maps.Animation.DROP
         });
 
