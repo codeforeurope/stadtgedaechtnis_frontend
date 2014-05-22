@@ -19,10 +19,10 @@ function errorLocationCallback (error) {
 
 function addMarker (location) {
     // calculate latitude and longitude
-    var latitude = parseFloat(location.latitude._int) * Math.pow(10, location.latitude._exp);
-    var longitude = parseFloat(location.longitude._int) * Math.pow(10, location.longitude._exp);
+    var latitude = parseFloat(location.latitude);
+    var longitude = parseFloat(location.longitude);
 
-    var entryCount = location.entries.length;
+    var entryCount = location.stories.length;
     if (entryCount > 9) {
         entryCount = 0;
     }
@@ -31,7 +31,7 @@ function addMarker (location) {
         var marker = new google.maps.Marker({
             map: userLocation.map,
             position: new google.maps.LatLng(latitude, longitude),
-            title: location.label,
+            title: location.title,
             icon: "/static/stadtgedaechtnis_frontend/img/marker_" + entryCount + ".png",
             animation: google.maps.Animation.DROP
         });
@@ -49,14 +49,14 @@ function addMarker (location) {
  * @param index index of entry for this infobox
  */
 function createInfobox(location) {
-    if (location.entries.length > 1) {
+    if (location.stories.length > 1) {
         var infoBoxContent = "<div class='infowindow'><ul>";
-        for (var i = 0; i < location.entries.length; i++) {
-            infoBoxContent += "<li><a href='#' class='switch-entry' data-entry='" + i + "'>" + location.entries[i].title + "</a></li>";
+        for (var i = 0; i < location.stories.length; i++) {
+            infoBoxContent += "<li><a href='#' class='switch-entry' data-entry='" + i + "'>" + location.stories[i].title + "</a></li>";
         }
         infoBoxContent += "</ul></div>";
     } else {
-        var infoBoxContent = "<div class='infowindow'><p>" + location.entries[0].abstract + "</p></div>";
+        var infoBoxContent = "<div class='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
     }
 
     var infoBox = new google.maps.InfoWindow({
@@ -101,9 +101,9 @@ function loadAdditionalEntry(listElement) {
  */
 function openEntry(location) {
     var entryList = "";
-    for (var i = 0; i < location.entries.length; i++) {
+    for (var i = 0; i < location.stories.length; i++) {
         // create list of entrys for slider
-        entryList += '<li data-entry="' + i + '" data-id="' + location.entries[i].id + '">\
+        entryList += '<li data-entry="' + i + '" data-id="' + location.stories[i].id + '">\
                         <div class="article-heading">\
                             <div class="article-heading-row">';
         if (i > 0) {
@@ -112,17 +112,17 @@ function openEntry(location) {
             </div></a>'
         }
         entryList += '<div class="article-heading-cell">\
-                                    <h3 id="article-heading-' + i + '">' + location.entries[i].title + '</h3>\
+                                    <h3 id="article-heading-' + i + '">' + location.stories[i].title + '</h3>\
                                 </div>';
-        if (i < location.entries.length - 1) {
+        if (i < location.stories.length - 1) {
             entryList += '<a href="#" class="next"><div class="article-heading-cell entry-slide next">\
                 <img src="/static/stadtgedaechtnis_frontend/img/right.png">\
             </div></a>';
         }
         entryList += '</div>\
                         </div>';
-        if (location.entries[i].image !== undefined) {
-            entryList += '<img src="' + location.entries[i].image + '" alt="' + location.entries[i].alt + '" id="entry-first-' + i + '"/>';
+        if (location.stories[i].image !== undefined) {
+            entryList += '<img src="' + location.stories[i].image.src + '" alt="' + location.stories[i].image.alt + '" id="entry-first-' + i + '"/>';
         }
         entryList += '<div class="center">\
                             <img src="/static/stadtgedaechtnis_frontend/img/ajax-loader.gif" id="load-more-' + i + '" class="load-more">\
@@ -135,7 +135,7 @@ function openEntry(location) {
     $("div.entry-list ul").html(entryList);
     var jQueryEntryList = $("section#article-section div.entry-list");
 
-    if (location.entries.length > 1) {
+    if (location.stories.length > 1) {
         // Show next and previous buttons
         $("div.entry-slide").show();
         $("div.article-heading-row a.previous").unbind("click").click(function() {
@@ -208,7 +208,7 @@ function openEntry(location) {
     userLocation.currentInfobox = location.infobox;
     location.infobox.open(userLocation.map, location.marker);
 
-    if (location.entries.length > 1) {
+    if (location.stories.length > 1) {
         $("a.switch-entry").each(function() {
             $(this).click(function(event) {
                 var entryIndex = $(this).data("entry");
@@ -261,8 +261,8 @@ function searchForEntries () {
     var min_lat = bounds.getSouthWest().lat().toFixed(10)
     var min_lon = bounds.getSouthWest().lng().toFixed(10)
     // get nearby locations
-    $.getJSON("/services/get-nearby-locations/" + min_lat + "/" + max_lat + "/" + min_lon + "/" + max_lon + "/", function (data) {
-        $.each(data, function (index, value) {
+    $.getJSON("/services/locations/" + min_lat + "/" + max_lat + "/" + min_lon + "/" + max_lon + "/stories/", function (data) {
+        $.each(data["locations"], function (index, value) {
             addMarker(value);
         })
     });
