@@ -19,9 +19,9 @@ var up = false;
 function resizeContainer() {
 	headerHeight = $("header[role='banner']").css("height");
     var footer = $("section#article-section");
+    var main = $("main");
     footerHeight = footer.css("height");
-    containerHeight = $("main").height();
-	$("main").css({
+	main.css({
         paddingTop: headerHeight,
         marginTop: "-" + headerHeight,
         paddingBottom: "0px",
@@ -30,6 +30,7 @@ function resizeContainer() {
     footer.css({
         height: "0"
     });
+    containerHeight = main.height();
 }
 
 /**
