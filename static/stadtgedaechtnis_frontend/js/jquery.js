@@ -34,9 +34,21 @@ function resizeContainer() {
 }
 
 /**
+ * Slide an element to a given size
+ * @param slidingElement
+ * @param containerElement
+ * @param newSize
+ * @param [callback]
+ */
+function slideElement(slidingElement, containerElement, newSize, callback) {
+    slidingElement.transition({height: newSize}, 200, "ease");
+    containerElement.transition({paddingBottom: newSize, marginBottom: "-" + newSize}, 200, "ease", callback);
+}
+
+/**
  * Initializes the swipe ability on the footer.
  */
-function initializeSwiping() {
+function initializeFooterSwiping() {
     var footer = $("section#article-section");
     var footerHeading = $("div.article-heading");
     var container = $("main");
@@ -47,8 +59,7 @@ function initializeSwiping() {
     footerHeading.swipe({
         swipeStatus: function(event, phase, direction, distance) {
             if (phase === "start") {
-                var cssHeight = footer.css("height");
-                footerSwipeHeight = parseInt(cssHeight.substring(0, cssHeight.length - 2));
+                footerSwipeHeight = footer.height();
             }
             // handles the current swipe
             if ((up && direction === "down") || (!up && direction === "up")) {
@@ -56,17 +67,15 @@ function initializeSwiping() {
                     var newPadding = (direction === "up" ? footerHeight : maxPadding);
                     var footerPadding = (direction === "up" ? "0.8rem 0.8rem 0 0.8rem" : "0.8rem");
                     footer.css("padding", footerPadding);
-                    footer.transition({height: newPadding}, 200, "ease");
-                    container.transition({paddingBottom: newPadding, marginBottom: "-" + newPadding}, 200, "ease");
+                    slideElement(footer, container, newPadding);
                     footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
                 } else if (phase === "end") {
                     var newPadding = (direction === "up" ? maxPadding : footerHeight);
                     var footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
                     footer.css("padding", footerPadding);
-                    footer.transition({height: newPadding}, 200, "ease");
-                    container.transition({paddingBottom: newPadding, marginBottom: "-" + newPadding}, 200, "ease");
+                    slideElement(footer, container, newPadding);
                     $("div.entry-list ul li").css("overflow-y", direction === "up" ? "auto" : "hidden");
-                    up = (direction === "up" ? true : false);
+                    up = (direction === "up");
                 } else {
                     var newPadding = footerSwipeHeight + (direction === "up" ? distance : -distance);
                     container.css({
@@ -127,6 +136,6 @@ function initializeSwiping() {
  */
 $(function() {
 	resizeContainer();
-    initializeSwiping();
+    initializeFooterSwiping();
     $("img#load-more").hide();
 });
