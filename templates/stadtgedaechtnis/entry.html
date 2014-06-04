@@ -1,11 +1,11 @@
 {% load i18n %}
-{% for image in entry.get_additional_images %}
+{% for image in story.get_additional_images %}
 	<img src="{{ image.mediasource_set.first.file.url }}" alt="{{ image.alt }}">
 {% endfor %}
-{% if entry.text %}
-{{ entry.text|safe }}
+{% if story.text %}
+{{ story.text|safe }}
 {% endif %}
-{% for media_object in entry.get_additional_media %}
+{% for media_object in story.get_additional_media %}
 	{% if media_object.type == "aud" %}
 		<audio controls preload="metadata">
 		{% for source in media_object.mediasource_set.all %}
@@ -20,4 +20,4 @@
 		</video>
 	{% endif %}
 {% endfor %}
-<p class="author">{% trans "Autor_in" %}:&nbsp;{{ entry.author }}</p>
+<p class="author">{% trans "Autor_in" %}:&nbsp;{{ story.author }}</p>

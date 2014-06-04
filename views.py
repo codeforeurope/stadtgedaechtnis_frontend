@@ -2,13 +2,13 @@ __author__ = 'jpi'
 
 from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
-from stadtgedaechtnis_backend.models import Entry
+from stadtgedaechtnis_backend.models import Story
 
 
 class EntryView(DetailView):
 
     template_name = "stadtgedaechtnis/entry.html"
-    model = Entry
+    model = Story
 
 
 class ExtraContextTemplateView(TemplateView):

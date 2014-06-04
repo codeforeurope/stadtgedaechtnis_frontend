@@ -121,8 +121,8 @@ function openEntry(location) {
         }
         entryList += '</div>\
                         </div>';
-        if (location.stories[i].image !== undefined) {
-            entryList += '<img src="' + location.stories[i].image.src + '" alt="' + location.stories[i].image.alt + '" id="entry-first-' + i + '"/>';
+        if (location.stories[i].assets[0] !== undefined) {
+            entryList += '<img src="' + location.stories[i].assets[0].sources + '" alt="' + location.stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>';
         }
         entryList += '<div class="center">\
                             <img src="/static/stadtgedaechtnis_frontend/img/ajax-loader.gif" id="load-more-' + i + '" class="load-more">\
@@ -261,8 +261,8 @@ function searchForEntries () {
     var min_lat = bounds.getSouthWest().lat().toFixed(10)
     var min_lon = bounds.getSouthWest().lng().toFixed(10)
     // get nearby locations
-    $.getJSON("/services/locations/" + min_lat + "/" + max_lat + "/" + min_lon + "/" + max_lon + "/stories/", function (data) {
-        $.each(data["locations"], function (index, value) {
+    $.getJSON("/services/locations/" + min_lat + "/" + max_lat + "/" + min_lon + "/" + max_lon + "/stories/title/image/", function (data) {
+        $.each(data, function (index, value) {
             addMarker(value);
         })
     });
