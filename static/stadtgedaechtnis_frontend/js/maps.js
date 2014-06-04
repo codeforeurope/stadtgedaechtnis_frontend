@@ -12,8 +12,8 @@ var channel = "mobile";
  */
 function errorLocationCallback (error) {
 	// error callback
-	userLocation.moveToLocation(this.DEFAULT_LAT, this.DEFAULT_LONG);
-    alert('There was an error obtaining your position. Message: ' + error.message);
+	userLocation.moveToLocation(userLocation.DEFAULT_LOCATION);
+    console.log('There was an error obtaining your position. Message: ' + error.message);
 	//TODO: show hint that location couldn't be retrieved
 }
 
@@ -28,7 +28,7 @@ function addMarker (location) {
     }
     // if not already on the map, display marker
     if (!userLocation.markers.hasOwnProperty(location.id)) {
-        var marker = new google.maps.Marker({
+        location.marker = new google.maps.Marker({
             map: userLocation.map,
             position: new google.maps.LatLng(latitude, longitude),
             title: location.title,
@@ -36,7 +36,6 @@ function addMarker (location) {
             animation: google.maps.Animation.DROP
         });
 
-        location.marker = marker;
         createInfobox(location);
 
         userLocation.markers[location.id] = location;
@@ -46,7 +45,6 @@ function addMarker (location) {
 /**
  * Creates an infobox for this location.
  * @param location
- * @param index index of entry for this infobox
  */
 function createInfobox(location) {
     if (location.stories.length > 1) {
@@ -62,20 +60,19 @@ function createInfobox(location) {
     var infoBox = new google.maps.InfoWindow({
         content: infoBoxContent,
         maxWidth: 225
-    })
+    });
 
     location.infobox = infoBox;
     google.maps.event.clearListeners(location.marker, 'click');
     google.maps.event.addListener(location.marker, 'click', function () {
         openEntry(location);
     });
-    google.maps.event.addListener(infoBox, 'closeclick', closeEntry);
+    google.maps.event.addListener(infoBox, 'closeclick', closeArticleBox);
 }
 
 /**
  * Loads the complete entry for the given location and entry index.
- * @param location
- * @param index
+ * @param listElement
  */
 function loadAdditionalEntry(listElement) {
     if (!listElement.data("loaded")) {
@@ -158,11 +155,12 @@ function openEntry(location) {
         if ($(window).width() < 768) {
             // mobile
             channel = "mobile";
+            var main = $("main");
             footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
             jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
             footer.transition({height: footerHeight}, 200, "ease");
             initializeFooterSwiping();
-            $("main").transition({paddingBottom: footerHeight, marginBottom: "-" + footerHeight}, 200, "ease", function() {
+            main.transition({paddingBottom: footerHeight, marginBottom: "-" + footerHeight}, 200, "ease", function() {
                 jQueryEntryList.unslider({
                     complete: loadAdditionalEntry
                 });
@@ -172,22 +170,23 @@ function openEntry(location) {
             // desktop
             $("div.article-heading").swipe("disable");
             channel = "desktop";
+            var map = $("section.max_map");
+            var mapWidth = map.width();
+            var listEntries = $("div.entry-list ul li");
             footer.css({
                 height: "100%",
                 width: "0%",
                 padding: "0.8rem"
             });
-            var map = $("section.max_map");
-            var map_width = map.width();
             jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
-            map.transition({width: map_width - 380 + "px"}, 200, "ease");
+            map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
             footer.transition({width: "380px"}, 200, "ease", function() {
                 jQueryEntryList.unslider({
                     complete: loadAdditionalEntry
                 });
                 jQueryEntryList.data("unslider").set(0, true);
             });
-            $("div.entry-list ul li").css("overflow-y", "auto");
+            listEntries.css("overflow-y", "auto");
         }
     } else {
         // Old entry already opened
@@ -199,7 +198,7 @@ function openEntry(location) {
         if (channel === "desktop") {
             $("div.entry-list ul li").css("overflow-y", "auto");
         } else {
-            initializeSwiping();
+            initializeFooterSwiping();
         }
     }
 
@@ -213,35 +212,78 @@ function openEntry(location) {
             $(this).click(function(event) {
                 var entryIndex = $(this).data("entry");
                 jQueryEntryList.data("unslider").move(entryIndex);
-                event.preventDefault;
+                event.preventDefault();
                 return false;
             });
         });
     }
 }
 
-function closeEntry() {
+
+/**
+ * Loads all the entries and lists them. Also shows search bar.
+ */
+function loadAllEntries() {
+    //TODO: load entries
+    var list = $("section#list-section");
+    if ($(window).width() < 768) {
+        // mobile
+        channel = "mobile";
+        var main = $("main");
+        list.transition({height: containerHeight + "px"}, 300, "ease", function() {
+            list.css({
+                padding: "0.8rem"
+            });
+        });
+        main.transition({paddingTop: containerHeight + "px", marginTop: "-" + containerHeight + "px"}, 300, "ease");
+    } else {
+        // desktop
+        channel = "desktop";
+        var map = $("section.max_map");
+        var mapWidth = map.width();
+        list.css({
+            height: "100%",
+            width: "0%",
+            paddingTop: "0.8rem"
+        });
+        map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
+        list.transition({width: "380px"}, 200, "ease", function() {
+            list.css({
+                padding: "0.8rem"
+            });
+        });
+    }
+}
+
+function closeArticleBox(both) {
     var footer = $("section#article-section");
 
     if (channel === "mobile") {
-        // mobile
-        footer.transition({height: 0}, 200, "ease");
-        $("main").transition({paddingBottom: "0px", marginBottom: "0px"}, 200, "ease" , function() {
+        //mobile
+        var main = $("main");
+        footer.transition({height: 0}, 200, "ease", function() {
             footer.css("padding", "0rem");
             $("div.entry-list ul").removeAttr("style");
         });
+        main.transition({paddingBottom: "0px", marginBottom: "0px"}, 200, "ease");
     } else {
-        // desktop
+        //desktop
+        var map = $("section.max_map");
+        var mapWidth = map.width();
+        var list = $("div.entry-list ul");
         footer.transition({width: "0%"}, 200, "ease", function() {
             footer.css({
                 height: "100%",
                 padding: "0rem",
                 width: "auto"
             });
-            $("div.entry-list ul").removeAttr("style")
+            list.removeAttr("style");
         });
-        $("section.max_map").transition({width: "100%"}, 200, "ease");
-        //footer.css("overflow-y", "hidden");
+        if (!both) {
+            map.transition({width: mapWidth + 380 + "px"}, 200, "ease");
+        } else {
+            map.transition({width: containerWidth + "px"}, 200, "ease");
+        }
     }
 
     if (userLocation.currentInfobox !== null) {
@@ -250,35 +292,61 @@ function closeEntry() {
     }
 }
 
+function closeListBox(both) {
+    var list = $("section#list-section");
+
+    if (channel === "mobile") {
+        // mobile
+        var main = $("main");
+        list.transition({height: 0}, 200, "ease");
+        main.transition({marginTop: "0px", paddingTop: "0px"}, 200, "ease");
+    } else {
+        // desktop
+        var map = $("section.max_map");
+        var mapWidth = map.width();
+        list.css({
+                padding: "0.8rem 0 0 0"
+        });
+        list.transition({width: "0%"}, 200, "ease");
+        if (!both) {
+            map.transition({width: mapWidth + 380 + "px"}, 200, "ease");
+        }
+    }
+}
+
+function closeBoxes() {
+    closeArticleBox(true);
+    closeListBox(true);
+}
+
 /**
  * Callback that is called when the viewport changed
  */
 function searchForEntries () {
     // calculate bounds to search for
-    var bounds = userLocation.map.getBounds()
-    var max_lat = bounds.getNorthEast().lat().toFixed(10)
-    var max_lon = bounds.getNorthEast().lng().toFixed(10)
-    var min_lat = bounds.getSouthWest().lat().toFixed(10)
-    var min_lon = bounds.getSouthWest().lng().toFixed(10)
-    // get nearby locations
-    $.getJSON("/services/locations/" + min_lat + "/" + max_lat + "/" + min_lon + "/" + max_lon + "/stories/title/image/", function (data) {
-        $.each(data, function (index, value) {
-            addMarker(value);
-        })
-    });
+    if (userLocation.map.getBounds() !== undefined) {
+        var bounds = userLocation.map.getBounds();
+        var max_lat = bounds.getNorthEast().lat().toFixed(10);
+        var max_lon = bounds.getNorthEast().lng().toFixed(10);
+        var min_lat = bounds.getSouthWest().lat().toFixed(10);
+        var min_lon = bounds.getSouthWest().lng().toFixed(10);
+        // get nearby locations
+        $.getJSON("/services/locations/" + min_lat + "/" + max_lat + "/" + min_lon + "/" + max_lon + "/stories/title/image/", function (data) {
+            $.each(data, function (index, value) {
+                addMarker(value);
+            })
+        });
+    }
 }
 
 /**
  * Location object to enable/disable tracking the location and to retrieve the current or fallback location.
- * @param trackLocation
  * @constructor
  */
 function Location() {
-	this.DEFAULT_LAT = 50.258;
-	this.DEFAULT_LONG = 10.965;
 	this.DEFAULT_LOCATION = new google.maps.LatLng(50.258, 10.965);
 	this.positionMarker = null;
-    this.markers = {}
+    this.markers = {};
     this.currentInfobox = null;
 }
 
@@ -289,20 +357,20 @@ function Location() {
 Location.prototype.moveToCurrentLocationOrFallback = function () {
 	if (Modernizr.geolocation) {
 	    google.maps.event.addListenerOnce(this.positionMarker, 'position_changed', function() {
-            this.map.setCenter(this.getPosition());
-            this.map.fitBounds(this.getBounds());
-            searchForEntries();
+            if (this.getPosition() !== undefined) {
+                userLocation.map.setCenter(this.getPosition());
+                userLocation.map.fitBounds(this.getBounds());
+                searchForEntries();
+            }
         });
 	} else {
-		this.moveToLocation(this.DEFAULT_LAT, this.DEFAULT_LONG);
-		//TODO: show hint that browser doesn't support location
+		this.moveToLocation(userLocation.DEFAULT_LOCATION);
 	}
 };
 
 /**
  * Moves the map to the given location
- * @param lat
- * @param long
+ * @param position
  */
 Location.prototype.moveToLocation = function(position) {
 	if (this.map) {
@@ -336,5 +404,14 @@ function initialize_Map() {
     userLocation.moveToCurrentLocationOrFallback();
     google.maps.event.addListener(userLocation.positionMarker, 'geolocation_error', errorLocationCallback);
     google.maps.event.addListener(userLocation.map, 'idle', searchForEntries)
-    google.maps.event.addListener(userLocation.map, 'click', closeEntry);
+    google.maps.event.addListener(userLocation.map, 'click', closeBoxes);
 }
+
+/**
+ * $(document).ready
+ *
+ * initialize jQuery hooks
+ */
+$(function() {
+    $("img.list-articles").click(loadAllEntries);
+});

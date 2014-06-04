@@ -476,17 +476,29 @@ div.article-heading div.article-heading-row div.article-heading-cell h3 {
   margin: 0;
 }
 
-section#article-section {
+section.slide-in {
   margin: 0;
   padding: 0;
-  height: 8rem;
-  box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.7);
-  -webkit-box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.7);
   position: relative;
   z-index: 1000;
+  background: white;
+}
+
+section#list-section {
+  height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+section#list-section h3 {
+  margin: 0;
+}
+
+section#article-section {
+  cursor: grab;
+  background: white;
   overflow-x: hidden;
   overflow-y: hidden;
-  cursor: grab;
+  height: 8rem;
 }
 section#article-section div.entry-list {
   position: relative;
@@ -555,11 +567,22 @@ img.list-articles {
   z-index: 2;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
   -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
   .desktop {
     display: none;
+  }
+
+  section#article-section {
+    box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.7);
+  }
+
+  section#list-section {
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.7);
   }
 
   header[role="banner"] nav ul {
@@ -578,7 +601,10 @@ img.list-articles {
   }
 
   header[role="banner"] nav ul {
-    margin: 0 0 0 1rem;
+    margin: .15rem 0 0 1rem;
+  }
+  header[role="banner"] h1 {
+    margin: .15rem 0 0 0;
   }
 
   section#article-section {
@@ -586,7 +612,14 @@ img.list-articles {
     -webkit-box-shadow: -5px 0 5px rgba(0, 0, 0, 0.7);
   }
 
+  section#list-section {
+    box-shadow: 5px 0 5px rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 5px 0 5px rgba(0, 0, 0, 0.7);
+    float: left;
+  }
+
   img.list-articles {
     float: left;
+    margin-left: .25rem;
   }
 }

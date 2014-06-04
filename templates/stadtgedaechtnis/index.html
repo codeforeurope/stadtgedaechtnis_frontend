@@ -43,11 +43,20 @@
 	</header>
 
 	<main role="main">
+		<section id="list-section" class="slide-in">
+			<div class="center">
+				<h3>{% trans "Liste aller Einträge" %}</h3>
+				<img src="{%static "stadtgedaechtnis_frontend/img/ajax-loader.gif" %}" id="load-more-list" class="load-more">
+				<ul>
+
+				</ul>
+			</div>
+		</section>
 		<section class="max_map">
 			<img class="list-articles mobile" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
 			<div class="max_map" id="map_canvas"></div>
 		</section>
-		<section id="article-section">
+		<section id="article-section" class="slide-in">
 			<div class="entry-list">
 				<ul>
 					<li>

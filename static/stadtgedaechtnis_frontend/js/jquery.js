@@ -11,26 +11,37 @@ var footerHeight;
 var headerHeight;
 var footerSwipeHeight;
 var containerHeight;
+var containerWidth;
 var up = false;
 
 /**
  * resizes the main element to the remaining browser height
  */
 function resizeContainer() {
-	headerHeight = $("header[role='banner']").css("height");
     var footer = $("section#article-section");
+    var list= $("section#list-section");
     var main = $("main");
-    footerHeight = footer.css("height");
 	main.css({
         paddingTop: headerHeight,
         marginTop: "-" + headerHeight,
         paddingBottom: "0px",
         marginBottom: "0px"
     });
+    list.css({
+        height: "0"
+    });
     footer.css({
         height: "0"
     });
+
+}
+
+function calculateOriginalSizes() {
+    var main = $("main");
+    headerHeight = $("header[role='banner']").css("height");
+    footerHeight = $("section#article-section").css("height");
     containerHeight = main.height();
+    containerWidth = main.width();
 }
 
 /**
@@ -135,7 +146,9 @@ function initializeFooterSwiping() {
  * initialize jQuery hooks
  */
 $(function() {
+    calculateOriginalSizes();
 	resizeContainer();
-    initializeFooterSwiping();
-    $("img#load-more").hide();
+    //initializeFooterSwiping(); not necessary
+    $("img.load-more").hide();
+    $(document).resize(calculateOriginalSizes);
 });
