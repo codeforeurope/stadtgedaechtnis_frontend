@@ -161,7 +161,7 @@ function openEntry(location) {
             footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
             jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
             footer.transition({height: footerHeight}, 200, "ease");
-            initializeSwiping();
+            initializeFooterSwiping();
             $("main").transition({paddingBottom: footerHeight, marginBottom: "-" + footerHeight}, 200, "ease", function() {
                 jQueryEntryList.unslider({
                     complete: loadAdditionalEntry
