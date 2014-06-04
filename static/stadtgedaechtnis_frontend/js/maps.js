@@ -67,7 +67,9 @@ function createInfobox(location) {
     google.maps.event.addListener(location.marker, 'click', function () {
         openEntry(location);
     });
-    google.maps.event.addListener(infoBox, 'closeclick', closeArticleBox);
+    google.maps.event.addListener(infoBox, 'closeclick', function () {
+        closeArticleBox(false);
+    });
 }
 
 /**
@@ -230,7 +232,7 @@ function loadAllEntries() {
         // mobile
         var main = $("main");
         if (userLocation.currentInfobox !== null) {
-            closeArticleBox();
+            closeArticleBox(false);
         }
         list.css({
                 padding: "0.8rem"
@@ -281,7 +283,7 @@ function closeArticleBox(both) {
             });
             list.removeAttr("style");
         });
-        if (!both) {
+        if (!both || both === undefined) {
             map.transition({width: mapWidth + 380 + "px"}, 200, "ease");
         } else {
             map.transition({width: containerWidth + "px"}, 200, "ease");
@@ -300,9 +302,12 @@ function closeListBox(both) {
     if (channel === "mobile") {
         // mobile
         var main = $("main");
+        list.css({
+                padding: "0"
+        });
         list.transition({height: 0}, 200, "ease");
-        if (!both) {
-            main.transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease");
+        if (!both || both === undefined) {
+            main.transition({marginTop: "-" + headerHeight, paddingTop: headerHeight}, 200, "ease");
         }
     } else {
         // desktop
@@ -312,7 +317,7 @@ function closeListBox(both) {
                 padding: "0.8rem 0 0 0"
         });
         list.transition({width: "0%"}, 200, "ease");
-        if (!both) {
+        if (!both || both === undefined) {
             map.transition({width: mapWidth + 380 + "px"}, 200, "ease");
         } else {
             map.transition({width: containerWidth + "px"}, 200, "ease");
@@ -420,5 +425,7 @@ function initialize_Map() {
  */
 $(function() {
     $("img.list-articles").click(loadAllEntries);
-    $("section#list-section div.close").click(closeListBox);
+    $("section#list-section div.close").click(function() {
+        closeListBox(false);
+    });
 });
