@@ -189,6 +189,19 @@ main, .max_map {
   height: 100%;
   width: 100%;
   float: left;
+
+  div.list-articles {
+    position: absolute;
+    padding: 0;
+    top: 4rem;
+    left: 4rem;
+    z-index: 500;
+
+    img {
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.70);
+      -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.70);
+    }
+  }
 }
 
 @media screen and (min-width: 768px) {
