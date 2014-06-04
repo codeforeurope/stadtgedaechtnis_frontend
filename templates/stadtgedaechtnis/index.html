@@ -24,6 +24,7 @@
 <body onload="initialize_Map()">
 	<header role="banner">	
 		<nav role="navigation">
+			<img class="list-articles desktop" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
 			<ul>
 				{% get_language_info_list for LANGUAGES as languages %}
 				{% for language in languages %}
@@ -38,13 +39,12 @@
 			</ul>
 		</nav>	
 		<h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
+		<div class="clear"></div>
 	</header>
 
 	<main role="main">
 		<section class="max_map">
-			<div class="list-articles">
-				<img src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
-			</div>
+			<img class="list-articles mobile" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
 			<div class="max_map" id="map_canvas"></div>
 		</section>
 		<section id="article-section">

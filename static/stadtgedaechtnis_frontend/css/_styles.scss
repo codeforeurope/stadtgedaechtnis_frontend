@@ -41,6 +41,10 @@ a, a:hover, a:visited, a:active, a:focus {
   text-align: center;
 }
 
+.clear {
+  clear: both;
+}
+
 /* Header style */
 header[role="banner"] {
   background-image: url(../img/header.png);
@@ -61,7 +65,6 @@ header[role="banner"] {
 
     ul {
       float: left;
-      margin: 0;
       padding: 0;
       list-style-type: none;
 
@@ -190,23 +193,55 @@ main, .max_map {
   width: 100%;
   float: left;
 
-  div.list-articles {
-    position: absolute;
-    padding: 0;
-    top: 4rem;
-    left: 4rem;
-    z-index: 500;
+}
 
-    img {
-      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.70);
-      -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.70);
+img.list-articles {
+    z-index: 2;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.70);
+    -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.70);
+  }
+
+@media screen and (max-width: 768px) {
+  // Mobile only styles from here on
+  .desktop {
+    display: none;
+  }
+
+  header[role="banner"] {
+    nav {
+      ul {
+        margin: 0;
+      }
     }
+  }
+
+  img.list-articles {
+    position: absolute;
+    top: 4rem;
+    left: 2rem;
   }
 }
 
 @media screen and (min-width: 768px) {
+  // Desktop styles from here on
+  .mobile {
+    display: none;
+  }
+
+  header[role="banner"] {
+    nav {
+      ul {
+        margin: 0 0 0 1rem;
+      }
+    }
+  }
+
   section#article-section {
     box-shadow: -5px 0 5px rgba(0, 0, 0, 0.70);
     -webkit-box-shadow: -5px 0 5px rgba(0, 0, 0, 0.70);
+  }
+
+  img.list-articles {
+    float: left;
   }
 }
