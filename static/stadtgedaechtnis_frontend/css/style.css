@@ -485,7 +485,6 @@ section.slide-in {
 }
 
 div.heading-box {
-  min-height: 3rem;
   padding: .8rem 0 0 0;
   background: white;
 }
@@ -496,7 +495,7 @@ section#list-section {
   overflow-y: hidden;
 }
 section#list-section h3 {
-  margin: 0 0 1rem 0;
+  margin: 0;
 }
 section#list-section ul {
   list-style: none;
@@ -511,9 +510,6 @@ section#list-section ul li {
 }
 section#list-section ul li:nth-child(odd) {
   background: #e5e5e5;
-}
-section#list-section div.list-box {
-  height: calc(100% - 3rem);
 }
 
 section#article-section {
@@ -620,6 +616,12 @@ div.close:hover {
     box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.7);
     -webkit-box-shadow: 5px 0 5px rgba(0, 0, 0, 0.7);
   }
+  section#list-section div.heading-box {
+    min-height: 2rem;
+  }
+  section#list-section div.list-box {
+    height: calc(100% - 2rem);
+  }
 
   img.list-articles {
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
@@ -657,6 +659,12 @@ div.close:hover {
     box-shadow: 5px 0 5px rgba(0, 0, 0, 0.7);
     -webkit-box-shadow: 5px 0 5px rgba(0, 0, 0, 0.7);
     float: left;
+  }
+  section#list-section div.heading-box {
+    min-height: 3rem;
+  }
+  section#list-section div.list-box {
+    height: calc(100% - 3rem);
   }
 
   img.list-articles {
