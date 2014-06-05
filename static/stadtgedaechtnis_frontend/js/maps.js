@@ -194,9 +194,9 @@ function openEntryBox(stories) {
             var main = $("main");
             footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
             jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
-            footer.transition({height: footerHeight}, 200, "ease");
+            footer.transition({height: footerHeight + "px"}, 200, "ease");
             initializeFooterSwiping();
-            main.transition({paddingBottom: footerHeight, marginBottom: "-" + footerHeight}, 200, "ease", function() {
+            main.transition({paddingBottom: footerHeight + "px", marginBottom: "-" + footerHeight + "px"}, 200, "ease", function() {
                 jQueryEntryList.unslider({
                     complete: loadAdditionalEntry
                 });
@@ -309,7 +309,7 @@ function loadAllEntries() {
         }
         channel = "mobile";
         list.transition({height: containerHeight + "px"}, 300, "ease");
-        main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + containerHeight + headerHeight + "px"}, 300, "ease");
+        main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + (containerHeight + headerHeight) + "px"}, 300, "ease");
     } else {
         // desktop
         channel = "desktop";
@@ -371,7 +371,7 @@ function closeListBox(both) {
         var main = $("main");
         list.transition({height: 0}, 200, "ease");
         if (!both || both === undefined) {
-            main.transition({marginTop: "-" + headerHeight, paddingTop: headerHeight}, 200, "ease");
+            main.transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease");
         }
     } else {
         // desktop

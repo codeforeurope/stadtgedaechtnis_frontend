@@ -19,13 +19,15 @@ var up = false;
  */
 function resizeContainer() {
 	headerHeight = $("header[role='banner']").css("height");
+    headerHeight = parseInt(headerHeight.substring(0, headerHeight.length - 2));
     var footer = $("section#article-section");
     var list= $("section#list-section");
     var main = $("main");
     footerHeight = footer.css("height");
+    footerHeight = parseInt(footerHeight.substring(0, footerHeight.length - 2));
 	main.css({
-        paddingTop: headerHeight,
-        marginTop: "-" + headerHeight,
+        paddingTop: headerHeight + "px",
+        marginTop: "-" + headerHeight + "px",
         paddingBottom: "0px",
         marginBottom: "0px"
     });
@@ -69,15 +71,15 @@ function initializeFooterSwiping() {
             // handles the current swipe
             if ((up && direction === "down") || (!up && direction === "up")) {
                 if (phase === "cancel") {
-                    var newPadding = (direction === "up" ? footerHeight : maxPadding);
+                    var newPadding = (direction === "up" ? footerHeight + "px": maxPadding);
                     var footerPadding = (direction === "up" ? "0.8rem 0.8rem 0 0.8rem" : "0.8rem");
-                    footer.css("padding", footerPadding);
+                    footer.css("padding", footerPadding + "px");
                     slideElement(footer, container, newPadding);
                     footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
                 } else if (phase === "end") {
-                    var newPadding = (direction === "up" ? maxPadding : footerHeight);
+                    var newPadding = (direction === "up" ? maxPadding : footerHeight + "px");
                     var footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
-                    footer.css("padding", footerPadding);
+                    footer.css("padding", footerPadding + "px");
                     slideElement(footer, container, newPadding);
                     $("div.entry-list ul li").css("overflow-y", direction === "up" ? "auto" : "hidden");
                     up = (direction === "up");
