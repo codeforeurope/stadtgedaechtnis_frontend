@@ -73,13 +73,13 @@ function initializeFooterSwiping() {
                 if (phase === "cancel") {
                     var newPadding = (direction === "up" ? footerHeight + "px": maxPadding);
                     var footerPadding = (direction === "up" ? "0.8rem 0.8rem 0 0.8rem" : "0.8rem");
-                    footer.css("padding", footerPadding + "px");
+                    footer.css("padding", footerPadding);
                     slideElement(footer, container, newPadding);
                     footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
                 } else if (phase === "end") {
                     var newPadding = (direction === "up" ? maxPadding : footerHeight + "px");
                     var footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
-                    footer.css("padding", footerPadding + "px");
+                    footer.css("padding", footerPadding);
                     slideElement(footer, container, newPadding);
                     $("div.entry-list ul li").css("overflow-y", direction === "up" ? "auto" : "hidden");
                     up = (direction === "up");
