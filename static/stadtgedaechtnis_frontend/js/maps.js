@@ -270,7 +270,10 @@ function loadAllEntries() {
         }
         channel = "mobile";
         list.transition({height: containerHeight + "px"}, 300, "ease");
-        main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + (containerHeight + headerHeight) + "px"}, 300, "ease");
+        main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + (containerHeight + headerHeight) + "px"}, 300, "ease", function() {
+            loadEntries();
+        });
+        allEntriesVisible = true;
     } else {
         // desktop
         channel = "desktop";
@@ -281,20 +284,23 @@ function loadAllEntries() {
             width: "0%"
         });
         map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
-        list.transition({width: "380px"}, 200, "ease");
+        list.transition({width: "380px"}, 200, "ease", function() {
+            loadEntries();
+        });
+        allEntriesVisible = true;
     }
+}
 
-    allEntriesVisible = true;
-
+function loadEntries() {
     $("img#load-more-list").show();
-    $.getJSON("/services/stories/title/", function(data) {
+    $.getJSON("/services/stories/title/", function (data) {
         var entryList = $("section#list-section ul");
-        $.each(data, function(index, value) {
+        $.each(data, function (index, value) {
             entryList.append("<li><a href='#' class='open-entry' data-location='" + value["location"] + "' data-entry='" + value["id"] + "'>" + value["title"] + "</a></li>");
         });
         $("img#load-more-list").hide();
-        $("a.open-entry").each(function() {
-            $(this).click(function(event) {
+        $("a.open-entry").each(function () {
+            $(this).click(function (event) {
                 var link = $(this);
                 var entryID = link.data("entry");
                 var locationID = link.data("location");
@@ -302,19 +308,19 @@ function loadAllEntries() {
                     closeListBox();
                 }
                 if (locationID !== null) {
-                     if (!userLocation.locations.hasOwnProperty(locationID)) {
-                         $.getJSON("/services/locations/" + locationID + "/stories/title/image/", function (location) {
-                             addMarker(location);
-                             openEntry(location);
-                             userLocation.moveToLocation(location.latitude, location.longitude);
-                         });
-                     } else {
-                         var location = userLocation.locations[locationID];
-                         openEntry(location);
-                         userLocation.moveToLocation(location.latitude, location.longitude);
-                     }
+                    if (!userLocation.locations.hasOwnProperty(locationID)) {
+                        $.getJSON("/services/locations/" + locationID + "/stories/title/image/", function (location) {
+                            addMarker(location);
+                            openEntry(location);
+                            userLocation.moveToLocation(location.latitude, location.longitude);
+                        });
+                    } else {
+                        var location = userLocation.locations[locationID];
+                        openEntry(location);
+                        userLocation.moveToLocation(location.latitude, location.longitude);
+                    }
                 } else {
-                    $.getJSON("/services/stories/" + entryID + "/image/", function(data) {
+                    $.getJSON("/services/stories/" + entryID + "/image/", function (data) {
                         var asList = [data];
                         openEntryBox(asList);
                         userLocation.currentInfobox = "dummy";
