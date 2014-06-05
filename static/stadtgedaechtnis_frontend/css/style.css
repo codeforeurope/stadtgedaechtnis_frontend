@@ -617,10 +617,10 @@ div.close:hover {
     -webkit-box-shadow: 5px 0 5px rgba(0, 0, 0, 0.7);
   }
   section#list-section div.heading-box {
-    min-height: 2rem;
+    min-height: 3rem;
   }
   section#list-section div.list-box {
-    height: calc(100% - 2rem);
+    height: calc(100% - 3rem);
   }
 
   img.list-articles {
