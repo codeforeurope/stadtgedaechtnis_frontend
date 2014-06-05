@@ -6,13 +6,15 @@ var MAP_ELEMENT = "map_canvas";
 
 var channel = "mobile";
 
+var allEntriesVisible = false;
+
 /**
  * Callback that is called when the location couldn't be retrieved.
  * @param error
  */
 function errorLocationCallback (error) {
 	// error callback
-	userLocation.moveToLocation(userLocation.DEFAULT_LOCATION);
+	userLocation.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
     console.log('There was an error obtaining your position. Message: ' + error.message);
 	//TODO: show hint that location couldn't be retrieved
 }
@@ -27,7 +29,7 @@ function addMarker (location) {
         entryCount = 0;
     }
     // if not already on the map, display marker
-    if (!userLocation.markers.hasOwnProperty(location.id)) {
+    if (!userLocation.locations.hasOwnProperty(location.id)) {
         location.marker = new google.maps.Marker({
             map: userLocation.map,
             position: new google.maps.LatLng(latitude, longitude),
@@ -38,7 +40,7 @@ function addMarker (location) {
 
         createInfobox(location);
 
-        userLocation.markers[location.id] = location;
+        userLocation.locations[location.id] = location;
     }
 }
 
@@ -66,10 +68,14 @@ function createInfobox(location) {
     google.maps.event.clearListeners(location.marker, 'click');
     google.maps.event.addListener(location.marker, 'click', function () {
         openEntry(location);
+        return false;
     });
     google.maps.event.addListener(infoBox, 'closeclick', function () {
         closeArticleBox(false);
+        return false;
     });
+
+    return location;
 }
 
 /**
@@ -92,17 +98,45 @@ function loadAdditionalEntry(listElement) {
 }
 
 /**
- * Opens an infobox for the first entry in this
- * location and pops up the pop up with the
- * correct heading and image. Handles click
- * events on the marker.
- * @param entry
+ * Opens the entry box and the info box for one location.
+ * Handles click events on the marker.
+ * @param location
  */
 function openEntry(location) {
+    openEntryBox(location.stories);
+    openInfobox(location);
+}
+
+/**
+ * Opens the infobox for one location.
+ * @param location
+ */
+function openInfobox(location) {
+    userLocation.currentInfobox = location.infobox;
+    location.infobox.open(userLocation.map, location.marker);
+
+    if (location.stories.length > 1) {
+        $("a.switch-entry").each(function() {
+            $(this).click(function(event) {
+                var entryIndex = $(this).data("entry");
+                $("section#article-section div.entry-list").data("unslider").move(entryIndex);
+                event.preventDefault();
+                return false;
+            });
+        });
+    }
+}
+
+/**
+ * Pops up the entry box with the first location
+ * correct heading and image.
+ * @param stories
+ */
+function openEntryBox(stories) {
     var entryList = "";
-    for (var i = 0; i < location.stories.length; i++) {
+    for (var i = 0; i < stories.length; i++) {
         // create list of entrys for slider
-        entryList += '<li data-entry="' + i + '" data-id="' + location.stories[i].id + '">\
+        entryList += '<li data-entry="' + i + '" data-id="' + stories[i].id + '">\
                         <div class="article-heading">\
                             <div class="article-heading-row">';
         if (i > 0) {
@@ -111,17 +145,17 @@ function openEntry(location) {
             </div></a>'
         }
         entryList += '<div class="article-heading-cell">\
-                                    <h3 id="article-heading-' + i + '">' + location.stories[i].title + '</h3>\
+                                    <h3 id="article-heading-' + i + '">' + stories[i].title + '</h3>\
                                 </div>';
-        if (i < location.stories.length - 1) {
+        if (i < stories.length - 1) {
             entryList += '<a href="#" class="next"><div class="article-heading-cell entry-slide next">\
                 <img src="/static/stadtgedaechtnis_frontend/img/right.png">\
             </div></a>';
         }
         entryList += '</div>\
                         </div>';
-        if (location.stories[i].assets[0] !== undefined) {
-            entryList += '<img src="' + location.stories[i].assets[0].sources + '" alt="' + location.stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>';
+        if (stories[i].assets[0] !== undefined) {
+            entryList += '<img src="' + stories[i].assets[0].sources + '" alt="' + stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>';
         }
         entryList += '<div class="center">\
                             <img src="/static/stadtgedaechtnis_frontend/img/ajax-loader.gif" id="load-more-' + i + '" class="load-more">\
@@ -134,7 +168,7 @@ function openEntry(location) {
     $("div.entry-list ul").html(entryList);
     var jQueryEntryList = $("section#article-section div.entry-list");
 
-    if (location.stories.length > 1) {
+    if (stories.length > 1) {
         // Show next and previous buttons
         $("div.entry-slide").show();
         $("div.article-heading-row a.previous").unbind("click").click(function() {
@@ -193,7 +227,9 @@ function openEntry(location) {
     } else {
         // Old entry already opened
         jQueryEntryList.data("unslider").set(0, true);
-        userLocation.currentInfobox.close();
+        if (userLocation.currentInfobox !== "dummy") {
+            userLocation.currentInfobox.close();
+        }
         jQueryEntryList.unslider({
             complete: loadAdditionalEntry
         });
@@ -206,19 +242,18 @@ function openEntry(location) {
 
     loadAdditionalEntry($("div.entry-list ul li:first"));
 
-    userLocation.currentInfobox = location.infobox;
-    location.infobox.open(userLocation.map, location.marker);
+}
 
-    if (location.stories.length > 1) {
-        $("a.switch-entry").each(function() {
-            $(this).click(function(event) {
-                var entryIndex = $(this).data("entry");
-                jQueryEntryList.data("unslider").move(entryIndex);
-                event.preventDefault();
-                return false;
-            });
-        });
+/**
+ * Toggles the all entries list box.
+ */
+function toggleAllEntries() {
+    if (allEntriesVisible) {
+        closeListBox();
+    } else {
+        loadAllEntries();
     }
+    return false;
 }
 
 
@@ -226,7 +261,45 @@ function openEntry(location) {
  * Loads all the entries and lists them. Also shows search bar.
  */
 function loadAllEntries() {
-    //TODO: load entries
+    $("img#load-more-list").show();
+    $.getJSON("/services/stories/title/", function(data) {
+        var entryList = $("section#list-section ul");
+        $.each(data, function(index, value) {
+            entryList.append("<li><a href='#' class='open-entry' data-location='" + value["location"] + "' data-entry='" + value["id"] + "'>" + value["title"] + "</a></li>");
+        });
+        $("img#load-more-list").hide();
+        $("a.open-entry").each(function() {
+            $(this).click(function(event) {
+                var link = $(this);
+                var entryID = link.data("entry");
+                var locationID = link.data("location");
+                if (channel === "mobile") {
+                    closeListBox();
+                }
+                if (locationID !== null) {
+                     if (!userLocation.locations.hasOwnProperty(locationID)) {
+                         $.getJSON("/services/locations/" + locationID + "/stories/title/image/", function (location) {
+                             addMarker(location);
+                             openEntry(location);
+                             userLocation.moveToLocation(location.latitude, location.longitude);
+                         });
+                     } else {
+                         var location = userLocation.locations[locationID];
+                         openEntry(location);
+                         userLocation.moveToLocation(location.latitude, location.longitude);
+                     }
+                } else {
+                    $.getJSON("/services/stories/" + entryID + "/image/", function(data) {
+                        var asList = [data];
+                        openEntryBox(asList);
+                        userLocation.currentInfobox = "dummy";
+                    });
+                }
+                event.preventDefault();
+                return false;
+            })
+        })
+    });
     var list = $("section#list-section");
     if ($(window).width() < 768) {
         // mobile
@@ -234,9 +307,6 @@ function loadAllEntries() {
         if (userLocation.currentInfobox !== null) {
             closeArticleBox(false);
         }
-        list.css({
-                padding: "0.8rem"
-        });
         channel = "mobile";
         list.transition({height: containerHeight + "px"}, 300, "ease");
         main.transition({paddingTop: containerHeight + "px", marginTop: "-" + containerHeight + "px"}, 300, "ease");
@@ -247,16 +317,12 @@ function loadAllEntries() {
         var mapWidth = map.width();
         list.css({
             height: "100%",
-            width: "0%",
-            paddingTop: "0.8rem"
+            width: "0%"
         });
         map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
-        list.transition({width: "380px"}, 200, "ease", function() {
-            list.css({
-                padding: "0.8rem"
-            });
-        });
+        list.transition({width: "380px"}, 200, "ease");
     }
+    allEntriesVisible = true;
 }
 
 function closeArticleBox(both) {
@@ -298,13 +364,11 @@ function closeArticleBox(both) {
 
 function closeListBox(both) {
     var list = $("section#list-section");
+    var entryList = $("section#list-section ul");
 
     if (channel === "mobile") {
         // mobile
         var main = $("main");
-        list.css({
-                padding: "0"
-        });
         list.transition({height: 0}, 200, "ease");
         if (!both || both === undefined) {
             main.transition({marginTop: "-" + headerHeight, paddingTop: headerHeight}, 200, "ease");
@@ -313,9 +377,6 @@ function closeListBox(both) {
         // desktop
         var map = $("section.max_map");
         var mapWidth = map.width();
-        list.css({
-                padding: "0.8rem 0 0 0"
-        });
         list.transition({width: "0%"}, 200, "ease");
         if (!both || both === undefined) {
             map.transition({width: mapWidth + 380 + "px"}, 200, "ease");
@@ -323,6 +384,8 @@ function closeListBox(both) {
             map.transition({width: containerWidth + "px"}, 200, "ease");
         }
     }
+    entryList.empty();
+    allEntriesVisible = false;
 }
 
 function closeBoxes() {
@@ -355,9 +418,11 @@ function searchForEntries () {
  * @constructor
  */
 function Location() {
+    this.DEFAULT_LAT = 50.258;
+    this.DEFAULT_LON = 10.965
 	this.DEFAULT_LOCATION = new google.maps.LatLng(50.258, 10.965);
 	this.positionMarker = null;
-    this.markers = {};
+    this.locations = {};
     this.currentInfobox = null;
 }
 
@@ -375,16 +440,18 @@ Location.prototype.moveToCurrentLocationOrFallback = function () {
             }
         });
 	} else {
-		this.moveToLocation(userLocation.DEFAULT_LOCATION);
+		this.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
 	}
 };
 
 /**
  * Moves the map to the given location
- * @param position
+ * @param lat
+ * @param lng
  */
-Location.prototype.moveToLocation = function(position) {
+Location.prototype.moveToLocation = function(lat, lng) {
 	if (this.map) {
+        var position = new google.maps.LatLng(lat, lng);
 		this.map.panTo(position);
         searchForEntries();
 	}
@@ -424,8 +491,9 @@ function initialize_Map() {
  * initialize jQuery hooks
  */
 $(function() {
-    $("img.list-articles").click(loadAllEntries);
+    $("img.list-articles").click(toggleAllEntries);
     $("section#list-section div.close").click(function() {
         closeListBox(false);
+        return false;
     });
 });

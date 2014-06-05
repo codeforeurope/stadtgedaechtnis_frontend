@@ -484,13 +484,36 @@ section.slide-in {
   background: white;
 }
 
+div.heading-box {
+  min-height: 3rem;
+  padding: .8rem 0 0 0;
+  background: white;
+}
+
 section#list-section {
   height: 0;
   overflow-x: auto;
   overflow-y: hidden;
 }
 section#list-section h3 {
+  margin: 0 0 1rem 0;
+}
+section#list-section ul {
+  list-style: none;
+  height: 100%;
   margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+section#list-section ul li {
+  background: #f6f6f6;
+  padding: .3rem;
+}
+section#list-section ul li:nth-child(odd) {
+  background: #e5e5e5;
+}
+section#list-section div.list-box {
+  height: calc(100% - 3rem);
 }
 
 section#article-section {
@@ -565,8 +588,6 @@ main, .max_map {
 
 img.list-articles {
   z-index: 2;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
-  -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
   cursor: pointer;
 }
 
@@ -598,6 +619,11 @@ div.close:hover {
   section#list-section {
     box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.7);
     -webkit-box-shadow: 5px 0 5px rgba(0, 0, 0, 0.7);
+  }
+
+  img.list-articles {
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
   }
 
   header[role="banner"] nav ul {
