@@ -309,7 +309,7 @@ function loadAllEntries() {
         }
         channel = "mobile";
         list.transition({height: containerHeight + "px"}, 300, "ease");
-        main.transition({paddingTop: containerHeight + "px", marginTop: "-" + containerHeight + "px"}, 300, "ease");
+        main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + containerHeight + headerHeight + "px"}, 300, "ease");
     } else {
         // desktop
         channel = "desktop";
