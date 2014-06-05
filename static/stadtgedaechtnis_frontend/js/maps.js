@@ -363,7 +363,9 @@ function closeArticleBox(both) {
     }
 
     if (userLocation.currentInfobox !== null) {
-        userLocation.currentInfobox.close();
+        if (userLocation.currentInfobox !== "dummy") {
+            userLocation.currentInfobox.close();
+        }
         userLocation.currentInfobox = null;
     }
 }
