@@ -50,19 +50,41 @@ header[role="banner"] {
   background-image: url(../img/header.png);
   background-image: none, url(../img/header.svg);
   background-size: 100% 100%;
-  padding: .5rem;
   position: relative;
   z-index: 500;
+  overflow: hidden;
 
   h1 {
     text-transform: uppercase;
     font-size: 1.3rem;
-    margin: 0;
+    margin: 0 .5rem 0 0;
     text-align: right
   }
 
-  nav {
+  div.search-box {
+    float: left;
+    position: relative;
+    padding: .5rem;
 
+    input.search-input {
+      width: 85%;
+      margin-left: .25rem;
+      padding: 3px 6px;
+      border-style: none none solid;
+      border-width: 0 0 1px;
+      border-color: black;
+      background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    }
+
+  }
+
+  div.nav-box {
+    position: relative;
+    float: left;
+    padding: .5rem;
+  }
+
+  nav {
     ul {
       float: left;
       padding: 0;
@@ -280,10 +302,22 @@ div.close:hover {
   }
 
   header[role="banner"] {
+    width: 200%;
+
+    div.nav-box {
+      width: 50%;
+      left: -50%;
+    }
+
     nav {
       ul {
         margin: 0;
       }
+    }
+
+    div.search-box {
+      width: 50%;
+      left: -50%;
     }
   }
 
@@ -301,10 +335,23 @@ div.close:hover {
   }
 
   header[role="banner"] {
+    width: calc(100% + 380px);
+
+    div.nav-box {
+      left: -380px;
+      width: calc(100% - 380px);
+    }
+
     nav {
+
       ul {
         margin: .15rem 0 0 1rem;
       }
+    }
+
+    div.search-box {
+      width: 380px;
+      left: -380px;
     }
 
     h1 {

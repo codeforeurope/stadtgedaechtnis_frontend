@@ -251,7 +251,7 @@ function toggleAllEntries() {
     if (allEntriesVisible) {
         closeListBox();
     } else {
-        loadAllEntries();
+        showAllEntries();
     }
     return false;
 }
@@ -260,8 +260,10 @@ function toggleAllEntries() {
 /**
  * Loads all the entries and lists them. Also shows search bar.
  */
-function loadAllEntries() {
+function showAllEntries() {
     var list = $("section#list-section");
+    var searchBox = $("div.search-box");
+    var navBox = $("div.nav-box");
     if ($(window).width() < 768) {
         // mobile
         var main = $("main");
@@ -270,6 +272,8 @@ function loadAllEntries() {
         }
         channel = "mobile";
         list.transition({height: containerHeight + "px"}, 300, "ease");
+        searchBox.transition({left: 0}, 200, "ease");
+        navBox.transition({left: 0}, 200, "ease");
         main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + (containerHeight + headerHeight) + "px"}, 300, "ease", function() {
             loadEntries();
         });
@@ -283,6 +287,8 @@ function loadAllEntries() {
             height: "100%",
             width: "0%"
         });
+        searchBox.transition({left: 0}, 200, "ease");
+        navBox.transition({left: 0, width: containerWidth - 380 + "px"}, 200, "ease");
         map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
         list.transition({width: "380px"}, 200, "ease", function() {
             loadEntries();
@@ -383,11 +389,15 @@ function closeArticleBox(both) {
 function closeListBox(both) {
     var list = $("section#list-section");
     var entryList = $("section#list-section ul");
+    var searchBox = $("div.search-box");
+    var navBox = $("div.nav-box");
 
     if (channel === "mobile") {
         // mobile
         var main = $("main");
         list.transition({height: 0}, 200, "ease");
+        searchBox.transition({left: "-50%"}, 200, "ease");
+        navBox.transition({left: "-50%"}, 200, "ease");
         if (!both || both === undefined) {
             main.transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease", function() {
                 entryList.empty();
@@ -398,6 +408,8 @@ function closeListBox(both) {
         var map = $("section.max_map");
         var mapWidth = map.width();
         list.transition({width: "0%"}, 200, "ease");
+        searchBox.transition({left: "-380px"}, 200, "ease");
+        navBox.transition({left: "-380px", width: containerWidth + "px"}, 200, "ease");
         if (!both || both === undefined) {
             map.transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
                 entryList.empty();

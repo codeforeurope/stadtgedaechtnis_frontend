@@ -22,23 +22,28 @@
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/jquery.js" %}"></script>
 </head>
 <body onload="initialize_Map()">
-	<header role="banner">	
-		<nav role="navigation">
-			<img class="list-articles desktop" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
-			<ul>
-				{% get_language_info_list for LANGUAGES as languages %}
-				{% for language in languages %}
-				<li>
-					<form action="{% url 'set_language' %}" name="lang{{ language.code}}" method="post">
-					{% csrf_token %}
-					<input type="hidden" name="language" value="{{ language.code }}">
-					<a href="#" onclick="document.lang{{ language.code}}.submit();return false;" {% if language.code == LANGUAGE_CODE %} class="current"{% endif %}><b>{{ language.code }}</b></a>{% if not forloop.last %}&nbsp;<b>|</b>&nbsp;{% endif %}
-					</form>
-				</li>
-				{% endfor %}
-			</ul>
-		</nav>	
-		<h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
+	<header role="banner">
+		<div class="search-box">
+			<label for="search-input"><span class="genericon genericon-search"></span></label><input type="search" id="search-input" class="search-input">
+		</div>
+		<div class="nav-box">
+			<nav role="navigation">
+				<img class="list-articles desktop" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
+				<ul>
+					{% get_language_info_list for LANGUAGES as languages %}
+					{% for language in languages %}
+					<li>
+						<form action="{% url 'set_language' %}" name="lang{{ language.code}}" method="post">
+						{% csrf_token %}
+						<input type="hidden" name="language" value="{{ language.code }}">
+						<a href="#" onclick="document.lang{{ language.code}}.submit();return false;" {% if language.code == LANGUAGE_CODE %} class="current"{% endif %}><b>{{ language.code }}</b></a>{% if not forloop.last %}&nbsp;<b>|</b>&nbsp;{% endif %}
+						</form>
+					</li>
+					{% endfor %}
+				</ul>
+			</nav>
+			<h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
+		</div>
 		<div class="clear"></div>
 	</header>
 

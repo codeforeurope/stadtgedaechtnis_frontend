@@ -38,6 +38,7 @@ function resizeContainer() {
         height: "0"
     });
     containerHeight = main.height();
+    containerWidth = main.width();
 }
 
 /**
