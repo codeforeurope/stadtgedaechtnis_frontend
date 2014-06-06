@@ -415,7 +415,9 @@ function closeArticleBox(both) {
             footer.css("padding", "0rem");
             $("div.entry-list ul").removeAttr("style");
         });
-        main.transition({paddingBottom: "0px", marginBottom: "0px"}, 200, "ease");
+        main.transition({paddingBottom: "0px", marginBottom: "0px"}, 200, "ease", function() {
+            google.maps.event.trigger(userLocation.map, "resize");
+        });
     } else {
         //desktop
         var map = $("section.max_map");
@@ -430,9 +432,13 @@ function closeArticleBox(both) {
             list.removeAttr("style");
         });
         if (!both || both === undefined) {
-            map.transition({width: mapWidth + 380 + "px"}, 200, "ease");
+            map.transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
+                google.maps.event.trigger(userLocation.map, "resize");
+            });
         } else {
-            map.transition({width: containerWidth + "px"}, 200, "ease");
+            map.transition({width: containerWidth + "px"}, 200, "ease", function() {
+                google.maps.event.trigger(userLocation.map, "resize");
+            });
         }
     }
 
@@ -442,7 +448,6 @@ function closeArticleBox(both) {
         }
         userLocation.currentInfobox = null;
     }
-    google.maps.event.trigger(userLocation.map, "resize");
 }
 
 var allEntriesList = null;
@@ -466,6 +471,7 @@ function closeListBox(both) {
         if (!both || both === undefined) {
             main.transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease", function() {
                 allEntriesList = allEntries.detach();
+                google.maps.event.trigger(userLocation.map, "resize");
             });
         }
     } else {
@@ -478,14 +484,15 @@ function closeListBox(both) {
         if (!both || both === undefined) {
             map.transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
                 allEntriesList = allEntries.detach();
+                google.maps.event.trigger(userLocation.map, "resize");
             });
         } else {
             map.transition({width: containerWidth + "px"}, 200, "ease", function() {
                 allEntriesList = allEntries.detach();
+                google.maps.event.trigger(userLocation.map, "resize");
             });
         }
     }
-    google.maps.event.trigger(userLocation.map, "resize");
     allEntriesVisible = false;
 }
 
