@@ -597,5 +597,5 @@ $(function() {
         closeListBox(false);
         return false;
     });
-    $("input#search-input").keydown(createSearchTimeout);
+    $("input#search-input").bind('input', createSearchTimeout);
 });
