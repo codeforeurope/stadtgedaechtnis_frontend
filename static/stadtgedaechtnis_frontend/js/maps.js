@@ -261,9 +261,9 @@ function toggleAllEntries() {
  * Loads all the entries and lists them. Also shows search bar.
  */
 function showAllEntries() {
-    var list = $("section#list-section");
+    var listSection = $("section#list-section");
+    var entryList = $("section#list-section ul");
     var searchBox = $("div.search-box");
-    var searchInput = $("input#search-input");
     var navBox = $("div.nav-box");
     if ($(window).width() < 768) {
         // mobile
@@ -272,12 +272,15 @@ function showAllEntries() {
             closeArticleBox(false);
         }
         channel = "mobile";
-        searchInput.val("");
-        list.transition({height: containerHeight + "px"}, 300, "ease");
+        listSection.transition({height: containerHeight + "px"}, 300, "ease");
         searchBox.transition({left: 0}, 200, "ease");
         navBox.transition({left: 0}, 200, "ease");
         main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + (containerHeight + headerHeight) + "px"}, 300, "ease", function() {
-            loadAllEntries();
+            if (allEntriesList !== null) {
+                allEntriesList.appendTo(entryList);
+            } else {
+                loadAllEntries();
+            }
         });
         allEntriesVisible = true;
     } else {
@@ -285,16 +288,19 @@ function showAllEntries() {
         channel = "desktop";
         var map = $("section.max_map");
         var mapWidth = map.width();
-        list.css({
+        listSection.css({
             height: "100%",
             width: "0%"
         });
-        searchInput.val("");
         searchBox.transition({left: 0}, 200, "ease");
         navBox.transition({left: 0, width: containerWidth - 380 + "px"}, 200, "ease");
         map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
-        list.transition({width: "380px"}, 200, "ease", function() {
-            loadAllEntries();
+        listSection.transition({width: "380px"}, 200, "ease", function() {
+            if (allEntriesList !== null) {
+                allEntriesList.appendTo(entryList);
+            } else {
+                loadAllEntries();
+            }
         });
         allEntriesVisible = true;
     }
@@ -427,13 +433,15 @@ function closeArticleBox(both) {
     }
 }
 
+var allEntriesList = null;
 /**
  * Closes the list box.
  * @param both Determines whether both boxes are closed at the same time.
  */
+
 function closeListBox(both) {
     var list = $("section#list-section");
-    var entryList = $("section#list-section ul");
+    var allEntries = $("section#list-section ul li");
     var searchBox = $("div.search-box");
     var navBox = $("div.nav-box");
 
@@ -445,7 +453,7 @@ function closeListBox(both) {
         navBox.transition({left: "-50%"}, 200, "ease");
         if (!both || both === undefined) {
             main.transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease", function() {
-                entryList.empty();
+                allEntriesList = allEntries.detach();
             });
         }
     } else {
@@ -457,11 +465,11 @@ function closeListBox(both) {
         navBox.transition({left: "-380px", width: containerWidth + "px"}, 200, "ease");
         if (!both || both === undefined) {
             map.transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
-                entryList.empty();
+                allEntriesList = allEntries.detach();
             });
         } else {
             map.transition({width: containerWidth + "px"}, 200, "ease", function() {
-                entryList.empty();
+                allEntriesList = allEntries.detach();
             });
         }
     }
