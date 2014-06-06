@@ -22,83 +22,85 @@
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/jquery.js" %}"></script>
 </head>
 <body onload="initialize_Map()">
-	<header role="banner">
-		<div class="search-box">
-			<label for="search-input"><span class="genericon genericon-search"></span></label><input type="search" id="search-input" class="search-input">
-		</div>
-		<div class="nav-box">
-			<nav role="navigation">
-				<img class="list-articles desktop" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
-				<ul>
-					{% get_language_info_list for LANGUAGES as languages %}
-					{% for language in languages %}
-					<li>
-						<form action="{% url 'set_language' %}" name="lang{{ language.code}}" method="post">
-						{% csrf_token %}
-						<input type="hidden" name="language" value="{{ language.code }}">
-						<a href="#" onclick="document.lang{{ language.code}}.submit();return false;" {% if language.code == LANGUAGE_CODE %} class="current"{% endif %}><b>{{ language.code }}</b></a>{% if not forloop.last %}&nbsp;<b>|</b>&nbsp;{% endif %}
-						</form>
-					</li>
-					{% endfor %}
-				</ul>
-			</nav>
-			<h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
-		</div>
-		<div class="clear"></div>
-	</header>
-
-	<main role="main">
-		<section id="list-section" class="slide-in">
-			<div class="heading-box">
-				<div class="center">
-					<h3>{% trans "Liste aller Einträge" %}</h3>
-					<img src="{%static "stadtgedaechtnis_frontend/img/ajax-loader.gif" %}" id="load-more-list" class="load-more">
-				</div>
-				<div class="close">
-					<img src="{%static "stadtgedaechtnis_frontend/img/close.png" %}">
-				</div>
+	<div id="wrapper">
+		<header role="banner">
+			<div class="search-box">
+				<label for="search-input"><span class="genericon genericon-search"></span></label><input type="search" id="search-input" class="search-input">
 			</div>
-			<div class="list-box">
-				<ul>
-
-				</ul>
+			<div class="nav-box">
+				<nav role="navigation">
+					<img class="list-articles desktop" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
+					<ul>
+						{% get_language_info_list for LANGUAGES as languages %}
+						{% for language in languages %}
+						<li>
+							<form action="{% url 'set_language' %}" name="lang{{ language.code}}" method="post">
+							{% csrf_token %}
+							<input type="hidden" name="language" value="{{ language.code }}">
+							<a href="#" onclick="document.lang{{ language.code}}.submit();return false;" {% if language.code == LANGUAGE_CODE %} class="current"{% endif %}><b>{{ language.code }}</b></a>{% if not forloop.last %}&nbsp;<b>|</b>&nbsp;{% endif %}
+							</form>
+						</li>
+						{% endfor %}
+					</ul>
+				</nav>
+				<h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
 			</div>
-		</section>
-		<section class="max_map">
-			<img class="list-articles mobile" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
-			<div class="max_map" id="map_canvas"></div>
-		</section>
-		<section id="article-section" class="slide-in">
-			<div class="entry-list">
-				<ul>
-					<li>
-						<div class="article-heading">
-							<div class="article-heading-row">
-								<a href="#" class="previous">
-								<div class="article-heading-cell entry-slide previous">
-									<img src="{%static "stadtgedaechtnis_frontend/img/left.png" %}">
+			<div class="clear"></div>
+		</header>
+
+		<main role="main">
+			<section id="list-section" class="slide-in">
+				<div class="heading-box">
+					<div class="center">
+						<h3>{% trans "Liste aller Einträge" %}</h3>
+						<img src="{%static "stadtgedaechtnis_frontend/img/ajax-loader.gif" %}" id="load-more-list" class="load-more">
+					</div>
+					<div class="close">
+						<img src="{%static "stadtgedaechtnis_frontend/img/close.png" %}">
+					</div>
+				</div>
+				<div class="list-box">
+					<ul>
+
+					</ul>
+				</div>
+			</section>
+			<section class="max_map">
+				<img class="list-articles mobile" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
+				<div class="max_map" id="map_canvas"></div>
+			</section>
+			<section id="article-section" class="slide-in">
+				<div class="entry-list">
+					<ul>
+						<li>
+							<div class="article-heading">
+								<div class="article-heading-row">
+									<a href="#" class="previous">
+									<div class="article-heading-cell entry-slide previous">
+										<img src="{%static "stadtgedaechtnis_frontend/img/left.png" %}">
+									</div>
+									</a>
+									<div class="article-heading-cell">
+										<h3></h3>
+									</div>
+									<a href="#" class="next">
+									<div class="article-heading-cell entry-slide next">
+										<a href="#"><img src="{%static "stadtgedaechtnis_frontend/img/right.png" %}"></a>
+									</div>
+									</a>
 								</div>
-								</a>
-								<div class="article-heading-cell">
-									<h3></h3>
-								</div>
-								<a href="#" class="next">
-								<div class="article-heading-cell entry-slide next">
-									<a href="#"><img src="{%static "stadtgedaechtnis_frontend/img/right.png" %}"></a>
-								</div>
-								</a>
 							</div>
-						</div>
-						<img src="" alt="" id="entry-first"/>
-						<div class="center">
-							<img src="{%static "stadtgedaechtnis_frontend/img/ajax-loader.gif" %}" id="load-more-0" class="load-more">
-						</div>
-						<article class="entry-more" id="entry-more-0">
-						</article>
-					</li>
-				</ul>
-			</div>
-		</section>
-	</main>
+							<img src="" alt="" id="entry-first"/>
+							<div class="center">
+								<img src="{%static "stadtgedaechtnis_frontend/img/ajax-loader.gif" %}" id="load-more-0" class="load-more">
+							</div>
+							<article class="entry-more" id="entry-more-0">
+							</article>
+						</li>
+					</ul>
+				</div>
+			</section>
+		</main>
+	</div>
 </body>
 </html>
