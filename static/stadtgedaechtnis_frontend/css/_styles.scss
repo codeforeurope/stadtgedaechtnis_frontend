@@ -177,6 +177,11 @@ section#list-section {
 
 }
 
+img.load-more {
+  width: auto;
+  margin-top: 15px;
+}
+
 section#article-section {
   cursor: grab;
   background: white;
@@ -231,11 +236,6 @@ section#article-section {
 
   img {
     width: 100%;
-  }
-
-  img.load-more {
-    width: auto;
-    margin-top: 15px;
   }
 
   article.entry-more {

@@ -539,6 +539,11 @@ section#list-section ul li:nth-child(odd) {
   background: #e5e5e5;
 }
 
+img.load-more {
+  width: auto;
+  margin-top: 15px;
+}
+
 section#article-section {
   cursor: grab;
   background: white;
@@ -585,10 +590,6 @@ section#article-section p {
 }
 section#article-section img {
   width: 100%;
-}
-section#article-section img.load-more {
-  width: auto;
-  margin-top: 15px;
 }
 section#article-section article.entry-more {
   clear: both;
