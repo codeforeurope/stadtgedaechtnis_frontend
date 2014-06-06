@@ -469,7 +469,7 @@ function Location() {
  * @returns {google.maps.LatLng|*}
  */
 Location.prototype.moveToCurrentLocationOrFallback = function () {
-	if (Modernizr.geolocation) {
+	if (navigator.geolocation) {
 	    google.maps.event.addListenerOnce(this.positionMarker, 'position_changed', function() {
             if (this.getPosition() !== undefined) {
                 userLocation.map.setCenter(this.getPosition());
