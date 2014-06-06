@@ -280,6 +280,7 @@ function showAllEntries() {
         main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + (containerHeight + headerHeight) + "px"}, 300, "ease", function() {
             if (allEntriesList !== null) {
                 allEntriesList.appendTo(entryList);
+                $("img#load-more-list").hide();
             } else {
                 if (query === "") {
                     loadAllEntries();

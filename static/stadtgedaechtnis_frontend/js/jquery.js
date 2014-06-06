@@ -144,6 +144,5 @@ function initializeFooterSwiping() {
  */
 $(function() {
 	resizeContainer();
-    //initializeFooterSwiping(); not necessary
     $("img.load-more").hide();
 });
