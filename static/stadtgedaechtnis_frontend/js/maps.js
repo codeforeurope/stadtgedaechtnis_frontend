@@ -265,6 +265,7 @@ function showAllEntries() {
     var entryList = $("section#list-section ul");
     var searchBox = $("div.search-box");
     var navBox = $("div.nav-box");
+    var query = $("input#search-input").val();
     $("img#load-more-list").show();
     if ($(window).width() < 768) {
         // mobile
@@ -280,7 +281,11 @@ function showAllEntries() {
             if (allEntriesList !== null) {
                 allEntriesList.appendTo(entryList);
             } else {
-                loadAllEntries();
+                if (query === "") {
+                    loadAllEntries();
+                } else {
+                    searchEntries();
+                }
             }
         });
         allEntriesVisible = true;
@@ -299,8 +304,13 @@ function showAllEntries() {
         listSection.transition({width: "380px"}, 200, "ease", function() {
             if (allEntriesList !== null) {
                 allEntriesList.appendTo(entryList);
+                $("img#load-more-list").hide();
             } else {
-                loadAllEntries();
+                if (query === "") {
+                    loadAllEntries();
+                } else {
+                    searchEntries();
+                }
             }
         });
         allEntriesVisible = true;
@@ -324,6 +334,7 @@ function createSearchTimeout() {
  */
 function searchEntries() {
     $("section#list-section ul").empty();
+    $("img#load-more-list").show();
     var query = $("input#search-input").val();
     if (query === "") {
         loadAllEntries();
