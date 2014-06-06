@@ -265,6 +265,7 @@ function showAllEntries() {
     var entryList = $("section#list-section ul");
     var searchBox = $("div.search-box");
     var navBox = $("div.nav-box");
+    $("img#load-more-list").show();
     if ($(window).width() < 768) {
         // mobile
         var main = $("main");
@@ -327,7 +328,6 @@ function searchEntries() {
     if (query === "") {
         loadAllEntries();
     } else {
-        $("img#load-more-list").show();
         $.getJSON("/services/stories/text/" + query + "/title/", function (data) {
             var entryList = $("section#list-section ul");
             $.each(data, function (index, value) {
@@ -379,7 +379,6 @@ function addOpenEntryEvent() {
  * Loads all saved entries and displays them in the list box.
  */
 function loadAllEntries() {
-    $("img#load-more-list").show();
     $.getJSON("/services/stories/title/", function (data) {
         var entryList = $("section#list-section ul");
         $.each(data, function (index, value) {
@@ -587,5 +586,5 @@ $(function() {
         closeListBox(false);
         return false;
     });
-    $("input#search-input").keyup(createSearchTimeout);
+    $("input#search-input").keydown(createSearchTimeout);
 });
