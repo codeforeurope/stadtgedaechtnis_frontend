@@ -263,6 +263,7 @@ function toggleAllEntries() {
 function showAllEntries() {
     var list = $("section#list-section");
     var searchBox = $("div.search-box");
+    var searchInput = $("input#search-input");
     var navBox = $("div.nav-box");
     if ($(window).width() < 768) {
         // mobile
@@ -271,11 +272,12 @@ function showAllEntries() {
             closeArticleBox(false);
         }
         channel = "mobile";
+        searchInput.val("");
         list.transition({height: containerHeight + "px"}, 300, "ease");
         searchBox.transition({left: 0}, 200, "ease");
         navBox.transition({left: 0}, 200, "ease");
         main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + (containerHeight + headerHeight) + "px"}, 300, "ease", function() {
-            loadEntries();
+            loadAllEntries();
         });
         allEntriesVisible = true;
     } else {
@@ -287,17 +289,90 @@ function showAllEntries() {
             height: "100%",
             width: "0%"
         });
+        searchInput.val("");
         searchBox.transition({left: 0}, 200, "ease");
         navBox.transition({left: 0, width: containerWidth - 380 + "px"}, 200, "ease");
         map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
         list.transition({width: "380px"}, 200, "ease", function() {
-            loadEntries();
+            loadAllEntries();
         });
         allEntriesVisible = true;
     }
 }
 
-function loadEntries() {
+var searchTimeoutID = null;
+
+/**
+ * Creates a timeout to search for entries.
+ */
+function createSearchTimeout() {
+    if (searchTimeoutID !== null) {
+        window.clearTimeout(searchTimeoutID);
+    }
+    searchTimeoutID = window.setTimeout(searchEntries, 500);
+}
+
+/**
+ * Searches for entries
+ */
+function searchEntries() {
+    $("section#list-section ul").empty();
+    var query = $("input#search-input").val();
+    if (query === "") {
+        loadAllEntries();
+    } else {
+        $("img#load-more-list").show();
+        $.getJSON("/services/stories/text/" + query + "/title/", function (data) {
+            var entryList = $("section#list-section ul");
+            $.each(data, function (index, value) {
+                entryList.append("<li><a href='#' class='open-entry' data-location='" + value["location"] + "' data-entry='" + value["id"] + "'>" + value["title"] + "</a></li>");
+            });
+            $("img#load-more-list").hide();
+            addOpenEntryEvent();
+        });
+    }
+}
+
+/**
+ * Attaches event handlers to the entry list to open the entry.
+ */
+function addOpenEntryEvent() {
+    $("a.open-entry").each(function () {
+        $(this).click(function (event) {
+            var link = $(this);
+            var entryID = link.data("entry");
+            var locationID = link.data("location");
+            if (channel === "mobile") {
+                closeListBox();
+            }
+            if (locationID !== null) {
+                if (!userLocation.locations.hasOwnProperty(locationID)) {
+                    $.getJSON("/services/locations/" + locationID + "/stories/title/image/", function (location) {
+                        addMarker(location);
+                        openEntry(location);
+                        userLocation.moveToLocation(location.latitude, location.longitude);
+                    });
+                } else {
+                    var location = userLocation.locations[locationID];
+                    openEntry(location);
+                    userLocation.moveToLocation(location.latitude, location.longitude);
+                }
+            } else {
+                $.getJSON("/services/stories/" + entryID + "/image/", function (data) {
+                    var asList = [data];
+                    openEntryBox(asList);
+                    userLocation.currentInfobox = "dummy";
+                });
+            }
+            event.preventDefault();
+            return false;
+        });
+    });
+}
+/**
+ * Loads all saved entries and displays them in the list box.
+ */
+function loadAllEntries() {
     $("img#load-more-list").show();
     $.getJSON("/services/stories/title/", function (data) {
         var entryList = $("section#list-section ul");
@@ -305,37 +380,7 @@ function loadEntries() {
             entryList.append("<li><a href='#' class='open-entry' data-location='" + value["location"] + "' data-entry='" + value["id"] + "'>" + value["title"] + "</a></li>");
         });
         $("img#load-more-list").hide();
-        $("a.open-entry").each(function () {
-            $(this).click(function (event) {
-                var link = $(this);
-                var entryID = link.data("entry");
-                var locationID = link.data("location");
-                if (channel === "mobile") {
-                    closeListBox();
-                }
-                if (locationID !== null) {
-                    if (!userLocation.locations.hasOwnProperty(locationID)) {
-                        $.getJSON("/services/locations/" + locationID + "/stories/title/image/", function (location) {
-                            addMarker(location);
-                            openEntry(location);
-                            userLocation.moveToLocation(location.latitude, location.longitude);
-                        });
-                    } else {
-                        var location = userLocation.locations[locationID];
-                        openEntry(location);
-                        userLocation.moveToLocation(location.latitude, location.longitude);
-                    }
-                } else {
-                    $.getJSON("/services/stories/" + entryID + "/image/", function (data) {
-                        var asList = [data];
-                        openEntryBox(asList);
-                        userLocation.currentInfobox = "dummy";
-                    });
-                }
-                event.preventDefault();
-                return false;
-            })
-        })
+        addOpenEntryEvent();
     });
 }
 
@@ -534,4 +579,5 @@ $(function() {
         closeListBox(false);
         return false;
     });
+    $("input#search-input").keypress(createSearchTimeout);
 });
