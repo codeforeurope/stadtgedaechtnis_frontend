@@ -579,5 +579,5 @@ $(function() {
         closeListBox(false);
         return false;
     });
-    $("input#search-input").keypress(createSearchTimeout);
+    $("input#search-input").keyup(createSearchTimeout);
 });

@@ -464,6 +464,9 @@ header[role="banner"] div.search-box input.search-input {
   border-width: 0 0 1px;
   border-color: black;
   background: none repeat scroll 0 0 transparent;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-modify: read-write-plaintext-only;
 }
 header[role="banner"] div.nav-box {
   position: relative;
