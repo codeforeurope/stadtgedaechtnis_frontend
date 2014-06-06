@@ -442,6 +442,7 @@ function closeArticleBox(both) {
         }
         userLocation.currentInfobox = null;
     }
+    google.maps.event.trigger(userLocation.map, "resize");
 }
 
 var allEntriesList = null;
@@ -484,6 +485,7 @@ function closeListBox(both) {
             });
         }
     }
+    google.maps.event.trigger(userLocation.map, "resize");
     allEntriesVisible = false;
 }
 
