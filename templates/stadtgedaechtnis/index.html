@@ -42,7 +42,16 @@
 						{% endfor %}
 					</ul>
 				</nav>
-				<h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
+                <h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
+                <div class="add-articles desktop">
+                    <img class="add-articles" src="{%static "stadtgedaechtnis_frontend/img/plus.png" %}">
+                    <ul>
+                        <li id="image">{% trans "Bild" %}</li>
+                        <li id="audio">{% trans "Audio" %}</li>
+                        <li id="video">{% trans "Video" %}</li>
+                        <li id="text">{% trans "Text" %}</li>
+                    </ul>
+                </div>
 			</div>
 			<div class="clear"></div>
 		</header>
@@ -66,6 +75,9 @@
 			</section>
 			<section class="max_map">
 				<img class="list-articles mobile" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
+                <div class="add-articles mobile">
+                    <img class="add-articles" src="{%static "stadtgedaechtnis_frontend/img/plus.png" %}">
+                </div>
 				<div class="max_map" id="map_canvas"></div>
 			</section>
 			<section id="article-section" class="slide-in">

@@ -60,13 +60,14 @@ header[role="banner"] {
   background-size: 100% 100%;
   position: relative;
   z-index: 500;
-  overflow: hidden;
+  //overflow: hidden;
 
   h1 {
     text-transform: uppercase;
     font-size: 1.3rem;
     margin: 0 .5rem 0 0;
-    text-align: right
+    text-align: right;
+    float: right;
   }
 
   div.search-box {
@@ -96,6 +97,51 @@ header[role="banner"] {
     position: relative;
     float: left;
     padding: .5rem;
+
+    div.add-articles {
+      ul {
+        margin: -200px 0 0 0;
+        position: absolute;
+        list-style: none;
+        padding: 0;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.2s ease 0.2s;
+
+        li {
+          cursor: pointer;
+          padding: 12px 24px 12px 40px;
+          background-repeat: no-repeat;
+          background-position: 4px 8px;
+          background-color: rgb(255, 255, 255);
+        }
+
+        li#image {
+          background-image: url(../img/bild.png);
+        }
+
+        li#text {
+          background-image: url(../img/text.png);
+        }
+
+        li#audio {
+          background-image: url(../img/audio.png);
+        }
+
+        li#video {
+          background-image: url(../img/video.png);
+        }
+
+      }
+    }
+
+    div.add-articles:hover {
+      ul {
+        margin: 0;
+        visibility: visible;
+        opacity: .75;
+      }
+    }
   }
 
   nav {
@@ -266,7 +312,7 @@ main, .max_map {
   float: left;
 }
 
-img.list-articles {
+img.list-articles, img.add-articles {
   z-index: 2;
   cursor: pointer;
 }
@@ -310,7 +356,7 @@ div.close:hover {
   }
   }
 
-  img.list-articles {
+  img.list-articles, img.add-articles {
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.70);
     -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.70);
   }
@@ -339,6 +385,12 @@ div.close:hover {
     position: absolute;
     top: 4rem;
     left: 2rem;
+  }
+
+  div.add-articles {
+    position: absolute;
+    bottom: 3rem;
+    right: 2rem;
   }
 }
 
@@ -395,5 +447,10 @@ div.close:hover {
   img.list-articles {
     float: left;
     margin-left: .25rem;
+  }
+
+  div.add-articles {
+    float: right;
+    margin-right: 1rem;
   }
 }
