@@ -164,7 +164,7 @@ div.add-articles {
   }
 }
 
-div.add-articles:hover, div.add-articles:active {
+div.add-articles:hover {
   ul {
     margin: 0;
     visibility: visible;
@@ -403,8 +403,6 @@ div.close:hover {
       right: -26px;
     }
   }
-
-
 }
 
 @media screen and (min-width: 768px) {
