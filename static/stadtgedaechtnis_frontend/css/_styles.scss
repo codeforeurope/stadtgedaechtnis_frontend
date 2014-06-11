@@ -392,13 +392,9 @@ div.close:hover {
     left: 2rem;
   }
 
-  body:hover div.add-articles ul {
+  section.max_map:hover div.add-articles ul {
     visibility: hidden;
     opacity: 0;
-  }
-
-  section.max_map div.add-articles ul {
-
   }
 
   div.add-articles {
