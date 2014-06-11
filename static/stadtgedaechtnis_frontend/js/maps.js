@@ -502,7 +502,7 @@ function closeListBox(both) {
 function closeBoxes() {
     closeArticleBox(true);
     closeListBox(true);
-    $("body").focus();
+    $("header[role='banner'] h1").focus();
 }
 
 /**
