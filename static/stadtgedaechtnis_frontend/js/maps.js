@@ -611,6 +611,6 @@ $(function() {
     });
     $("input#search-input").bind('input', createSearchTimeout);
     $("div.add-articles.mobile").click(function() {
-        $(this).addClass("hover");
+        $(this).toggleClass("hover");
     })
 });

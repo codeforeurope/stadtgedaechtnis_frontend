@@ -393,6 +393,14 @@ div.close:hover {
     ul {
       bottom: 40px;
       right: -26px;
+      overflow: hidden;
+      visibility: visible;
+
+      li {
+        transition: all 0.2s ease 0.2s;
+        position: relative;
+        left: -120px;
+      }
     }
   }
 
@@ -401,6 +409,10 @@ div.close:hover {
       margin: 0;
       visibility: visible;
       opacity: .9;
+
+      li {
+        left: 0px;
+      }
     }
   }
 }
