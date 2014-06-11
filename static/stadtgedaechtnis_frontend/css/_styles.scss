@@ -164,14 +164,6 @@ div.add-articles {
   }
 }
 
-div.add-articles:hover {
-  ul {
-    margin: 0;
-    visibility: visible;
-    opacity: .9;
-  }
-}
-
 div.article-heading {
   width: 100%;
   display: table;
@@ -403,6 +395,14 @@ div.close:hover {
       right: -26px;
     }
   }
+
+  div.add-articles.hover {
+    ul {
+      margin: 0;
+      visibility: visible;
+      opacity: .9;
+    }
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -429,13 +429,13 @@ div.close:hover {
       div.add-articles:hover {
         ul {
           margin: 0;
+          visibility: visible;
+          opacity: .9;
         }
       }
-
     }
 
     nav {
-
       ul {
         margin: .15rem 0 0 1rem;
       }

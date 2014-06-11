@@ -500,9 +500,10 @@ function closeListBox(both) {
  * Closes both boxes.
  */
 function closeBoxes() {
+    var addArticleMenu = $("div.add-articles");
     closeArticleBox(true);
     closeListBox(true);
-    $("header[role='banner'] h1").focus();
+    addArticleMenu.removeClass("hover");
 }
 
 /**
@@ -609,4 +610,7 @@ $(function() {
         return false;
     });
     $("input#search-input").bind('input', createSearchTimeout);
+    $("div.add-articles.mobile").click(function() {
+        $(this).addClass("hover");
+    })
 });
