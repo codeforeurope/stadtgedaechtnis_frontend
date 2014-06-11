@@ -502,6 +502,7 @@ function closeListBox(both) {
 function closeBoxes() {
     closeArticleBox(true);
     closeListBox(true);
+    $("body").focus();
 }
 
 /**
