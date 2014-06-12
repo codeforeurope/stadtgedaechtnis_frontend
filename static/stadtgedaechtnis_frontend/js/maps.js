@@ -488,7 +488,9 @@ function closeListBox(both) {
         navBox.transition({left: "-50%"}, 200, "ease");
         if (!both || both === undefined) {
             main.transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease", function() {
-                allEntriesList = allEntries.detach();
+                if (allEntries.count > 0) {
+                    allEntriesList = allEntries.detach();
+                }
                 google.maps.event.trigger(userLocation.map, "resize");
             });
         }
@@ -501,12 +503,13 @@ function closeListBox(both) {
         navBox.transition({left: "-380px", width: containerWidth + "px"}, 200, "ease");
         if (!both || both === undefined) {
             map.transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
-                allEntriesList = allEntries.detach();
                 google.maps.event.trigger(userLocation.map, "resize");
             });
         } else {
             map.transition({width: containerWidth + "px"}, 200, "ease", function() {
-                allEntriesList = allEntries.detach();
+                if (allEntries.count > 0) {
+                    allEntriesList = allEntries.detach();
+                }
                 google.maps.event.trigger(userLocation.map, "resize");
             });
         }
