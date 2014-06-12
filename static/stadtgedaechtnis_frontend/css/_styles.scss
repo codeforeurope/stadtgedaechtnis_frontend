@@ -237,6 +237,11 @@ section#list-section {
 
 }
 
+span.hide-text {
+  display: block;
+  text-indent: -999px;
+}
+
 section#article-section img.load-more, section#list-section img.load-more {
   width: auto;
   margin-top: 15px;
@@ -307,6 +312,25 @@ section#article-section {
       p {
         margin-top: 1.5rem;
       }
+    }
+
+    span#selected-location {
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    span.next {
+      float: right;
+      background: url("../img/next.png") no-repeat;
+      height: 28px;
+      width: 28px;
+    }
+
+    span.new {
+      float: right;
+      background: url("../img/plus.png") no-repeat;
+      height: 28px;
+      width: 28px;
     }
   }
 

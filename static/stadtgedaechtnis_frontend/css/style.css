@@ -590,6 +590,11 @@ section#list-section ul li:nth-child(odd) {
   background: #e5e5e5;
 }
 
+span.hide-text {
+  display: block;
+  text-indent: -999px;
+}
+
 section#article-section img.load-more, section#list-section img.load-more {
   width: auto;
   margin-top: 15px;
@@ -648,6 +653,22 @@ section#article-section div.new-entry p {
 }
 section#article-section div.new-entry form p {
   margin-top: 1.5rem;
+}
+section#article-section div.new-entry span#selected-location {
+  text-decoration: underline;
+  font-weight: bold;
+}
+section#article-section div.new-entry span.next {
+  float: right;
+  background: url("../img/next.png") no-repeat;
+  height: 28px;
+  width: 28px;
+}
+section#article-section div.new-entry span.new {
+  float: right;
+  background: url("../img/plus.png") no-repeat;
+  height: 28px;
+  width: 28px;
 }
 section#article-section img {
   width: 100%;

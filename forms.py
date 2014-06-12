@@ -66,7 +66,7 @@ class NewStoryImageForm(forms.Form):
 
     title = forms.CharField(
         widget=PlaceHolderInput(placeholder=_("z.Bsp. Sambafest in Coburg")),
-        label=_("Titel des Eintrags"))
+        label=_("Titel"))
     file = forms.FileField(widget=input_widget, label=file_label)
 
     def get_media_type(self):

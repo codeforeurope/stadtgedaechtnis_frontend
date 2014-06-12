@@ -27,7 +27,7 @@ class NewStoryMediaFormView(FormView):
     """
     View that creates the form to upload a new media entry.
     """
-    template_name = "stadtgedaechtnis/new_entry.html"
+    template_name = "stadtgedaechtnis/new_entry_title.html"
 
     # pass this parameter to the as_view()-Method to supply, which form should be displayed
     form_class = NewStoryImageForm

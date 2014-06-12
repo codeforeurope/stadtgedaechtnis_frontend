@@ -6,6 +6,8 @@ var MAP_ELEMENT = "map_canvas";
 
 var channel = "mobile";
 
+var newEntryMode = false;
+
 var allEntriesVisible = false;
 
 /**
@@ -15,6 +17,7 @@ var allEntriesVisible = false;
 function errorLocationCallback (error) {
 	// error callback
 	userLocation.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
+    userLocation.locationAvailable = false;
     console.log('There was an error obtaining your position. Message: ' + error.message);
 	//TODO: show hint that location couldn't be retrieved
 }
@@ -37,7 +40,7 @@ function addMarker (location) {
         location.marker = new google.maps.Marker({
             map: userLocation.map,
             position: new google.maps.LatLng(latitude, longitude),
-            title: location.title,
+            title: location.label,
             icon: "/static/stadtgedaechtnis_frontend/img/marker_" + entryCount + ".png",
             animation: google.maps.Animation.DROP
         });
@@ -71,7 +74,11 @@ function createInfobox(location) {
     location.infobox = infoBox;
     google.maps.event.clearListeners(location.marker, 'click');
     google.maps.event.addListener(location.marker, 'click', function () {
-        openEntry(location);
+        if (newEntryMode) {
+            selectNewLocation(location);
+        } else {
+            openEntry(location);
+        }
         return false;
     });
     google.maps.event.addListener(infoBox, 'closeclick', function () {
@@ -80,6 +87,38 @@ function createInfobox(location) {
     });
 
     return location;
+}
+
+/**
+ * Selects a location for the new entry box.
+ * @param location
+ */
+var resetOldMarker;
+function selectNewLocation(location) {
+    $("span#selected-location").text(location.label);
+    if (resetOldMarker !== undefined) {
+        resetOldMarker();
+    }
+    var oldMarkerIcon = location.marker.getIcon();
+    resetOldMarker = function() {
+        if (userLocation.newLocationMarker !== undefined) {
+            userLocation.newLocationMarker.setMap(null);
+            userLocation.newLocationMarker = undefined;
+        }
+        location.marker.setIcon(oldMarkerIcon);
+    };
+    location.marker.setIcon("/static/stadtgedaechtnis_frontend/img/marker_selected.png");
+}
+
+/**
+ * Reads the position of the selection marker after dragging.
+ */
+function markerSetNewLocation(event) {
+    var lat = event.latLng.lat();
+    var lon = event.latLng.lng();
+    getNearbyAddresses(lat, lon, function(result) {
+        $("span#selected-location").text(result[0].address);
+    })
 }
 
 /**
@@ -195,6 +234,13 @@ function openArticleBox(articleBoxHeight, callback) {
         } else {
             initializeFooterSwiping();
         }
+
+        if (newEntryMode) {
+        newEntryMode = false;
+        if (resetOldMarker !== undefined) {
+            resetOldMarker();
+        }
+    }
     }
 }
 /**
@@ -466,6 +512,13 @@ function closeArticleBox(both) {
         }
         userLocation.currentInfobox = null;
     }
+
+    if (newEntryMode) {
+        newEntryMode = false;
+        if (resetOldMarker !== undefined) {
+            resetOldMarker();
+        }
+    }
 }
 
 var allEntriesList = null;
@@ -544,7 +597,7 @@ function searchForEntries () {
             lon: min_lon,
             maxlat: max_lat,
             maxlon: max_lon
-        })
+        });
         $.getJSON(locationsUrl, function (data) {
             $.each(data, function (index, value) {
                 addMarker(value);
@@ -564,6 +617,7 @@ function Location() {
 	this.positionMarker = null;
     this.locations = {};
     this.currentInfobox = null;
+    this.locationAvailable = false;
 }
 
 /**
@@ -574,6 +628,7 @@ Location.prototype.moveToCurrentLocationOrFallback = function () {
 	if (navigator.geolocation) {
 	    google.maps.event.addListenerOnce(this.positionMarker, 'position_changed', function() {
             if (this.getPosition() !== undefined) {
+                userLocation.locationAvailable = true;
                 userLocation.map.setCenter(this.getPosition());
                 userLocation.map.fitBounds(this.getBounds());
                 searchForEntries();
@@ -595,7 +650,25 @@ Location.prototype.moveToLocation = function(lat, lng) {
 		this.map.panTo(position);
         searchForEntries();
 	}
-}
+};
+
+/**
+ * Retrieves the current position without a callback.
+ */
+Location.prototype.getCurrentLocation = function() {
+    if (userLocation.positionMarker) {
+        var googlePosition = userLocation.positionMarker.getPosition();
+        return ({
+            lat: googlePosition.lat(),
+            lon: googlePosition.lon()
+        });
+    } else {
+        return ({
+            lat: userLocation.DEFAULT_LAT,
+            lon: userLocation.DEFAULT_LON
+        });
+    }
+};
 
 var userLocation = new Location();
 
@@ -645,13 +718,41 @@ $(function() {
         var mediaType = that.attr("id");
         var entryList = $("section#article-section div.entry-list ul");
         that.click(function() {
-            var newEntryFormURL = django_js_utils.urls.resolve("new-story-" + mediaType);
-            openArticleBox(footerHeight * 2);
+            var newEntryFormURL;
+            var openFooterHeight;
+            var onFinish;
+            if (userLocation.locationAvailable) {
+                newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
+                openFooterHeight = footerHeight * 1.5;
+                newEntryMode = true;
+                onFinish = function() {
+                    $("div.new-entry span.new").click(function() {
+                        if (resetOldMarker !== undefined) {
+                            resetOldMarker();
+                        }
+                        userLocation.newLocationMarker = new google.maps.Marker({
+                            map: userLocation.map,
+                            position: userLocation.map.getCenter(),
+                            icon: "/static/stadtgedaechtnis_frontend/img/marker_selected.png",
+                            animation: google.maps.Animation.DROP,
+                            draggable: true
+                        });
+                        google.maps.event.addListener(userLocation.newLocationMarker, "dragend", markerSetNewLocation);
+                    });
+                }
+            } else {
+                newEntryFormURL = django_js_utils.urls.resolve("new-story-" + mediaType);
+                openFooterHeight = footerHeight * 2;
+            }
+            openArticleBox(openFooterHeight);
             $.get(newEntryFormURL, function (data) {
                 userLocation.currentInfobox = "dummy";
                 var listEntry = $("<li>");
                 listEntry.html(data);
                 entryList.html(listEntry);
+                if (onFinish !== undefined) {
+                    onFinish();
+                }
             });
         });
     });

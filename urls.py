@@ -18,6 +18,9 @@ urlpatterns = patterns(
        })),
    url(r'^i18n/', include('django.conf.urls.i18n')),
    url(r'^entry/(?P<pk>\d+)/$', EntryView.as_view(), name="entry-view"),
+   url(r'^forms/location/$', TemplateView.as_view(
+       template_name='stadtgedaechtnis/new_entry_location.html'
+   ), name="new-story-location"),
    url(r'^forms/image/$', NewStoryMediaFormView.as_view(
            form_class=NewStoryImageForm), name="new-story-image"),
    url(r'^forms/audio/$', NewStoryMediaFormView.as_view(
