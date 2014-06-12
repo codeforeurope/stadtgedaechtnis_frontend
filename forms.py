@@ -70,7 +70,7 @@ class NewStoryImageForm(forms.Form):
     file = forms.FileField(widget=input_widget, label=file_label)
 
     def get_media_type(self):
-        return _("Bild")
+        return _("ein Bild")
 
 
 class NewStoryVideoForm(NewStoryImageForm):
@@ -79,7 +79,7 @@ class NewStoryVideoForm(NewStoryImageForm):
     file = forms.FileField(widget=input_widget, label=file_label)
 
     def get_media_type(self):
-        return _("Video")
+        return _("ein Video")
 
 
 class NewStoryAudioForm(NewStoryImageForm):
@@ -88,4 +88,4 @@ class NewStoryAudioForm(NewStoryImageForm):
     file = forms.FileField(widget=input_widget, label=file_label)
 
     def get_media_type(self):
-        return _("Tonaufnahme")
+        return _("eine Tonaufnahme")

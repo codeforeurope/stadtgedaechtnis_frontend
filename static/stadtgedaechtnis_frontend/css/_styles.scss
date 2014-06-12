@@ -56,6 +56,10 @@ a, a:hover, a:visited, a:active, a:focus {
   text-align: center;
 }
 
+.right {
+  text-align: right;
+}
+
 .clear {
   clear: both;
 }
@@ -288,6 +292,22 @@ section#article-section {
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
     hyphens: auto;
+  }
+
+  div.new-entry {
+    p {
+      -moz-hyphens: none;
+      -o-hyphens: none;
+      -webkit-hyphens: none;
+      -ms-hyphens: none;
+      hyphens: none;
+    }
+
+    form {
+      p {
+        margin-top: 1.5rem;
+      }
+    }
   }
 
   img {
