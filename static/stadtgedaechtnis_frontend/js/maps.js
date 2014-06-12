@@ -19,6 +19,10 @@ function errorLocationCallback (error) {
 	//TODO: show hint that location couldn't be retrieved
 }
 
+/**
+ * Adds a marker for a specific location to the map.
+ * @param location
+ */
 function addMarker (location) {
     // calculate latitude and longitude
     var latitude = parseFloat(location.latitude);
@@ -89,7 +93,8 @@ function loadAdditionalEntry(listElement) {
 
         $("article#entry-more-" + index).html("");
         $("img#load-more-" + index).show();
-        $.get("/entry/" + id + "/", function (data) {
+        var entryUrl = django_js_utils.urls.resolve("entry-view", {pk: id});
+        $.get(entryUrl, function (data) {
             $("article#entry-more-" + index).html(data);
             $("img#load-more-" + index).hide();
             listElement.data("loaded", true);
@@ -103,7 +108,7 @@ function loadAdditionalEntry(listElement) {
  * @param location
  */
 function openEntry(location) {
-    openEntryBox(location.stories);
+    loadAndOpenEntryBox(location.stories);
     openInfobox(location);
 }
 
@@ -128,11 +133,76 @@ function openInfobox(location) {
 }
 
 /**
+ * Opens the article sidebox and calls a callback
+ * that can be used to load content into the sidebox.
+ * @param articleBoxHeight height of the article box
+ * @param [callback]
+ */
+function openArticleBox(articleBoxHeight, callback) {
+    var jQueryEntryList = $("section#article-section div.entry-list");
+
+    if (userLocation.currentInfobox === null) {
+        // New entry opened
+        var footer = $("section#article-section");
+
+        if ($(window).width() < 768) {
+            // mobile
+            channel = "mobile";
+            var main = $("main");
+            footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
+            jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
+            footer.transition({height: articleBoxHeight + "px"}, 200, "ease");
+            initializeFooterSwiping();
+            main.transition({paddingBottom: articleBoxHeight + "px", marginBottom: "-" + articleBoxHeight + "px"}, 200, "ease", function () {
+                jQueryEntryList.unslider({
+                    complete: callback
+                });
+                jQueryEntryList.data("unslider").set(0, true);
+            });
+        } else {
+            // desktop
+            $("div.article-heading").swipe("disable");
+            channel = "desktop";
+            var map = $("section.max_map");
+            var mapWidth = map.width();
+            var listEntries = $("div.entry-list ul li");
+            footer.css({
+                height: "100%",
+                width: "0%",
+                padding: "0.8rem"
+            });
+            jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
+            map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
+            footer.transition({width: "380px"}, 200, "ease", function () {
+                jQueryEntryList.unslider({
+                    complete: callback
+                });
+                jQueryEntryList.data("unslider").set(0, true);
+            });
+            listEntries.css("overflow-y", "auto");
+        }
+    } else {
+        // Old entry already opened
+        jQueryEntryList.data("unslider").set(0, true);
+        if (userLocation.currentInfobox !== "dummy") {
+            userLocation.currentInfobox.close();
+        }
+        jQueryEntryList.unslider({
+            complete: callback
+        });
+        if (channel === "desktop") {
+            $("div.entry-list ul li").css("overflow-y", "auto");
+        } else {
+            initializeFooterSwiping();
+        }
+    }
+}
+/**
  * Pops up the entry box with the first location
  * correct heading and image.
  * @param stories
  */
-function openEntryBox(stories) {
+function loadAndOpenEntryBox(stories) {
     var entryList = "";
     for (var i = 0; i < stories.length; i++) {
         // create list of entrys for slider
@@ -183,65 +253,9 @@ function openEntryBox(stories) {
         // Hide next and previous buttons
         $("div.entry-slide").hide();
     }
-
-    if (userLocation.currentInfobox === null) {
-        // New entry opened
-        var footer = $("section#article-section");
-
-        if ($(window).width() < 768) {
-            // mobile
-            channel = "mobile";
-            var main = $("main");
-            footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
-            jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
-            footer.transition({height: footerHeight + "px"}, 200, "ease");
-            initializeFooterSwiping();
-            main.transition({paddingBottom: footerHeight + "px", marginBottom: "-" + footerHeight + "px"}, 200, "ease", function() {
-                jQueryEntryList.unslider({
-                    complete: loadAdditionalEntry
-                });
-                jQueryEntryList.data("unslider").set(0, true);
-            });
-        } else {
-            // desktop
-            $("div.article-heading").swipe("disable");
-            channel = "desktop";
-            var map = $("section.max_map");
-            var mapWidth = map.width();
-            var listEntries = $("div.entry-list ul li");
-            footer.css({
-                height: "100%",
-                width: "0%",
-                padding: "0.8rem"
-            });
-            jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
-            map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
-            footer.transition({width: "380px"}, 200, "ease", function() {
-                jQueryEntryList.unslider({
-                    complete: loadAdditionalEntry
-                });
-                jQueryEntryList.data("unslider").set(0, true);
-            });
-            listEntries.css("overflow-y", "auto");
-        }
-    } else {
-        // Old entry already opened
-        jQueryEntryList.data("unslider").set(0, true);
-        if (userLocation.currentInfobox !== "dummy") {
-            userLocation.currentInfobox.close();
-        }
-        jQueryEntryList.unslider({
-            complete: loadAdditionalEntry
-        });
-        if (channel === "desktop") {
-            $("div.entry-list ul li").css("overflow-y", "auto");
-        } else {
-            initializeFooterSwiping();
-        }
-    }
+    openArticleBox(footerHeight, loadAdditionalEntry);
 
     loadAdditionalEntry($("div.entry-list ul li:first"));
-
 }
 
 /**
@@ -340,7 +354,8 @@ function searchEntries() {
     if (query === "") {
         loadAllEntries();
     } else {
-        $.getJSON("/services/stories/text/" + query + "/title/", function (data) {
+        var searchUrl = django_js_utils.urls.resolve("query-story-text", {query: query});
+        $.getJSON(searchUrl, function (data) {
             var entryList = $("section#list-section ul");
             $.each(data, function (index, value) {
                 entryList.append("<li><a href='#' class='open-entry' data-location='" + value["location"] + "' data-entry='" + value["id"] + "'>" + value["title"] + "</a></li>");
@@ -365,7 +380,8 @@ function addOpenEntryEvent() {
             }
             if (locationID !== null) {
                 if (!userLocation.locations.hasOwnProperty(locationID)) {
-                    $.getJSON("/services/locations/" + locationID + "/stories/title/image/", function (location) {
+                    var locationURL = django_js_utils.urls.resolve("get-location-with-stories-images", {id: locationID});
+                    $.getJSON(locationURL, function (location) {
                         addMarker(location);
                         openEntry(location);
                         userLocation.moveToLocation(location.latitude, location.longitude);
@@ -376,9 +392,10 @@ function addOpenEntryEvent() {
                     userLocation.moveToLocation(location.latitude, location.longitude);
                 }
             } else {
-                $.getJSON("/services/stories/" + entryID + "/image/", function (data) {
+                var storyURL = django_js_utils.urls.resolve("get-story-image", {id: entryID});
+                $.getJSON(storyURL, function (data) {
                     var asList = [data];
-                    openEntryBox(asList);
+                    loadAndOpenEntryBox(asList);
                     userLocation.currentInfobox = "dummy";
                 });
             }
@@ -391,7 +408,8 @@ function addOpenEntryEvent() {
  * Loads all saved entries and displays them in the list box.
  */
 function loadAllEntries() {
-    $.getJSON("/services/stories/title/", function (data) {
+    var allEntriesURL = django_js_utils.urls.resolve("get-all-stories-with-title");
+    $.getJSON(allEntriesURL, function (data) {
         var entryList = $("section#list-section ul");
         $.each(data, function (index, value) {
             entryList.append("<li><a href='#' class='open-entry' data-location='" + value["location"] + "' data-entry='" + value["id"] + "'>" + value["title"] + "</a></li>");
@@ -453,7 +471,7 @@ function closeArticleBox(both) {
 var allEntriesList = null;
 /**
  * Closes the list box.
- * @param both Determines whether both boxes are closed at the same time.
+ * @param [both] Determines whether both boxes are closed at the same time.
  */
 
 function closeListBox(both) {
@@ -518,7 +536,13 @@ function searchForEntries () {
         var min_lat = bounds.getSouthWest().lat().toFixed(10);
         var min_lon = bounds.getSouthWest().lng().toFixed(10);
         // get nearby locations
-        $.getJSON("/services/locations/" + min_lat + "/" + max_lat + "/" + min_lon + "/" + max_lon + "/stories/title/image/", function (data) {
+        var locationsUrl = django_js_utils.urls.resolve("get-locations-with-stories-image", {
+            lat: min_lat,
+            lon: min_lon,
+            maxlat: max_lat,
+            maxlon: max_lon
+        })
+        $.getJSON(locationsUrl, function (data) {
             $.each(data, function (index, value) {
                 addMarker(value);
             })
@@ -591,10 +615,10 @@ var mapOptions = {
 function initialize_Map() {
 	userLocation.map = new google.maps.Map(document.getElementById(MAP_ELEMENT),
 		mapOptions);
-    userLocation.positionMarker = new GeolocationMarker(userLocation.map)
+    userLocation.positionMarker = new GeolocationMarker(userLocation.map);
     userLocation.moveToCurrentLocationOrFallback();
     google.maps.event.addListener(userLocation.positionMarker, 'geolocation_error', errorLocationCallback);
-    google.maps.event.addListener(userLocation.map, 'idle', searchForEntries)
+    google.maps.event.addListener(userLocation.map, 'idle', searchForEntries);
     google.maps.event.addListener(userLocation.map, 'click', closeBoxes);
 }
 
@@ -612,5 +636,20 @@ $(function() {
     $("input#search-input").bind('input', createSearchTimeout);
     $("div.add-articles.mobile").click(function() {
         $(this).toggleClass("hover");
-    })
+    });
+    $("div.add-articles ul li").each(function(index, item) {
+        var that = $(item);
+        var mediaType = that.attr("id");
+        var entryList = $("section#article-section div.entry-list ul");
+        that.click(function() {
+            var newEntryFormURL = django_js_utils.urls.resolve("new-story-" + mediaType);
+            openArticleBox(footerHeight * 2);
+            $.get(newEntryFormURL, function (data) {
+                userLocation.currentInfobox = "dummy";
+                var listEntry = $("<li>");
+                listEntry.html(data);
+                entryList.html(listEntry);
+            });
+        });
+    });
 });

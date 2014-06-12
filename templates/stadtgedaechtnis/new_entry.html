@@ -1,8 +1,10 @@
 {% load i18n %}
-<h3>{% trans "Einen neuen Eintrag hinzufügen" %}</h3>
-<p>{% trans "Bitte geben Sie einen Titel ein, wählen ein " %}{{ media_type }}{% trans ' aus und klicken Sie auf "Abschicken".' %}
-</p>
-<form action="/services/stories/" method="post" enctype="multipart/form-data">
-    {{ form.as_p }}
-    <input type="submit" value="{% trans "Abschicken" %}">
-</form>
+<div class="new-entry">
+    <h3>{% trans "Einen neuen Eintrag hinzufügen" %}</h3>
+    <p>{% trans "Bitte geben Sie einen Titel ein, wählen ein " %}{{ media_type }}{% trans ' aus und klicken Sie auf "Abschicken".' %}
+    </p>
+    <form action="/services/stories/" method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="{% trans "Abschicken" %}">
+    </form>
+</div>

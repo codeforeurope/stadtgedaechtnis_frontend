@@ -9,6 +9,13 @@ body {
   overflow: hidden;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 div#wrapper {
   overflow: hidden;
   position: absolute;
@@ -327,6 +334,24 @@ div.close {
 
 div.close:hover {
   opacity: 1;
+}
+
+div.new-entry {
+  h3 {
+    margin: 0 0 .75rem 0;
+    text-align: center;
+  }
+
+  input {
+    margin-top: .5rem;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    border-style: none none solid;
+    border-width: 0 0 1px;
+    border-color: black;
+  }
 }
 
 @media screen and (max-width: 768px) {
