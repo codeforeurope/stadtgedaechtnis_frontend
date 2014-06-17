@@ -18,6 +18,8 @@ urlpatterns = patterns(
        })),
    url(r'^i18n/', include('django.conf.urls.i18n')),
    url(r'^entry/(?P<pk>\d+)/$', EntryView.as_view(), name="entry-view"),
+   url(r'^jsurls.js$', 'django_js_utils.views.jsurls', {}, 'jsurls'),
+   url(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
    url(r'^forms/location/$', TemplateView.as_view(
        template_name='stadtgedaechtnis/new_entry_location.html'
    ), name="new-story-location"),
