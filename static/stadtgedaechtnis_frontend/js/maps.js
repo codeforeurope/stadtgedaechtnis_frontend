@@ -18,8 +18,7 @@ function errorLocationCallback (error) {
 	// error callback
 	userLocation.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
     userLocation.locationAvailable = false;
-    console.log('There was an error obtaining your position. Message: ' + error.message);
-	//TODO: show hint that location couldn't be retrieved
+    alertBox(gettext("Ihre Position konnte nicht ermittelt werden. Nachricht: ") + error.message);
 }
 
 /**
@@ -107,6 +106,7 @@ function selectNewLocation(location) {
         }
         location.marker.setIcon(oldMarkerIcon);
     };
+    userLocation.selectedLocation = location;
     location.marker.setIcon("/static/stadtgedaechtnis_frontend/img/marker_selected.png");
 }
 
@@ -577,6 +577,7 @@ function closeBoxes() {
     var addArticleMenu = $("div.add-articles");
     closeArticleBox(true);
     closeListBox(true);
+    userLocation.selectedLocation = null;
     addArticleMenu.removeClass("hover");
 }
 
@@ -607,6 +608,25 @@ function searchForEntries () {
 }
 
 /**
+ * Loads a new tab and switches to this tab.
+ * @param url
+ * @param [callback]
+ */
+function loadAndOpenNewTab(url, callback) {
+    var entryList = $("section#article-section div.entry-list ul");
+    var jQueryEntryList = $("section#article-section div.entry-list");
+    $.get(url, function(data) {
+        var newListEntry = $("<li>").html(data);
+        newListEntry.appendTo(entryList);
+        jQueryEntryList.unslider();
+        jQueryEntryList.data("unslider").next();
+        if (callback !== undefined || callback !== null) {
+            callback();
+        }
+    });
+}
+
+/**
  * Location object to enable/disable tracking the location and to retrieve the current or fallback location.
  * @constructor
  */
@@ -618,6 +638,7 @@ function Location() {
     this.locations = {};
     this.currentInfobox = null;
     this.locationAvailable = false;
+    this.selectedLocation = null;
 }
 
 /**
@@ -717,13 +738,14 @@ $(function() {
         var that = $(item);
         var mediaType = that.attr("id");
         var entryList = $("section#article-section div.entry-list ul");
+        var jQueryEntryList = $("section#article-section div.entry-list");
         that.click(function() {
             var newEntryFormURL;
             var openFooterHeight;
             var onFinish;
             if (userLocation.locationAvailable) {
                 newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
-                openFooterHeight = footerHeight * 1.5;
+                openFooterHeight = footerHeight * 2;
                 newEntryMode = true;
                 onFinish = function() {
                     $("div.new-entry span.new").click(function() {
@@ -745,6 +767,18 @@ $(function() {
                         });
                         google.maps.event.addListener(userLocation.newLocationMarker, "dragend", markerSetNewLocation);
                     });
+                    $("span#next-location").click(function() {
+                        if (newEntryMode) {
+
+                        } else {
+                            var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
+
+                        }
+                    });
+                    $("span#no-location").click(function() {
+                        var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
+                        loadAndOpenNewTab(titleEntryUrl);
+                    });
                 }
             } else {
                 newEntryFormURL = django_js_utils.urls.resolve("new-story-" + mediaType);
@@ -756,6 +790,7 @@ $(function() {
                 var listEntry = $("<li>");
                 listEntry.html(data);
                 entryList.html(listEntry);
+                jQueryEntryList.unslider();
                 if (onFinish !== undefined) {
                     onFinish();
                 }

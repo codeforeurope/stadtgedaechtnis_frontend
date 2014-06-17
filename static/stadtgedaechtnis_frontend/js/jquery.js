@@ -138,6 +138,16 @@ function initializeFooterSwiping() {
 }
 
 /**
+ * Displays an alert box that displays a short message and, optionally, an icon.
+ * @param message
+ * @param [icon]
+ */
+function alertBox(message, icon) {
+    //TODO: implement alert box, for now, a simple alert box will do
+    alert(message);
+}
+
+/**
  * $(document).ready
  *
  * initialize jQuery hooks
