@@ -19,8 +19,8 @@
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/geolocationmarker.js" %}"></script>
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/locations.js" %}"></script>
     <script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/django_js_utils.js" %}"></script>
-    <script type="text/javascript" src="{%url "django_js_utils.views.jsurls" %}"></script>
-	<script type="text/javascript" src="{%url "django.views.i18n.javascript_catalog" %}"></script>
+    <script type="text/javascript" src="{%url 'stadtgedaechtnis_frontend:django_js_utils.views.jsurls' %}"></script>
+	<script type="text/javascript" src="{%url 'stadtgedaechtnis_frontend:django.views.i18n.javascript_catalog' %}"></script>
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/maps.js" %}"></script>
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/jquery.js" %}"></script>
 </head>
