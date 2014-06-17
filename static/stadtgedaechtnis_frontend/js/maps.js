@@ -730,6 +730,12 @@ $(function() {
                         if (resetOldMarker !== undefined) {
                             resetOldMarker();
                         }
+                        resetOldMarker = function() {
+                            if (userLocation.newLocationMarker !== undefined) {
+                                userLocation.newLocationMarker.setMap(null);
+                                userLocation.newLocationMarker = undefined;
+                            }
+                        };
                         userLocation.newLocationMarker = new google.maps.Marker({
                             map: userLocation.map,
                             position: userLocation.map.getCenter(),
