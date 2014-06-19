@@ -426,7 +426,7 @@ function addOpenEntryEvent() {
             }
             if (locationID !== null) {
                 if (!userLocation.locations.hasOwnProperty(locationID)) {
-                    var locationURL = django_js_utils.urls.resolve("get-location-with-stories-images", {id: locationID});
+                    var locationURL = django_js_utils.urls.resolve("get-location-with-stories-images", {pk: locationID});
                     $.getJSON(locationURL, function (location) {
                         addMarker(location);
                         openEntry(location);
@@ -438,7 +438,7 @@ function addOpenEntryEvent() {
                     userLocation.moveToLocation(location.latitude, location.longitude);
                 }
             } else {
-                var storyURL = django_js_utils.urls.resolve("get-story-image", {id: entryID});
+                var storyURL = django_js_utils.urls.resolve("get-story-image", {pk: entryID});
                 $.getJSON(storyURL, function (data) {
                     var asList = [data];
                     loadAndOpenEntryBox(asList);
