@@ -55,33 +55,38 @@ function addMarker (location) {
  * @param location
  */
 function createInfobox(location) {
-    if (location.stories.length > 1) {
-        var infoBoxContent = "<div class='infowindow'><ul>";
-        for (var i = 0; i < location.stories.length; i++) {
-            infoBoxContent += "<li><a href='#' class='switch-entry' data-entry='" + i + "'>" + location.stories[i].title + "</a></li>";
+    if (location.stories.length > 0) {
+        if (location.stories.length > 1) {
+            var infoBoxContent = "<div class='infowindow'><ul>";
+            for (var i = 0; i < location.stories.length; i++) {
+                infoBoxContent += "<li><a href='#' class='switch-entry' data-entry='" + i + "'>" + location.stories[i].title + "</a></li>";
+            }
+            infoBoxContent += "</ul></div>";
+        } else {
+            var infoBoxContent = "<div class='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
         }
-        infoBoxContent += "</ul></div>";
-    } else {
-        var infoBoxContent = "<div class='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
+
+        var infoBox = new google.maps.InfoWindow({
+            content: infoBoxContent,
+            maxWidth: 225
+        });
+
+        location.infobox = infoBox;
+
+        google.maps.event.addListener(infoBox, 'closeclick', function () {
+            closeArticleBox(false);
+            return false;
+        });
     }
-
-    var infoBox = new google.maps.InfoWindow({
-        content: infoBoxContent,
-        maxWidth: 225
-    });
-
-    location.infobox = infoBox;
     google.maps.event.clearListeners(location.marker, 'click');
     google.maps.event.addListener(location.marker, 'click', function () {
         if (newEntryMode) {
             selectNewLocation(location);
         } else {
-            openEntry(location);
+            if (location.stories.length > 0) {
+                openEntry(location);
+            }
         }
-        return false;
-    });
-    google.maps.event.addListener(infoBox, 'closeclick', function () {
-        closeArticleBox(false);
         return false;
     });
 
@@ -797,4 +802,5 @@ $(function() {
             });
         });
     });
+    channel = ($(window).width() < 768 ? "mobile" : "desktop");
 });
