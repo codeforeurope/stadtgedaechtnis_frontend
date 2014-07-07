@@ -20,4 +20,5 @@
 		</video>
 	{% endif %}
 {% endfor %}
-<p class="author">{% trans "Autor_in" %}:&nbsp;{{ story.author }}</p>
+<p class="sources">{% trans "Quellen" %}:&nbsp;{{ story.sources }}</p>
+<p class="author">{% trans "Autor_in" %}:&nbsp;{{ story.author.first_name }} {{ story.author.last_name }}</p>
