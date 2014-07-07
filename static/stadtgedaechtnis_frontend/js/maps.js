@@ -546,7 +546,7 @@ function closeListBox(both) {
         navBox.transition({left: "-50%"}, 200, "ease");
         if (!both || both === undefined) {
             main.transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease", function() {
-                if (allEntries.count > 0) {
+                if (allEntries.length > 0) {
                     allEntriesList = allEntries.detach();
                 }
                 google.maps.event.trigger(userLocation.map, "resize");
@@ -565,7 +565,7 @@ function closeListBox(both) {
             });
         } else {
             map.transition({width: containerWidth + "px"}, 200, "ease", function() {
-                if (allEntries.count > 0) {
+                if (allEntries.length > 0) {
                     allEntriesList = allEntries.detach();
                 }
                 google.maps.event.trigger(userLocation.map, "resize");

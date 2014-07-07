@@ -684,6 +684,10 @@ section#article-section article.entry-more p.author {
   text-align: right;
   font-size: .8rem;
 }
+section#article-section article.entry-more p.sources {
+  font-size: .8rem;
+  font-style: italic;
+}
 
 /* Sizing of map_section and map_canvas */
 main, .max_map {
