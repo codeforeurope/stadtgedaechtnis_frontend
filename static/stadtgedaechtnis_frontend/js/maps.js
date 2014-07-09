@@ -57,18 +57,19 @@ function addMarker (location) {
 function createInfobox(location) {
     if (location.stories.length > 0) {
         if (location.stories.length > 1) {
-            var infoBoxContent = "<div class='infowindow'><ul>";
+            var infoBoxContent = "<div class='infowindow' id='infowindow'><ul>";
             for (var i = 0; i < location.stories.length; i++) {
                 infoBoxContent += "<li><a href='#' class='switch-entry' data-entry='" + i + "'>" + location.stories[i].title + "</a></li>";
             }
             infoBoxContent += "</ul></div>";
         } else {
-            var infoBoxContent = "<div class='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
+            var infoBoxContent = "<div class='infowindow' id='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
         }
 
         var infoBox = new google.maps.InfoWindow({
             content: infoBoxContent,
-            maxWidth: 225
+            maxWidth: 225,
+            zIndex: 1000
         });
 
         location.infobox = infoBox;
@@ -578,8 +579,9 @@ function closeListBox(both) {
 /**
  * Closes both boxes.
  */
-function closeBoxes() {
+function closeBoxes(mouseEvent) {
     var addArticleMenu = $("div.add-articles");
+    mouseEvent.stop();
     closeArticleBox(true);
     closeListBox(true);
     userLocation.selectedLocation = null;

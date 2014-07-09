@@ -32,8 +32,7 @@ div.infowindow {
   hyphens: auto;
   margin: 0;
   max-height: 250px;
-  overflow: auto;
-  z-index: 1000;
+  z-index: 9999;
 
   p {
     margin: .2rem 0;
