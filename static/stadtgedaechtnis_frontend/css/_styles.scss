@@ -32,6 +32,8 @@ div.infowindow {
   hyphens: auto;
   margin: 0;
   max-height: 250px;
+  overflow: auto;
+  z-index: 1000;
 
   p {
     margin: .2rem 0;
@@ -468,7 +470,6 @@ div.new-entry {
       bottom: 40px;
       right: -26px;
       overflow: hidden;
-      visibility: visible;
 
       li {
         transition: all 0.2s ease 0.2s;
