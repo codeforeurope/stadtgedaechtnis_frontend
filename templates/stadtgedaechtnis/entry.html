@@ -1,6 +1,7 @@
 {% load i18n %}
 {% for image in story.get_additional_images %}
 	<img src="{{ image.sources.first.file.url }}" alt="{{ image.alt }}">
+	<p class="image-description">{{ image.alt|safe }}</p>
 {% endfor %}
 <p class="date">{{ story.time_start }}{% if story.time_end %}&nbsp;{% trans "bis" %}&nbsp;{{ story.time_end }}{% endif %}</p>
 {% if story.text %}

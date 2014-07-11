@@ -277,7 +277,8 @@ function loadAndOpenEntryBox(stories) {
         entryList += '</div>\
                         </div>';
         if (stories[i].assets[0] !== undefined) {
-            entryList += '<img src="' + stories[i].assets[0].sources + '" alt="' + stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>';
+            entryList += '<img src="' + stories[i].assets[0].sources + '" alt="' + stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>' +
+                '<p class="image-description">' + stories[i].assets[0].alt + '</p>';
         }
         entryList += '<div class="center">\
                             <img src="/static/stadtgedaechtnis_frontend/img/ajax-loader.gif" id="load-more-' + i + '" class="load-more">\

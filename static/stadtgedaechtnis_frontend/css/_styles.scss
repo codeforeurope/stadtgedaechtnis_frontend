@@ -339,9 +339,14 @@ section#article-section {
     width: 100%;
   }
 
+  p.image-description {
+    font-size: .8rem;
+    font-style: italic;
+    text-align: center;
+  }
+
   article.entry-more {
     clear: both;
-    padding-top: .1rem;
 
     * {
       margin-top: 10px;
@@ -365,6 +370,10 @@ section#article-section {
       font-weight: bold;
       padding: 0 3px;
       margin-right: .5rem;
+    }
+
+    p.image-description {
+      margin-top: 0;
     }
   }
 }
