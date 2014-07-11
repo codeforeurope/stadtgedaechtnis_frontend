@@ -347,6 +347,7 @@ function showAllEntries() {
         main.transition({paddingTop: containerHeight + headerHeight  + "px", marginTop: "-" + (containerHeight + headerHeight) + "px"}, 300, "ease", function() {
             if (allEntriesList !== null) {
                 allEntriesList.appendTo(entryList);
+                allEntriesList = null;
                 $("img#load-more-list").hide();
             } else {
                 if (query === "") {
@@ -371,6 +372,7 @@ function showAllEntries() {
         map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
         listSection.transition({width: "380px"}, 200, "ease", function() {
             if (allEntriesList !== null) {
+                allEntriesList = null;
                 allEntriesList.appendTo(entryList);
                 $("img#load-more-list").hide();
             } else {
@@ -635,6 +637,64 @@ function loadAndOpenNewTab(url, callback) {
 }
 
 /**
+ * Shows the overlay.
+ */
+function showOverlay() {
+    var overlay = $("div.overlay");
+    var greeting = $("div.greeting");
+    var link = $("div.greeting a");
+    overlay.show();
+    link.click(closeOverlay);
+    overlay.transition({backgroundColor: "rgba(0, 0, 0, 0.7)"}, 2000, "cubic-bezier(.37,.96,.61,.95)");
+    greeting.transition({opacity: "1"}, 2000, "cubic-bezier(.85,.07,.51,.93)");
+}
+
+var OVERLAY_COOKIE = "overlay";
+var OVERLAY_COOKIE_HIDDEN = "hidden";
+
+/**
+ * Hides the overlay
+ */
+function closeOverlay() {
+    var overlay = $("div.overlay");
+    var greeting = $("div.greeting");
+    greeting.transition({opacity: "0"}, 1000, "cubic-bezier(.02,.53,.28,.96)");
+    overlay.transition({backgroundColor: "rgba(0, 0, 0, 0)"}, 1500, "cubic-bezier(.37,.96,.61,.95)", function() {
+        overlay.hide();
+        setCookie(OVERLAY_COOKIE, OVERLAY_COOKIE_HIDDEN, 365);
+    });
+}
+
+/**
+ * Sets a cookie with name, value and expiry date.
+ * @param name
+ * @param value
+ * @param expiryInDays
+ */
+function setCookie(name, value, expiryInDays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (expiryInDays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toGMTString();
+    document.cookie = name + "=" + value + "; " + expires;
+}
+
+/**
+ * Reads a cookie
+ * @param name
+ * @returns {*}
+ */
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+/**
  * Location object to enable/disable tracking the location and to retrieve the current or fallback location.
  * @constructor
  */
@@ -806,4 +866,11 @@ $(function() {
         });
     });
     channel = ($(window).width() < 768 ? "mobile" : "desktop");
+    // only show overlay when cookie is not present
+    if (readCookie(OVERLAY_COOKIE) === OVERLAY_COOKIE_HIDDEN) {
+        // renew cookie
+        setCookie(OVERLAY_COOKIE, OVERLAY_COOKIE_HIDDEN, 365);
+    } else {
+        showOverlay();
+    }
 });
