@@ -641,7 +641,7 @@ function loadAndOpenNewTab(url, callback) {
  */
 function showOverlay() {
     var overlay = $("div.overlay");
-    var greeting = $("div.greeting");
+    var greeting = $("div.greeting, div.advice");
     var link = $("div.greeting a");
     overlay.show();
     link.click(closeOverlay);
@@ -657,7 +657,7 @@ var OVERLAY_COOKIE_HIDDEN = "hidden";
  */
 function closeOverlay() {
     var overlay = $("div.overlay");
-    var greeting = $("div.greeting");
+    var greeting = $("div.greeting, div.advice");
     greeting.transition({opacity: "0"}, 1000, "cubic-bezier(.02,.53,.28,.96)");
     overlay.transition({backgroundColor: "rgba(0, 0, 0, 0)"}, 1500, "cubic-bezier(.37,.96,.61,.95)", function() {
         overlay.hide();
