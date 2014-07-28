@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/jquery-1.11.0.js" %}"></script>
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/jquery.transit.js" %}"></script>
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/jquery.touchSwipe.js" %}"></script>
+	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/jquery.easing.1.3.js" %}"></script>
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/unslider.js" %}"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&key={{ GOOGLE_API_KEY }}&sensor=true&language={{ LANGUAGE_CODE }}"></script>
 	<script type="text/javascript" src="{%static "stadtgedaechtnis_frontend/js/geolocationmarker.js" %}"></script>
@@ -32,8 +33,14 @@
 			<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebumsed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
 			<p class="center"><a href="#">{% trans "Los geht's" %}!</a></p>
 		</div>
-        <div class="list-advice advice"><p><span class="genericon genericon-list-entries"></span>&nbsp;&nbsp;{% trans "Alle Einträge anzeigen" %}</p></div>
-        <div class="plus-advice advice"><p>{% trans "Neuen Eintrag hinzufügen" %}&nbsp;&nbsp;<span class="genericon genericon-new-entry"></span></p></div>
+		<div class="list-advice advice"><p><span class="genericon genericon-list-entries"></span>&nbsp;&nbsp;{% trans "Alle Einträge anzeigen" %}</p></div>
+		<div class="plus-advice advice"><p>{% trans "Neuen Eintrag hinzufügen" %}&nbsp;&nbsp;<span class="genericon genericon-new-entry"></span></p></div>
+	</div>
+	<div class="message">
+		<div class="close">
+			<img src="{%static "stadtgedaechtnis_frontend/img/close.png" %}">
+		</div>
+		<p></p>
 	</div>
 	<header role="banner">
 		<div class="search-box">

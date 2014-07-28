@@ -15,8 +15,8 @@ var allEntriesVisible = false;
  * @param error
  */
 function errorLocationCallback (error) {
-	// error callback
-	userLocation.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
+    // error callback
+    userLocation.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
     userLocation.locationAvailable = false;
     alertBox(gettext("Ihre Position konnte nicht ermittelt werden. Nachricht: ") + error.message);
 }
@@ -119,9 +119,7 @@ function selectNewLocation(location) {
 /**
  * Reads the position of the selection marker after dragging.
  */
-function markerSetNewLocation(event) {
-    var lat = event.latLng.lat();
-    var lon = event.latLng.lng();
+function markerSetNewLocation(lat, lon) {
     getNearbyAddresses(lat, lon, function(result) {
         $("span#selected-location").text(result[0].address);
     })
@@ -188,25 +186,22 @@ function openArticleBox(articleBoxHeight, callback) {
 
     if (userLocation.currentInfobox === null) {
         // New entry opened
-        var footer = $("section#article-section");
-
         if ($(window).width() < 768) {
             // mobile
             channel = "mobile";
-            var main = $("main");
-            footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
             jQueryEntryList.data("unslider") && jQueryEntryList.data("unslider").set(0, true);
-            footer.transition({height: articleBoxHeight + "px"}, 200, "ease");
-            initializeFooterSwiping();
-            main.transition({paddingBottom: articleBoxHeight + "px", marginBottom: "-" + articleBoxHeight + "px"}, 200, "ease", function () {
+            resizeArticleBox(articleBoxHeight, function () {
+                initializeFooterSwiping();
                 jQueryEntryList.unslider({
                     complete: callback
                 });
                 jQueryEntryList.data("unslider").set(0, true);
+                google.maps.event.trigger(userLocation.map, "resize");
             });
         } else {
             // desktop
             $("div.article-heading").swipe("disable");
+            var footer = $("section#article-section");
             channel = "desktop";
             var map = $("section.max_map");
             var mapWidth = map.width();
@@ -223,6 +218,7 @@ function openArticleBox(articleBoxHeight, callback) {
                     complete: callback
                 });
                 jQueryEntryList.data("unslider").set(0, true);
+                google.maps.event.trigger(userLocation.map, "resize");
             });
             listEntries.css("overflow-y", "auto");
         }
@@ -242,11 +238,31 @@ function openArticleBox(articleBoxHeight, callback) {
         }
 
         if (newEntryMode) {
-        newEntryMode = false;
-        if (resetOldMarker !== undefined) {
-            resetOldMarker();
+            newEntryMode = false;
+            if (resetOldMarker !== undefined) {
+                resetOldMarker();
+            }
         }
     }
+}
+
+/**
+ * Resizes the article box to a different height.
+ * @param articleBoxHeight
+ * @param [callback]
+ */
+function resizeArticleBox(articleBoxHeight, callback) {
+    if (channel === "mobile") {
+        // only necessary in mobile view
+        var footer = $("section#article-section");
+        var main = $("main");
+        footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
+        footer.transition({height: articleBoxHeight + "px"}, 200, "ease");
+        main.transition({paddingBottom: articleBoxHeight + "px", marginBottom: "-" + articleBoxHeight + "px"}, 200, "ease", function () {
+            if (callback !== undefined && callback !== null) {
+                callback();
+            }
+        });
     }
 }
 /**
@@ -630,7 +646,7 @@ function loadAndOpenNewTab(url, callback) {
         newListEntry.appendTo(entryList);
         jQueryEntryList.unslider();
         jQueryEntryList.data("unslider").next();
-        if (callback !== undefined || callback !== null) {
+        if (callback !== undefined && callback !== null) {
             callback();
         }
     });
@@ -684,14 +700,14 @@ function setCookie(name, value, expiryInDays) {
  * @returns {*}
  */
 function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	}
-	return null;
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
 }
 
 /**
@@ -701,8 +717,8 @@ function readCookie(name) {
 function Location() {
     this.DEFAULT_LAT = 50.258;
     this.DEFAULT_LON = 10.965
-	this.DEFAULT_LOCATION = new google.maps.LatLng(50.258, 10.965);
-	this.positionMarker = null;
+    this.DEFAULT_LOCATION = new google.maps.LatLng(50.258, 10.965);
+    this.positionMarker = null;
     this.locations = {};
     this.currentInfobox = null;
     this.locationAvailable = false;
@@ -714,8 +730,8 @@ function Location() {
  * @returns {google.maps.LatLng|*}
  */
 Location.prototype.moveToCurrentLocationOrFallback = function () {
-	if (navigator.geolocation) {
-	    google.maps.event.addListenerOnce(this.positionMarker, 'position_changed', function() {
+    if (navigator.geolocation) {
+        google.maps.event.addListenerOnce(this.positionMarker, 'position_changed', function() {
             if (this.getPosition() !== undefined) {
                 userLocation.locationAvailable = true;
                 userLocation.map.setCenter(this.getPosition());
@@ -723,9 +739,9 @@ Location.prototype.moveToCurrentLocationOrFallback = function () {
                 searchForEntries();
             }
         });
-	} else {
-		this.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
-	}
+    } else {
+        this.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
+    }
 };
 
 /**
@@ -734,11 +750,11 @@ Location.prototype.moveToCurrentLocationOrFallback = function () {
  * @param lng
  */
 Location.prototype.moveToLocation = function(lat, lng) {
-	if (this.map) {
+    if (this.map) {
         var position = new google.maps.LatLng(lat, lng);
-		this.map.panTo(position);
+        this.map.panTo(position);
         searchForEntries();
-	}
+    }
 };
 
 /**
@@ -766,25 +782,64 @@ var userLocation = new Location();
  * @type {{center: google.maps.LatLng, zoom: number, mapTypeId: *, disableDefaultUI: boolean, zoomControl: boolean}}
  */
 var mapOptions = {
-	center: userLocation.DEFAULT_LOCATION,
-	zoom: 17,
+    center: userLocation.DEFAULT_LOCATION,
+    zoom: 17,
     mapTypeControl: true,
-	mapTypeId: google.maps.MapTypeId.SATELLITE,
-	disableDefaultUI: true,
-	zoomControl: true
+    mapTypeId: google.maps.MapTypeId.SATELLITE,
+    disableDefaultUI: true,
+    zoomControl: true
 };
 
 /**
  * Initializes the map
  */
 function initialize_Map() {
-	userLocation.map = new google.maps.Map(document.getElementById(MAP_ELEMENT),
-		mapOptions);
+    userLocation.map = new google.maps.Map(document.getElementById(MAP_ELEMENT),
+        mapOptions);
     userLocation.positionMarker = new GeolocationMarker(userLocation.map);
     userLocation.moveToCurrentLocationOrFallback();
     google.maps.event.addListener(userLocation.positionMarker, 'geolocation_error', errorLocationCallback);
     google.maps.event.addListener(userLocation.map, 'idle', searchForEntries);
     google.maps.event.addListener(userLocation.map, 'click', closeBoxes);
+}
+
+/**
+ * Enables the user to add a new location.
+ */
+function newLocation() {
+    var newButton = $("div.new-entry span.new");
+    var inputField = $("div.new-entry span#selected-location");
+    var entryList = $("div.entry-list ul li");
+    if (resetOldMarker !== undefined) {
+        resetOldMarker();
+    }
+    resetOldMarker = function() {
+        if (userLocation.newLocationMarker !== undefined) {
+            userLocation.newLocationMarker.setMap(null);
+            userLocation.newLocationMarker = undefined;
+            newButton.removeClass("edit").addClass("new").unbind("click").click(newLocation);
+            inputField.prop("contenteditable", "false");
+        }
+    };
+    userLocation.newLocationMarker = new google.maps.Marker({
+        map: userLocation.map,
+        position: userLocation.map.getCenter(),
+        icon: "/static/stadtgedaechtnis_frontend/img/marker_selected.png",
+        animation: google.maps.Animation.DROP,
+        draggable: true
+    });
+    markerSetNewLocation(userLocation.map.getCenter().lat(), userLocation.map.getCenter().lng());
+    newButton.removeClass("new").addClass("edit").unbind("click").click(function() {
+        entryList.unbind("mousedown");
+        inputField.prop("contenteditable", "true").on("focus click", function() {
+            document.execCommand('selectAll', false, null);
+        }).focus();
+    });
+    google.maps.event.addListener(userLocation.newLocationMarker, "dragend", function(event) {
+        var lat = event.latLng.lat();
+        var lon = event.latLng.lng();
+        markerSetNewLocation(lat, lon);
+    });
 }
 
 /**
@@ -811,47 +866,29 @@ $(function() {
             var newEntryFormURL;
             var openFooterHeight;
             var onFinish;
-            if (userLocation.locationAvailable) {
-                newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
-                openFooterHeight = footerHeight * 2;
-                newEntryMode = true;
-                onFinish = function() {
-                    $("div.new-entry span.new").click(function() {
-                        if (resetOldMarker !== undefined) {
-                            resetOldMarker();
-                        }
-                        resetOldMarker = function() {
-                            if (userLocation.newLocationMarker !== undefined) {
-                                userLocation.newLocationMarker.setMap(null);
-                                userLocation.newLocationMarker = undefined;
-                            }
-                        };
-                        userLocation.newLocationMarker = new google.maps.Marker({
-                            map: userLocation.map,
-                            position: userLocation.map.getCenter(),
-                            icon: "/static/stadtgedaechtnis_frontend/img/marker_selected.png",
-                            animation: google.maps.Animation.DROP,
-                            draggable: true
-                        });
-                        google.maps.event.addListener(userLocation.newLocationMarker, "dragend", markerSetNewLocation);
-                    });
-                    $("span#next-location").click(function() {
-                        if (newEntryMode) {
+            newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
+            openFooterHeight = footerHeight * 2;
+            newEntryMode = true;
+            onFinish = function() {
+                $("div.new-entry span.new").click(newLocation);
+                $("span#next-location").click(function() {
+                    if (newEntryMode) {
 
-                        } else {
-                            var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
-
-                        }
-                    });
-                    $("span#no-location").click(function() {
+                    } else {
                         var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
-                        loadAndOpenNewTab(titleEntryUrl);
+
+                    }
+                });
+                $("span#no-location").click(function() {
+                    var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
+                    loadAndOpenNewTab(titleEntryUrl, function() {
+                        openFooterHeight = containerHeight * 0.6;
+                        resizeArticleBox(openFooterHeight, function() {
+                            google.maps.event.trigger(userLocation.map, "resize");
+                        })
                     });
-                }
-            } else {
-                newEntryFormURL = django_js_utils.urls.resolve("new-story-" + mediaType);
-                openFooterHeight = footerHeight * 2;
-            }
+                });
+            };
             openArticleBox(openFooterHeight);
             $.get(newEntryFormURL, function (data) {
                 userLocation.currentInfobox = "dummy";
@@ -873,4 +910,11 @@ $(function() {
     } else {
         showOverlay();
     }
+    $("div.message div.close").click(function() {
+        var messageBox = $("div.message");
+        messageBox.fadeOut("75ms", function() {
+            messageBox.css("top", "-10rem");
+            messageBox.show();
+        })
+    })
 });

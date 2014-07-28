@@ -56,6 +56,19 @@ div.overlay {
   }
 }
 
+div.message {
+  position: absolute;
+  top: -10rem;
+  width: 80%;
+  left: 10%;
+  z-index: 9999;
+  background: white;
+  padding: 0 .5rem;
+  border: solid black 2px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.70);
+  -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.70);
+}
+
 div.infowindow {
   font-family: Trebuchet MS, Arial, sans-serif;
   -moz-hyphens: auto;
@@ -366,6 +379,13 @@ section#article-section {
       height: 28px;
       width: 28px;
     }
+
+    span.edit {
+      float: right;
+      background: url("../img/edit.png") no-repeat;
+      height: 28px;
+      width: 28px;
+    }
   }
 
   img {
@@ -569,7 +589,7 @@ div.new-entry {
     display: none;
   }
 
-    div.overlay {
+  div.overlay {
     div.list-advice {
       left: 0.8rem;
       top: 2.2rem;
