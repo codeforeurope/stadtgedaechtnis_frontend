@@ -146,7 +146,18 @@ function alertBox(message) {
     $("div.message p").text(message);
     // animate sliding
     var messageBox = $("div.message");
-    messageBox.animate({"top": "3rem"}, "200ms", "easeOutBounce")
+    messageBox.animate({"top": "3rem"}, 800, "easeOutBounce")
+}
+
+/**
+ * Closes the alert box.
+ */
+function closeAlertBox() {
+    var messageBox = $("div.message");
+    messageBox.fadeOut("75ms", function() {
+        messageBox.css("top", "-10rem");
+        messageBox.show();
+    });
 }
 
 /**

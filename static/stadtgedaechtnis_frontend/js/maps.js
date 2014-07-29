@@ -31,6 +31,9 @@ function addMarker (location) {
     var longitude = parseFloat(location.longitude);
 
     var entryCount = location.stories.length;
+    if (entryCount === 0) {
+        entryCount = 1;
+    }
     if (entryCount > 9) {
         entryCount = 0;
     }
@@ -55,37 +58,44 @@ function addMarker (location) {
  * @param location
  */
 function createInfobox(location) {
+    var infoBoxContent;
     if (location.stories.length > 0) {
         if (location.stories.length > 1) {
-            var infoBoxContent = "<div class='infowindow' id='infowindow'><ul>";
+            infoBoxContent = "<div class='infowindow' id='infowindow'><ul>";
             for (var i = 0; i < location.stories.length; i++) {
                 infoBoxContent += "<li><a href='#' class='switch-entry' data-entry='" + i + "'>" + location.stories[i].title + "</a></li>";
             }
             infoBoxContent += "</ul></div>";
         } else {
-            var infoBoxContent = "<div class='infowindow' id='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
+            infoBoxContent = "<div class='infowindow' id='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
         }
-
-        var infoBox = new google.maps.InfoWindow({
-            content: infoBoxContent,
-            maxWidth: 225,
-            zIndex: 1000
-        });
-
-        location.infobox = infoBox;
-
-        google.maps.event.addListener(infoBox, 'closeclick', function () {
-            closeArticleBox(false);
-            return false;
-        });
+    } else {
+        infoBoxContent = "<div class='infowindow' id='infowindow'><p>" + location.label + "</p></div>";
     }
+
+    var infoBox = new google.maps.InfoWindow({
+        content: infoBoxContent,
+        maxWidth: 225,
+        zIndex: 1000
+    });
+
+    location.infobox = infoBox;
+
+    google.maps.event.addListener(infoBox, 'closeclick', function () {
+        closeArticleBox(location.stories.length === 0);
+        return false;
+    });
     google.maps.event.clearListeners(location.marker, 'click');
     google.maps.event.addListener(location.marker, 'click', function () {
         if (newEntryMode) {
-            selectNewLocation(location);
+            if (newStory.location === null) {
+                selectNewLocation(location);
+            }
         } else {
             if (location.stories.length > 0) {
                 openEntry(location);
+            } else {
+                openInfobox(location);
             }
         }
         return false;
@@ -105,7 +115,7 @@ function selectNewLocation(location) {
         resetOldMarker();
     }
     var oldMarkerIcon = location.marker.getIcon();
-    resetOldMarker = function() {
+    resetOldMarker = function () {
         if (userLocation.newLocationMarker !== undefined) {
             userLocation.newLocationMarker.setMap(null);
             userLocation.newLocationMarker = undefined;
@@ -153,6 +163,7 @@ function loadAdditionalEntry(listElement) {
 function openEntry(location) {
     loadAndOpenEntryBox(location.stories);
     openInfobox(location);
+    userLocation.currentInfobox = location.infobox;
 }
 
 /**
@@ -160,7 +171,6 @@ function openEntry(location) {
  * @param location
  */
 function openInfobox(location) {
-    userLocation.currentInfobox = location.infobox;
     location.infobox.open(userLocation.map, location.marker);
 
     if (location.stories.length > 1) {
@@ -263,6 +273,8 @@ function resizeArticleBox(articleBoxHeight, callback) {
                 callback();
             }
         });
+    } else {
+        callback();
     }
 }
 /**
@@ -543,6 +555,7 @@ function closeArticleBox(both) {
         if (resetOldMarker !== undefined) {
             resetOldMarker();
         }
+        newStory = null;
     }
 }
 
@@ -603,6 +616,7 @@ function closeBoxes(mouseEvent) {
     mouseEvent.stop();
     closeArticleBox(true);
     closeListBox(true);
+    closeAlertBox();
     userLocation.selectedLocation = null;
     addArticleMenu.removeClass("hover");
 }
@@ -790,10 +804,20 @@ var mapOptions = {
     zoomControl: true
 };
 
+function Story() {
+    this.location = null;
+    this.title = null;
+    this.author = null;
+    this.text = null;
+    this.dateStart = null;
+    this.dateFinish = null;
+    this.media = [];
+}
+
 /**
  * Initializes the map
  */
-function initialize_Map() {
+function initializeMap() {
     userLocation.map = new google.maps.Map(document.getElementById(MAP_ELEMENT),
         mapOptions);
     userLocation.positionMarker = new GeolocationMarker(userLocation.map);
@@ -842,6 +866,88 @@ function newLocation() {
     });
 }
 
+var newStory = null;
+
+/**
+ * Loads the title tab for the new entry routine.
+ * @param mediaType
+ */
+function loadTitleTab(mediaType) {
+    newStory = new Story();
+    $("div.new-entry span.new").click(newLocation);
+    $("span#next-location").click(function() {
+        if (userLocation.newLocationMarker !== undefined) {
+            var lat = userLocation.newLocationMarker.getPosition().lat();
+            var lon = userLocation.newLocationMarker.getPosition().lng();
+            var title = $("span#selected-location").text();
+            var postNewLocationUrl = django_js_utils.urls.resolve("list-locations");
+            postAjaxRequestWithCSRF(postNewLocationUrl, {
+                latitude: lat,
+                longitude: lon,
+                label: title,
+                altitude: 0
+            }, function(data) {
+                var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
+                newStory.location = data;
+                loadAndOpenNewTab(titleEntryUrl, function() {
+                    var openFooterHeight = containerHeight * 0.6;
+                    resizeArticleBox(openFooterHeight, function() {
+                        google.maps.event.trigger(userLocation.map, "resize");
+                        userLocation.map.panTo(userLocation.newLocationMarker.getPosition());
+                    })
+                });
+            });
+        } else {
+            if (userLocation.selectedLocation !== null) {
+                var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
+                newStory.location = userLocation.selectedLocation;
+                loadAndOpenNewTab(titleEntryUrl, function() {
+                    var openFooterHeight = containerHeight * 0.6;
+                    resizeArticleBox(openFooterHeight, function() {
+                        google.maps.event.trigger(userLocation.map, "resize");
+                        userLocation.map.panTo(userLocation.selectedLocation.marker.getPosition());
+                    })
+                });
+            } else {
+                alertBox(gettext("Sie müssen einen Ort auswählen, um fortfahren zu können, oder auf 'Ohne Ort fortfahren' klicken."));
+            }
+        }
+    });
+    $("span#no-location").click(function() {
+        newStory.location = null;
+        var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
+        loadAndOpenNewTab(titleEntryUrl, function() {
+            var openFooterHeight = containerHeight * 0.6;
+            resizeArticleBox(openFooterHeight, function() {
+                google.maps.event.trigger(userLocation.map, "resize");
+            })
+        });
+    });
+}
+
+/**
+ * Makes an AJAX post request to the given url with the given data,
+ * calling the callback on success. The additional X-CSRFToken-Header will
+ * be sent to ensure Cross Site Forgery Requests can not be done.
+ * @param url
+ * @param data
+ * @param callback
+ */
+function postAjaxRequestWithCSRF(url, data, callback) {
+    var csrfToken = readCookie("csrftoken");
+    $.ajax(url, {
+        beforeSend: function(xhr) {
+            if (!this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrfToken);
+            }
+        },
+        data: data,
+        type: "POST"
+    }).done(function(data) {
+        callback(data);
+    });
+}
+
 /**
  * $(document).ready
  *
@@ -869,26 +975,11 @@ $(function() {
             newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
             openFooterHeight = footerHeight * 2;
             newEntryMode = true;
-            onFinish = function() {
-                $("div.new-entry span.new").click(newLocation);
-                $("span#next-location").click(function() {
-                    if (newEntryMode) {
-
-                    } else {
-                        var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
-
-                    }
-                });
-                $("span#no-location").click(function() {
-                    var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
-                    loadAndOpenNewTab(titleEntryUrl, function() {
-                        openFooterHeight = containerHeight * 0.6;
-                        resizeArticleBox(openFooterHeight, function() {
-                            google.maps.event.trigger(userLocation.map, "resize");
-                        })
-                    });
-                });
-            };
+            onFinish = function(mediaType) {
+                return function() {
+                    loadTitleTab(mediaType);
+                }
+            }(mediaType);
             openArticleBox(openFooterHeight);
             $.get(newEntryFormURL, function (data) {
                 userLocation.currentInfobox = "dummy";
@@ -910,11 +1001,5 @@ $(function() {
     } else {
         showOverlay();
     }
-    $("div.message div.close").click(function() {
-        var messageBox = $("div.message");
-        messageBox.fadeOut("75ms", function() {
-            messageBox.css("top", "-10rem");
-            messageBox.show();
-        })
-    })
+    $("div.message div.close").click(closeAlertBox);
 });
