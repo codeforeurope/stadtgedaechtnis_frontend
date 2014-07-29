@@ -650,15 +650,19 @@ function searchForEntries () {
 /**
  * Loads a new tab and switches to this tab.
  * @param url
+ * @param resizeContainerHeight
  * @param [callback]
  */
-function loadAndOpenNewTab(url, callback) {
+function loadAndOpenNewTab(url, resizeContainerHeight, callback) {
     var entryList = $("section#article-section div.entry-list ul");
     var jQueryEntryList = $("section#article-section div.entry-list");
     $.get(url, function(data) {
         var newListEntry = $("<li>").html(data);
         newListEntry.appendTo(entryList);
         jQueryEntryList.unslider();
+        resizeArticleBox(resizeContainerHeight, function() {
+            google.maps.event.trigger(userLocation.map, "resize");
+        });
         jQueryEntryList.data("unslider").next();
         if (callback !== undefined && callback !== null) {
             callback();
@@ -674,7 +678,11 @@ function showOverlay() {
     var greeting = $("div.greeting, div.advice");
     var link = $("div.greeting a");
     overlay.show();
-    link.click(closeOverlay);
+    link.click(function(event) {
+        closeOverlay();
+        event.stopPropagation();
+        return false;
+    });
     overlay.transition({backgroundColor: "rgba(0, 0, 0, 0.7)"}, 2000, "cubic-bezier(.37,.96,.61,.95)");
     greeting.transition({opacity: "1"}, 2000, "cubic-bezier(.85,.07,.51,.93)");
 }
@@ -875,7 +883,7 @@ var newStory = null;
 function loadTitleTab(mediaType) {
     newStory = new Story();
     $("div.new-entry span.new").click(newLocation);
-    $("span#next-location").click(function() {
+    $("span#next-location").click(function(event) {
         if (userLocation.newLocationMarker !== undefined) {
             var lat = userLocation.newLocationMarker.getPosition().lat();
             var lon = userLocation.newLocationMarker.getPosition().lng();
@@ -887,43 +895,55 @@ function loadTitleTab(mediaType) {
                 label: title,
                 altitude: 0
             }, function(data) {
-                var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
                 newStory.location = data;
-                loadAndOpenNewTab(titleEntryUrl, function() {
-                    var openFooterHeight = containerHeight * 0.75;
-                    resizeArticleBox(openFooterHeight, function() {
-                        google.maps.event.trigger(userLocation.map, "resize");
-                        userLocation.map.panTo(userLocation.newLocationMarker.getPosition());
-                    })
-                });
+                openTitleTab(mediaType);
             });
         } else {
             if (userLocation.selectedLocation !== null) {
-                var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
                 newStory.location = userLocation.selectedLocation;
-                loadAndOpenNewTab(titleEntryUrl, function() {
-                    var openFooterHeight = containerHeight * 0.75;
-                    resizeArticleBox(openFooterHeight, function() {
-                        google.maps.event.trigger(userLocation.map, "resize");
-                        userLocation.map.panTo(userLocation.selectedLocation.marker.getPosition());
-                    })
-                });
+                openTitleTab(mediaType);
             } else {
                 alertBox(gettext("Sie müssen einen Ort auswählen, um fortfahren zu können, oder auf 'Ohne Ort fortfahren' klicken."));
             }
         }
+        event.stopPropagation();
+        return false;
     });
-    $("span#no-location").click(function() {
+    $("span#no-location").click(function(event) {
         newStory.location = null;
-        var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
-        loadAndOpenNewTab(titleEntryUrl, function() {
-            var openFooterHeight = containerHeight * 0.6;
-            resizeArticleBox(openFooterHeight, function() {
-                google.maps.event.trigger(userLocation.map, "resize");
-            })
-        });
+        openTitleTab(mediaType);
+        event.stopPropagation();
+        return false;
     });
 }
+/**
+ * Opens the title tab for a new story.
+ * @param mediaType
+ */
+function openTitleTab(mediaType) {
+    var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
+    loadAndOpenNewTab(titleEntryUrl, containerHeight * 0.75, function() {
+        $("span#next-text").click(function(event) {
+            var title = $("input#id_title").val();
+            if (title === "") {
+                alertBox(gettext("Sie müssen einen Titel für Ihre Geschichte eingeben."));
+            } else {
+                loadTextTab();
+            }
+            event.stopPropagation();
+            return false;
+        })
+    });
+}
+
+/**
+ * Loads the tab to enter a text for a new entry.
+ */
+function loadTextTab() {
+    var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
+    loadAndOpenNewTab(textEntryUrl, containerHeight);
+}
+
 
 /**
  * Makes an AJAX post request to the given url with the given data,

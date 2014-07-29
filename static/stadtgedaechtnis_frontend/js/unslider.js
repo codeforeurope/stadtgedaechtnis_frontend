@@ -75,6 +75,8 @@
 			//  Set the relative widths
 			this.ul.css({width: (this.items.length * 100) + '%', position: 'relative'});
 			this.items.css('width', (100 / this.items.length) + '%');
+
+            _.current = Math.round(-this.items.length * this.ul.position().left / this.ul.width());
 			
 			if(this.opts.delay !== f) {
 				this.start();
@@ -102,7 +104,7 @@
 					.find('.arrows span').click(function() {
 						$.isFunction(_[this.className]) && _[this.className]();
 					});
-			};
+			}
 			
 			//  Swipe support
 			if($.event.swipe) {

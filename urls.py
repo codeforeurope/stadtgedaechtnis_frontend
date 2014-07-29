@@ -33,4 +33,6 @@ urlpatterns = patterns(
            form_class=NewStoryAudioForm), name="new-story-audio"),
    url(r'^forms/video/$', NewStoryMediaFormView.as_view(
            form_class=NewStoryVideoForm), name="new-story-video"),
+   url(r'^forms/text/$', TemplateView.as_view(
+       template_name='stadtgedaechtnis/new_entry_story.html'), name="new-story-text")
    )
