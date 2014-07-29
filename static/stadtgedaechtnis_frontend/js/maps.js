@@ -890,7 +890,7 @@ function loadTitleTab(mediaType) {
                 var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
                 newStory.location = data;
                 loadAndOpenNewTab(titleEntryUrl, function() {
-                    var openFooterHeight = containerHeight * 0.6;
+                    var openFooterHeight = containerHeight * 0.8;
                     resizeArticleBox(openFooterHeight, function() {
                         google.maps.event.trigger(userLocation.map, "resize");
                         userLocation.map.panTo(userLocation.newLocationMarker.getPosition());
@@ -902,7 +902,7 @@ function loadTitleTab(mediaType) {
                 var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
                 newStory.location = userLocation.selectedLocation;
                 loadAndOpenNewTab(titleEntryUrl, function() {
-                    var openFooterHeight = containerHeight * 0.6;
+                    var openFooterHeight = containerHeight * 0.8;
                     resizeArticleBox(openFooterHeight, function() {
                         google.maps.event.trigger(userLocation.map, "resize");
                         userLocation.map.panTo(userLocation.selectedLocation.marker.getPosition());
