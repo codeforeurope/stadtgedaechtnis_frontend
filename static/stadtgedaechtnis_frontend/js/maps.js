@@ -552,6 +552,14 @@ function closeArticleBox(both) {
 
     if (newEntryMode) {
         newEntryMode = false;
+        if (userLocation.newLocationMarker !== undefined) {
+            // new location was created, delete this location
+            var deleteNewLocationUrl = django_js_utils.urls.resolve("get-location", {pk: newStory.location.id});
+            ajaxRequestWithCSRF(deleteNewLocationUrl, "DELETE", {
+                unique_id: newStory.location.unique_id
+            });
+            userLocation.newLocationMarker.map = null;
+        }
         if (resetOldMarker !== undefined) {
             resetOldMarker();
         }
@@ -610,15 +618,34 @@ function closeListBox(both) {
 
 /**
  * Closes both boxes.
+ * @param mouseEvent
+ * @param [force]
  */
-function closeBoxes(mouseEvent) {
-    var addArticleMenu = $("div.add-articles");
-    mouseEvent.stop();
-    closeArticleBox(true);
-    closeListBox(true);
-    closeAlertBox();
-    userLocation.selectedLocation = null;
-    addArticleMenu.removeClass("hover");
+function closeBoxes(mouseEvent, force) {
+    if (!newEntryMode || (force !== undefined && force)) {
+        var addArticleMenu = $("div.add-articles");
+        mouseEvent !== undefined && mouseEvent.stop();
+        closeArticleBox(true);
+        closeListBox(true);
+        closeAlertBox();
+        userLocation.selectedLocation = null;
+        addArticleMenu.removeClass("hover");
+    } else {
+        var text = gettext("Wollen Sie den Vorgang wirklich abbrechen? Sämtliche bisherige Eingaben werden verworfen.").toString();
+        var yes = gettext("Ja").toString();
+        var no = gettext("Nein").toString();
+        alertBox(text + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="yes">' + yes + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="no">' + no + '</a>', function() {
+            $("div.message a#yes").click(function() {
+                closeBoxes(undefined, true);
+                return false;
+            });
+            $("div.message a#no").click(function(event) {
+                event.stopPropagation();
+                closeAlertBox();
+                return false;
+            })
+        });
+    }
 }
 
 /**
@@ -660,10 +687,10 @@ function loadAndOpenNewTab(url, resizeContainerHeight, callback) {
         var newListEntry = $("<li>").html(data);
         newListEntry.appendTo(entryList);
         jQueryEntryList.unslider();
+        jQueryEntryList.data("unslider").next();
         resizeArticleBox(resizeContainerHeight, function() {
             google.maps.event.trigger(userLocation.map, "resize");
         });
-        jQueryEntryList.data("unslider").next();
         if (callback !== undefined && callback !== null) {
             callback();
         }
@@ -872,6 +899,7 @@ function newLocation() {
         var lon = event.latLng.lng();
         markerSetNewLocation(lat, lon);
     });
+    return false;
 }
 
 var newStory = null;
@@ -885,22 +913,24 @@ function loadTitleTab(mediaType) {
     $("div.new-entry span.new").click(newLocation);
     $("span#next-location").click(function(event) {
         if (userLocation.newLocationMarker !== undefined) {
-            var lat = userLocation.newLocationMarker.getPosition().lat();
-            var lon = userLocation.newLocationMarker.getPosition().lng();
+            var lat = userLocation.newLocationMarker.getPosition().lat().toFixed(13);
+            var lon = userLocation.newLocationMarker.getPosition().lng().toFixed(13);
             var title = $("span#selected-location").text();
             var postNewLocationUrl = django_js_utils.urls.resolve("list-locations");
-            postAjaxRequestWithCSRF(postNewLocationUrl, {
+            ajaxRequestWithCSRF(postNewLocationUrl, "POST", {
                 latitude: lat,
                 longitude: lon,
                 label: title,
                 altitude: 0
             }, function(data) {
                 newStory.location = data;
+                userLocation.map.panTo(new google.maps.LatLng(lat, lon));
                 openTitleTab(mediaType);
             });
         } else {
             if (userLocation.selectedLocation !== null) {
                 newStory.location = userLocation.selectedLocation;
+                userLocation.map.panTo(newStory.location.marker.getPosition());
                 openTitleTab(mediaType);
             } else {
                 alertBox(gettext("Sie müssen einen Ort auswählen, um fortfahren zu können, oder auf 'Ohne Ort fortfahren' klicken."));
@@ -946,14 +976,15 @@ function loadTextTab() {
 
 
 /**
- * Makes an AJAX post request to the given url with the given data,
+ * Makes an AJAX request to the given url with the given data,
  * calling the callback on success. The additional X-CSRFToken-Header will
  * be sent to ensure Cross Site Forgery Requests can not be done.
  * @param url
- * @param data
- * @param callback
+ * @param method
+ * @param [data]
+ * @param [callback]
  */
-function postAjaxRequestWithCSRF(url, data, callback) {
+function ajaxRequestWithCSRF(url, method, data, callback) {
     var csrfToken = readCookie("csrftoken");
     $.ajax(url, {
         beforeSend: function(xhr) {
@@ -962,9 +993,9 @@ function postAjaxRequestWithCSRF(url, data, callback) {
             }
         },
         data: data,
-        type: "POST"
+        type: method
     }).done(function(data) {
-        callback(data);
+        callback !== undefined && callback(data);
     });
 }
 

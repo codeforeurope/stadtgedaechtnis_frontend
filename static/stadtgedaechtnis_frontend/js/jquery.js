@@ -140,13 +140,18 @@ function initializeFooterSwiping() {
 /**
  * Displays an alert box that displays a short message and, optionally, an icon.
  * @param message
+ * @param [callback]
  */
-function alertBox(message) {
+function alertBox(message, callback) {
     // set message
-    $("div.message p").text(message);
+    $("div.message p").html(message);
     // animate sliding
     var messageBox = $("div.message");
-    messageBox.animate({"top": "3rem"}, 800, "easeOutBounce")
+    messageBox.animate({"top": "3rem"}, 800, "easeOutBounce", function() {
+        if (callback !== undefined) {
+            callback();
+        }
+    });
 }
 
 /**
