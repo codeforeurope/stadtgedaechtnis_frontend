@@ -317,6 +317,7 @@ function loadAndOpenEntryBox(stories) {
     }
 
     $("div.entry-list ul").html(entryList);
+    $("section#article-section div.close").hide();
     var jQueryEntryList = $("section#article-section div.entry-list");
 
     if (stories.length > 1) {
@@ -846,6 +847,7 @@ function Story() {
     this.text = null;
     this.dateStart = null;
     this.dateFinish = null;
+    this.id = null;
     this.media = [];
 }
 
@@ -958,6 +960,7 @@ function openTitleTab(mediaType) {
             if (title === "") {
                 alertBox(gettext("Sie müssen einen Titel für Ihre Geschichte eingeben."));
             } else {
+                newStory.title = title;
                 loadTextTab();
             }
             event.stopPropagation();
@@ -970,10 +973,37 @@ function openTitleTab(mediaType) {
  * Loads the tab to enter a text for a new entry.
  */
 function loadTextTab() {
-    var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
-    loadAndOpenNewTab(textEntryUrl, containerHeight);
+    var postNewStoryUrl = django_js_utils.urls.resolve("get-all-stories");
+    ajaxRequestWithCSRF(postNewStoryUrl, "POST", {
+        title: newStory.title,
+        abstract: "",
+        author: "",
+        timeStart: ""
+    }, function(data) {
+        newStory.id = data.id;
+        var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
+        loadAndOpenNewTab(textEntryUrl, containerHeight, function() {
+            $("div.new-entry input#title").value(newStory.title);
+            var uploadUrl = "";
+            uploadImage($("div.new-entry input#id_file"), function() {
+
+            });
+        });
+    });
 }
 
+/**
+ * Uploads an image and calls a callback
+ */
+function uploadImage(fileInput, url, callback) {
+    var formData = new FormData();
+    var file = fileInput.files[0];
+    if (!file) {
+        return;
+    }
+    formData.append("file", file);
+    ajaxRequestWithCSRF(url, "POST", formData, callback);
+}
 
 /**
  * Makes an AJAX request to the given url with the given data,
@@ -1037,6 +1067,7 @@ $(function() {
                 var listEntry = $("<li>");
                 listEntry.html(data);
                 entryList.html(listEntry);
+                $("section#article-section div.close").show();
                 jQueryEntryList.unslider();
                 if (onFinish !== undefined) {
                     onFinish();
