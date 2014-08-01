@@ -559,6 +559,13 @@ function closeArticleBox(both) {
             ajaxRequestWithCSRF(deleteNewLocationUrl, "DELETE", {
                 unique_id: newStory.location.unique_id
             });
+            if (newStory.id !== null) {
+                // new story was created, delete this story
+                var deleteNewStoryUrl = django_js_utils.urls.resolve("get-story", {pk: newStory.id});
+                ajaxRequestWithCSRF(deleteNewStoryUrl, "DELETE", {
+                    unique_id: newStory.uniqueId
+                })
+            }
             userLocation.newLocationMarker.map = null;
         }
         if (resetOldMarker !== undefined) {
@@ -847,6 +854,7 @@ function Story() {
     this.text = null;
     this.dateStart = null;
     this.dateFinish = null;
+    this.uniqueId = null;
     this.id = null;
     this.media = [];
 }
@@ -974,18 +982,26 @@ function openTitleTab(mediaType) {
  */
 function loadTextTab() {
     var postNewStoryUrl = django_js_utils.urls.resolve("get-all-stories");
+    var date = new Date();
+    var dateString = date.toFormattedString();
+    var locationId = null;
+    if (newStory.location !== null) {
+        locationId = newStory.location.id;
+    }
     ajaxRequestWithCSRF(postNewStoryUrl, "POST", {
         title: newStory.title,
-        abstract: "",
-        author: "",
-        timeStart: ""
+        abstract: "temporary",
+        author: 1,
+        time_start: dateString,
+        location: locationId
     }, function(data) {
         newStory.id = data.id;
+        newStory.uniqueId = data.unique_id;
         var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
         loadAndOpenNewTab(textEntryUrl, containerHeight, function() {
-            $("div.new-entry input#title").value(newStory.title);
+            $("div.new-entry input#title").val(newStory.title);
             var uploadUrl = "";
-            uploadImage($("div.new-entry input#id_file"), function() {
+            uploadImage($("div.new-entry input#id_file")[0], function() {
 
             });
         });

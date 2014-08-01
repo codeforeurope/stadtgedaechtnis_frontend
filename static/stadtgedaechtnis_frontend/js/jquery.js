@@ -18,14 +18,14 @@ var up = false;
  * resizes the main element to the remaining browser height
  */
 function resizeContainer() {
-	headerHeight = $("header[role='banner']").css("height");
+    headerHeight = $("header[role='banner']").css("height");
     headerHeight = parseInt(headerHeight.substring(0, headerHeight.length - 2));
     var footer = $("section#article-section");
     var list= $("section#list-section");
     var main = $("main");
     footerHeight = footer.css("height");
     footerHeight = parseInt(footerHeight.substring(0, footerHeight.length - 2));
-	main.css({
+    main.css({
         paddingTop: headerHeight + "px",
         marginTop: "-" + headerHeight + "px",
         paddingBottom: "0px",
@@ -106,34 +106,34 @@ function initializeFooterSwiping() {
     var slideList = $("section#article-section div.entry-list");
 
     $("section#article-section div.entry-list ul li").swipe({
-       swipeStatus: function(event, phase, direction, distance) {
-           if (direction === "left" || direction ==="right") {
-               var unslider = slideList.data("unslider");
-               var currentSlide = unslider.current;
-               if (phase === "end") {
-                   if ((direction === "left" && (currentSlide === unslider.items.length - 1)) || (direction === "right" && (currentSlide === 0))) {
-                       return false;
-                   } else {
-                       unslider.move(currentSlide + (direction === "left" ? 1 : -1));
-                   }
-               } else if (phase === "cancel") {
-                        unslider.move(currentSlide);
-               } else {
-                   if ((direction === "left" && (currentSlide === unslider.items.length - 1)) || (direction === "right" && (currentSlide === 0))) {
-                       return false;
-                   } else {
-                       var percentMoved = (distance / slideWidth) * 100;
-                       var newPercentage = currentSlide * 100 + (direction === "left" ? percentMoved : -percentMoved);
-                       var newLeft = "-" + newPercentage + "%";
-                       $("section#article-section div.entry-list ul").css("left", newLeft);
-                   }
-               }
-           }
-       },
-       checkThresholds: true,
-       maxTimeThreshold: 300,
-       threshold: swipeLeftRightThreshold,
-       allowPageScroll: "vertical"
+        swipeStatus: function(event, phase, direction, distance) {
+            if (direction === "left" || direction ==="right") {
+                var unslider = slideList.data("unslider");
+                var currentSlide = unslider.current;
+                if (phase === "end") {
+                    if ((direction === "left" && (currentSlide === unslider.items.length - 1)) || (direction === "right" && (currentSlide === 0))) {
+                        return false;
+                    } else {
+                        unslider.move(currentSlide + (direction === "left" ? 1 : -1));
+                    }
+                } else if (phase === "cancel") {
+                    unslider.move(currentSlide);
+                } else {
+                    if ((direction === "left" && (currentSlide === unslider.items.length - 1)) || (direction === "right" && (currentSlide === 0))) {
+                        return false;
+                    } else {
+                        var percentMoved = (distance / slideWidth) * 100;
+                        var newPercentage = currentSlide * 100 + (direction === "left" ? percentMoved : -percentMoved);
+                        var newLeft = "-" + newPercentage + "%";
+                        $("section#article-section div.entry-list ul").css("left", newLeft);
+                    }
+                }
+            }
+        },
+        checkThresholds: true,
+        maxTimeThreshold: 300,
+        threshold: swipeLeftRightThreshold,
+        allowPageScroll: "vertical"
     });
 }
 
@@ -165,12 +165,22 @@ function closeAlertBox() {
     });
 }
 
+Date.prototype.toFormattedString = function () {
+    function f(n) {
+        // Format integers to have at least two digits.
+        return n < 10 ? '0' + n : n;
+    }
+    return this.getFullYear()   + '-' +
+        f(this.getMonth() + 1) + '-' +
+        f(this.getDate())      + '';
+};
+
 /**
  * $(document).ready
  *
  * initialize jQuery hooks
  */
 $(function() {
-	resizeContainer();
+    resizeContainer();
     $("img.load-more").hide();
 });
