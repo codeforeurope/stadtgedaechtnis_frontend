@@ -1000,7 +1000,8 @@ function loadTextTab() {
         var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
         loadAndOpenNewTab(textEntryUrl, containerHeight, function() {
             $("div.new-entry input#title").val(newStory.title);
-            var uploadUrl = "";
+            var uploadUrl = django_js_utils.urls.resolve("all-stories");
+
             uploadImage($("div.new-entry input#id_file")[0], function() {
 
             });
