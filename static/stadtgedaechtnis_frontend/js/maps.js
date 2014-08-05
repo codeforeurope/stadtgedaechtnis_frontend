@@ -699,13 +699,14 @@ function loadAndOpenNewTab(url, resizeContainerHeight, callback) {
     var entryList = $("section#article-section div.entry-list ul");
     var jQueryEntryList = $("section#article-section div.entry-list");
     $.get(url, function(data) {
-        var newListEntry = $("<li>").html(data);
+        var newListEntry = $("<li>").html(data).css("overflow-y", "auto");
         newListEntry.appendTo(entryList);
         jQueryEntryList.unslider();
         jQueryEntryList.data("unslider").next();
         resizeArticleBox(resizeContainerHeight, function() {
             google.maps.event.trigger(userLocation.map, "resize");
         });
+        $("section#article-section div.close img").click(closeBoxes);
         if (callback !== undefined && callback !== null) {
             callback();
         }
@@ -1126,6 +1127,7 @@ $(function() {
                 listEntry.html(data);
                 entryList.html(listEntry);
                 $("section#article-section div.close").show();
+                $("section#article-section div.close img").click(closeBoxes);
                 jQueryEntryList.unslider();
                 if (onFinish !== undefined) {
                     onFinish();
