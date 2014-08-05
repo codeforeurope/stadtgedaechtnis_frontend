@@ -204,19 +204,19 @@ div.add-articles {
       text-decoration: underline;
     }
 
-    li#image {
+    li#img {
       background-image: url(../img/bild.png);
     }
 
-    li#text {
+    li#txt {
       background-image: url(../img/text.png);
     }
 
-    li#audio {
+    li#aud {
       background-image: url(../img/audio.png);
     }
 
-    li#video {
+    li#vid {
       background-image: url(../img/video.png);
     }
   }
@@ -361,6 +361,11 @@ section#article-section {
       }
     }
 
+    label {
+      margin-top: .75rem;
+      display: block;
+    }
+
     span#selected-location {
       text-decoration: underline;
       font-weight: bold;
@@ -468,12 +473,21 @@ div.new-entry {
     margin-top: .5rem;
   }
 
-  input[type="text"] {
+  input[type="text"], textarea {
     width: 100%;
     border-style: none none solid;
     border-width: 0 0 1px;
     border-color: black;
     font-weight: bold;
+  }
+
+  textarea {
+    height: 8rem;
+    margin-top: .5rem;
+  }
+
+  img.entry-image {
+    display: none;
   }
 }
 

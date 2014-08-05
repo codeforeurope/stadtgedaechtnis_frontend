@@ -568,16 +568,16 @@ div.add-articles ul li {
 div.add-articles ul li:hover {
   text-decoration: underline;
 }
-div.add-articles ul li#image {
+div.add-articles ul li#img {
   background-image: url(../img/bild.png);
 }
-div.add-articles ul li#text {
+div.add-articles ul li#txt {
   background-image: url(../img/text.png);
 }
-div.add-articles ul li#audio {
+div.add-articles ul li#aud {
   background-image: url(../img/audio.png);
 }
-div.add-articles ul li#video {
+div.add-articles ul li#vid {
   background-image: url(../img/video.png);
 }
 
@@ -698,6 +698,10 @@ section#article-section div.new-entry p {
 section#article-section div.new-entry form p {
   margin-top: 1.5rem;
 }
+section#article-section div.new-entry label {
+  margin-top: .75rem;
+  display: block;
+}
 section#article-section div.new-entry span#selected-location {
   text-decoration: underline;
   font-weight: bold;
@@ -789,11 +793,19 @@ div.new-entry h3 {
 div.new-entry input {
   margin-top: .5rem;
 }
-div.new-entry input[type="text"] {
+div.new-entry input[type="text"], div.new-entry textarea {
   width: 100%;
   border-style: none none solid;
   border-width: 0 0 1px;
   border-color: black;
+  font-weight: bold;
+}
+div.new-entry textarea {
+  height: 8rem;
+  margin-top: .5rem;
+}
+div.new-entry img.entry-image {
+  display: none;
 }
 
 @media screen and (max-width: 768px) {

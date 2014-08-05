@@ -559,14 +559,21 @@ function closeArticleBox(both) {
             ajaxRequestWithCSRF(deleteNewLocationUrl, "DELETE", {
                 unique_id: newStory.location.unique_id
             });
-            if (newStory.id !== null) {
-                // new story was created, delete this story
-                var deleteNewStoryUrl = django_js_utils.urls.resolve("get-story", {pk: newStory.id});
-                ajaxRequestWithCSRF(deleteNewStoryUrl, "DELETE", {
-                    unique_id: newStory.uniqueId
-                })
-            }
             userLocation.newLocationMarker.map = null;
+        }
+        if (newStory.id !== null) {
+            // new story was created, delete this story
+            var deleteNewStoryUrl = django_js_utils.urls.resolve("get-story", {pk: newStory.id});
+            ajaxRequestWithCSRF(deleteNewStoryUrl, "DELETE", {
+                unique_id: newStory.uniqueId
+            })
+        }
+        if (newStory.asset.id !== null) {
+            // new asset was created, delete this asset
+            var deleteNewAssetUrl = django_js_utils.urls.resolve("get-asset", {pk: newStory.asset.id});
+            ajaxRequestWithCSRF(deleteNewAssetUrl, "DELETE", {
+                unique_id: newStory.asset.uniqueId
+            });
         }
         if (resetOldMarker !== undefined) {
             resetOldMarker();
@@ -856,7 +863,14 @@ function Story() {
     this.dateFinish = null;
     this.uniqueId = null;
     this.id = null;
+    this.asset = new Asset();
     this.media = [];
+}
+
+function Asset() {
+    this.id = null;
+    this.uniqueId = null;
+    this.url = null;
 }
 
 /**
@@ -969,7 +983,7 @@ function openTitleTab(mediaType) {
                 alertBox(gettext("Sie müssen einen Titel für Ihre Geschichte eingeben."));
             } else {
                 newStory.title = title;
-                loadTextTab();
+                loadTextTab(mediaType);
             }
             event.stopPropagation();
             return false;
@@ -980,7 +994,7 @@ function openTitleTab(mediaType) {
 /**
  * Loads the tab to enter a text for a new entry.
  */
-function loadTextTab() {
+function loadTextTab(mediaType) {
     var postNewStoryUrl = django_js_utils.urls.resolve("get-all-stories");
     var date = new Date();
     var dateString = date.toFormattedString();
@@ -997,14 +1011,34 @@ function loadTextTab() {
     }, function(data) {
         newStory.id = data.id;
         newStory.uniqueId = data.unique_id;
-        var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
+        var textEntryUrl = django_js_utils.urls.resolve("new-story-txt");
+        var finishUploading = function() {
+            $("img#load-more-picture").hide();
+        };
         loadAndOpenNewTab(textEntryUrl, containerHeight, function() {
             $("div.new-entry input#title").val(newStory.title);
-            var uploadUrl = django_js_utils.urls.resolve("all-stories");
-
-            uploadImage($("div.new-entry input#id_file")[0], function() {
-
-            });
+            var fileInput = $("div.new-entry input#id_file")[0];
+            var newAssetUrl = django_js_utils.urls.resolve("get-story-with-asset", {pk: newStory.id});
+            if (fileInput.files.length > 0) {
+                ajaxRequestWithCSRF(newAssetUrl, "POST", {
+                    type: mediaType,
+                    alt: "temporary"
+                }, function (data) {
+                    newStory.asset.id = data.id;
+                    newStory.asset.uniqueId = data.unique_id;
+                    var putImageUrl = django_js_utils.urls.resolve("asset-sources", {pk: newStory.asset.id});
+                    uploadImage(fileInput, putImageUrl, newStory.asset.uniqueId, function (data) {
+                        if (data !== undefined) {
+                            // uploaded image
+                            newStory.asset.url = data["url"];
+                            $("div.new-entry img.entry-image").attr("src", newStory.asset.url).show();
+                        }
+                        finishUploading()
+                    });
+                });
+            } else {
+                finishUploading();
+            }
         });
     });
 }
@@ -1012,14 +1046,18 @@ function loadTextTab() {
 /**
  * Uploads an image and calls a callback
  */
-function uploadImage(fileInput, url, callback) {
+function uploadImage(fileInput, url, uniqueId, callback) {
     var formData = new FormData();
     var file = fileInput.files[0];
     if (!file) {
-        return;
+        callback();
     }
     formData.append("file", file);
-    ajaxRequestWithCSRF(url, "POST", formData, callback);
+    formData.append("unique_id", uniqueId);
+    ajaxRequestWithCSRF(url, "POST", formData, callback, {
+        contentType: false,
+        processData: false
+    });
 }
 
 /**
@@ -1030,10 +1068,11 @@ function uploadImage(fileInput, url, callback) {
  * @param method
  * @param [data]
  * @param [callback]
+ * @param [additionalParams]
  */
-function ajaxRequestWithCSRF(url, method, data, callback) {
+function ajaxRequestWithCSRF(url, method, data, callback, additionalParams) {
     var csrfToken = readCookie("csrftoken");
-    $.ajax(url, {
+    var parameters = {
         beforeSend: function(xhr) {
             if (!this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", csrfToken);
@@ -1041,7 +1080,9 @@ function ajaxRequestWithCSRF(url, method, data, callback) {
         },
         data: data,
         type: method
-    }).done(function(data) {
+    };
+    additionalParams !== undefined && $.extend(parameters, additionalParams);
+    $.ajax(url, parameters).done(function(data) {
         callback !== undefined && callback(data);
     });
 }

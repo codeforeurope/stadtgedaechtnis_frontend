@@ -4,8 +4,10 @@
     <div class="center">
         <img src="/static/stadtgedaechtnis_frontend/img/ajax-loader.gif" id="load-more-picture" class="load-more">
     </div>
+	<img src="" class="entry-image">
     <form>
-        <p><input type="text" id="title" readonly="readonly"></p>
-        <p><label for="text">{% trans "Ihre persönliche Geschichte:" %}</label><input type="textarea" id="text"></p>
+        <input type="text" id="title" readonly="readonly">
+        <label for="text">{% trans "Ihre persönliche Geschichte:" %}</label><textarea id="text"></textarea>
+		<p><a href="#"><span class="next hide-text" id="next-location">{% trans "Weiter" %}</span></a></p>
     </form>
 </div>

@@ -28,11 +28,11 @@ urlpatterns = patterns(
        template_name='stadtgedaechtnis/new_entry_location.html'
    ), name="new-story-location"),
    url(r'^forms/image/$', NewStoryMediaFormView.as_view(
-           form_class=NewStoryImageForm), name="new-story-image"),
+           form_class=NewStoryImageForm), name="new-story-img"),
    url(r'^forms/audio/$', NewStoryMediaFormView.as_view(
-           form_class=NewStoryAudioForm), name="new-story-audio"),
+           form_class=NewStoryAudioForm), name="new-story-aud"),
    url(r'^forms/video/$', NewStoryMediaFormView.as_view(
-           form_class=NewStoryVideoForm), name="new-story-video"),
+           form_class=NewStoryVideoForm), name="new-story-vid"),
    url(r'^forms/text/$', TemplateView.as_view(
-       template_name='stadtgedaechtnis/new_entry_story.html'), name="new-story-text")
+       template_name='stadtgedaechtnis/new_entry_story.html'), name="new-story-txt")
    )
