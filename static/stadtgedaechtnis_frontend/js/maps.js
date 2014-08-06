@@ -579,7 +579,7 @@ function closeArticleBox(both) {
                     unique_id: newStory.location.unique_id
                 }, function () {
                     newStory = null;
-                    userLocation.newLocationMarker.map = null;
+                    userLocation.newLocationMarker.setMap(null);
                     userLocation.newLocationMarker = undefined;
                 });
             }
@@ -1134,7 +1134,7 @@ $(function() {
             var openFooterHeight;
             var onFinish;
             newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
-            openFooterHeight = footerHeight * 2;
+            openFooterHeight = containerHeight * 0.6;
             newEntryMode = true;
             onFinish = function(mediaType) {
                 return function() {
