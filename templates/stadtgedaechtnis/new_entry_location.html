@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="new-entry">
     <h3>{% trans "Einen neuen Beitrag hinzufügen" %}</h3>
-    <p>{% trans "Wählen Sie durch Tippen einen Ort aus, mit dem Sie Ihre persönliche Geschichte verbinden wollen." %} {% trans "Ist der gewünschte Ort nicht vorhanden, tippen Sie auf das Plus und ziehen den Marker an den gewünschten Ort." %}</p>
+    <div class="desktop"><p>{% trans "Wählen Sie durch Tippen einen Ort aus, mit dem Sie Ihre persönliche Geschichte verbinden wollen." %} {% trans "Ist der gewünschte Ort nicht vorhanden, tippen Sie auf das Plus und ziehen den Marker an den gewünschten Ort." %}</p></div>
     <form>
 		<p><label>{% trans "Ausgewählter Ort" %}:</label><span id="selected-location"></span>&nbsp;<a href="#"><span class="new hide-text">{% trans "Neuer Ort" %}</span></a></p>
     	<p><span id="no-location"><a href="#">{% trans "Ohne Ort fortfahren" %}</a></span>

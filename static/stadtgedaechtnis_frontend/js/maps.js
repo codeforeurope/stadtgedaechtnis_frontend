@@ -1134,7 +1134,7 @@ $(function() {
             var openFooterHeight;
             var onFinish;
             newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
-            openFooterHeight = containerHeight * 0.6;
+            openFooterHeight = footerHeight * 2;
             newEntryMode = true;
             onFinish = function(mediaType) {
                 return function() {
