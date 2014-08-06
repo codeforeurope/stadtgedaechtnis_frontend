@@ -230,7 +230,10 @@ function openArticleBox(articleBoxHeight, callback) {
                 jQueryEntryList.data("unslider").set(0, true);
                 google.maps.event.trigger(userLocation.map, "resize");
             });
-            listEntries.css("overflow-y", "auto");
+            listEntries.css({
+                "overflow-y": "auto",
+                "overflow-x": "hidden"
+            });
         }
     } else {
         // Old entry already opened
@@ -553,32 +556,47 @@ function closeArticleBox(both) {
 
     if (newEntryMode) {
         newEntryMode = false;
-        if (userLocation.newLocationMarker !== undefined) {
-            // new location was created, delete this location
-            var deleteNewLocationUrl = django_js_utils.urls.resolve("get-location", {pk: newStory.location.id});
-            ajaxRequestWithCSRF(deleteNewLocationUrl, "DELETE", {
-                unique_id: newStory.location.unique_id
-            });
-            userLocation.newLocationMarker.map = null;
-        }
-        if (newStory.id !== null) {
-            // new story was created, delete this story
-            var deleteNewStoryUrl = django_js_utils.urls.resolve("get-story", {pk: newStory.id});
-            ajaxRequestWithCSRF(deleteNewStoryUrl, "DELETE", {
-                unique_id: newStory.uniqueId
-            })
-        }
-        if (newStory.asset.id !== null) {
-            // new asset was created, delete this asset
+
+        var deleteNewAsset = function() {
             var deleteNewAssetUrl = django_js_utils.urls.resolve("get-asset", {pk: newStory.asset.id});
             ajaxRequestWithCSRF(deleteNewAssetUrl, "DELETE", {
                 unique_id: newStory.asset.uniqueId
             });
+        };
+
+        var deleteNewStory = function(callback) {
+            var deleteNewStoryUrl = django_js_utils.urls.resolve("get-story", {pk: newStory.id});
+            ajaxRequestWithCSRF(deleteNewStoryUrl, "DELETE", {
+                unique_id: newStory.uniqueId
+            }, callback);
+        };
+
+        var deleteNewLocation = function() {
+            // new location was created, delete this location
+            if (userLocation.newLocationMarker !== undefined) {
+                var deleteNewLocationUrl = django_js_utils.urls.resolve("get-location", {pk: newStory.location.id});
+                ajaxRequestWithCSRF(deleteNewLocationUrl, "DELETE", {
+                    unique_id: newStory.location.unique_id
+                }, function () {
+                    newStory = null;
+                    userLocation.newLocationMarker.map = null;
+                    userLocation.newLocationMarker = undefined;
+                });
+            }
+        };
+
+        if (newStory.asset.id !== null) {
+            deleteNewAsset();
         }
-        if (resetOldMarker !== undefined) {
-            resetOldMarker();
+        if (newStory.id !== null) {
+            // new story was created, delete this story
+            deleteNewStory(function() {
+                // delete new location afterwards
+                deleteNewLocation();
+            })
+        } else {
+            deleteNewLocation();
         }
-        newStory = null;
     }
 }
 
@@ -699,7 +717,10 @@ function loadAndOpenNewTab(url, resizeContainerHeight, callback) {
     var entryList = $("section#article-section div.entry-list ul");
     var jQueryEntryList = $("section#article-section div.entry-list");
     $.get(url, function(data) {
-        var newListEntry = $("<li>").html(data).css("overflow-y", "auto");
+        var newListEntry = $("<li>").html(data).css({
+                "overflow-y": "auto",
+                "overflow-x": "hidden"
+            });
         newListEntry.appendTo(entryList);
         jQueryEntryList.unslider();
         jQueryEntryList.data("unslider").next();

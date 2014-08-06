@@ -296,7 +296,7 @@ section#article-section img.load-more, section#list-section img.load-more {
 
 section#article-section {
   cursor: grab;
-  background: white;
+  background: url("../img/bg2.jpg") repeat scroll 0 0 transparent;
   overflow-x: hidden;
   overflow-y: hidden;
   height: 8rem;
@@ -357,12 +357,18 @@ section#article-section {
 
     form {
       p {
-        margin-top: 1.5rem;
+        border-color: black;
+        border-radius: 3px;
+        border-style: solid;
+        border-width: 1px;
+        margin-top: .75rem;
+        padding: 0.25rem;
+        float: left;
+        width: 100%;
       }
     }
 
     label {
-      margin-top: .75rem;
       display: block;
     }
 
@@ -421,10 +427,9 @@ section#article-section {
     }
 
     p.date {
-      background-color: #ededed;
-      border-left: 1px solid #999;
-      color: #444;
-      font-size: 0.8em;
+      background: white;
+      border-left: 3px solid #999;
+      font-size: 0.8rem;
       font-weight: bold;
       padding: 0 3px;
       margin-right: .5rem;
@@ -469,16 +474,13 @@ div.new-entry {
     text-align: center;
   }
 
-  input {
-    margin-top: .5rem;
-  }
-
   input[type="text"], textarea {
     width: 100%;
     border-style: none none solid;
     border-width: 0 0 1px;
     border-color: black;
     font-weight: bold;
+    background: transparent;
   }
 
   textarea {
