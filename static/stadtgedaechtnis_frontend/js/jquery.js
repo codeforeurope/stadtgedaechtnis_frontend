@@ -147,6 +147,7 @@ function alertBox(message, callback) {
     $("div.message p").html(message);
     // animate sliding
     var messageBox = $("div.message");
+    messageBox.css("opacity", 1);
     messageBox.animate({"top": "3rem"}, 800, "easeOutBounce", function() {
         if (callback !== undefined) {
             callback();
@@ -159,7 +160,7 @@ function alertBox(message, callback) {
  */
 function closeAlertBox() {
     var messageBox = $("div.message");
-    messageBox.fadeOut("75ms", function() {
+    messageBox.transition({"opacity": 0}, 130, "linear", function() {
         messageBox.css("top", "-10rem");
         messageBox.show();
     });
@@ -172,8 +173,18 @@ Date.prototype.toFormattedString = function () {
     }
     return this.getFullYear()   + '-' +
         f(this.getMonth() + 1) + '-' +
-        f(this.getDate())      + '';
+        f(this.getDate());
 };
+
+Date.prototype.parseDate = function(input) {
+    var parts = input.split('.');
+    if (parts.length === 3 && isNumber(parts[0]) && isNumber(parts[1]) && isNumber(parts[2])) {
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
+    return null;
+};
+
+function isNumber(obj) { return !isNaN(parseFloat(obj)) };
 
 /**
  * $(document).ready

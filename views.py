@@ -3,7 +3,7 @@ __author__ = 'jpi'
 from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
-from stadtgedaechtnis_backend.models import Story
+from stadtgedaechtnis_backend.models import Story, Asset
 from stadtgedaechtnis_frontend.forms import NewStoryImageForm
 
 
@@ -11,6 +11,11 @@ class EntryView(DetailView):
 
     template_name = "stadtgedaechtnis/entry.html"
     model = Story
+
+
+class AssetView(DetailView):
+    template_name = "stadtgedaechtnis/asset.html"
+    model = Asset
 
 
 class ExtraContextTemplateView(TemplateView):

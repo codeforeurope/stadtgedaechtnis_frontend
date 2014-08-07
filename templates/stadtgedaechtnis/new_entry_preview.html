@@ -1,0 +1,11 @@
+{% load i18n %}
+{% load static %}
+<div class="new-entry">
+    <p>{% trans "Vorschau Ihres Eintrages:" %}</p>
+    <div class="center">
+        <img src="{% static "stadtgedaechtnis_frontend/img/ajax-loader.gif"%}" id="load-more-entry" class="load-more">
+    </div>
+    <div class="entry"></div>
+    <p>{% trans 'Wenn Sie Ihren Beitrag so abschicken möchten, tippen Sie bitte auf "Weiter".' %}</p>
+    <p><a href="#"><span class="next hide-text" id="next-preview">{% trans "Weiter" %}</span></a></p>
+</div>

@@ -557,6 +557,10 @@ function closeArticleBox(both) {
     if (newEntryMode) {
         newEntryMode = false;
 
+        if (resetOldMarker !== undefined) {
+            resetOldMarker();
+        }
+
         var deleteNewAsset = function() {
             var deleteNewAssetUrl = django_js_utils.urls.resolve("get-asset", {pk: newStory.asset.id});
             ajaxRequestWithCSRF(deleteNewAssetUrl, "DELETE", {
@@ -669,11 +673,11 @@ function closeBoxes(mouseEvent, force) {
         var no = gettext("Nein").toString();
         alertBox(text + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="yes">' + yes + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="no">' + no + '</a>', function() {
             $("div.message a#yes").click(function() {
+                closeAlertBox();
                 closeBoxes(undefined, true);
                 return false;
             });
-            $("div.message a#no").click(function(event) {
-                event.stopPropagation();
+            $("div.message a#no").click(function() {
                 closeAlertBox();
                 return false;
             })
@@ -726,11 +730,11 @@ function loadAndOpenNewTab(url, resizeContainerHeight, callback) {
         jQueryEntryList.data("unslider").next();
         resizeArticleBox(resizeContainerHeight, function() {
             google.maps.event.trigger(userLocation.map, "resize");
+            $("section#article-section div.close img").click(closeBoxes);
+            if (callback !== undefined && callback !== null) {
+                callback();
+            }
         });
-        $("section#article-section div.close img").click(closeBoxes);
-        if (callback !== undefined && callback !== null) {
-            callback();
-        }
     });
 }
 
@@ -880,6 +884,7 @@ function Story() {
     this.location = null;
     this.title = null;
     this.author = null;
+    this.authorEmail = null;
     this.text = null;
     this.dateStart = null;
     this.dateFinish = null;
@@ -970,13 +975,11 @@ function loadTitleTab(mediaType) {
                 altitude: 0
             }, function(data) {
                 newStory.location = data;
-                userLocation.map.panTo(new google.maps.LatLng(lat, lon));
                 openTitleTab(mediaType);
             });
         } else {
             if (userLocation.selectedLocation !== null) {
                 newStory.location = userLocation.selectedLocation;
-                userLocation.map.panTo(newStory.location.marker.getPosition());
                 openTitleTab(mediaType);
             } else {
                 alertBox(gettext("Sie müssen einen Ort auswählen, um fortfahren zu können, oder auf 'Ohne Ort fortfahren' klicken."));
@@ -999,6 +1002,10 @@ function loadTitleTab(mediaType) {
 function openTitleTab(mediaType) {
     var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
     loadAndOpenNewTab(titleEntryUrl, containerHeight * 0.75, function() {
+        if (newStory.location) {
+            userLocation.map.panTo(new google.maps.LatLng(newStory.location.latitude, newStory.location.longitude));
+            userLocation.map.setZoom(17);
+        }
         $("span#next-text").click(function(event) {
             var title = $("input#id_title").val();
             if (title === "") {
@@ -1035,7 +1042,18 @@ function loadTextTab(mediaType) {
         newStory.uniqueId = data.unique_id;
         var textEntryUrl = django_js_utils.urls.resolve("new-story-txt");
         var finishUploading = function() {
-            $("img#load-more-picture").hide();
+            $("div.new-entry div.upload-advice").hide();
+            $("div.new-entry span#next-story").click(function() {
+                var text = $("div.new-entry textarea#text").val();
+                var alt = $("div.new-entry input#alt").val();
+                if (text === "") {
+                    alertBox(gettext("Sie müssen einen Text für Ihre persönliche Geschichte eingeben."));
+                } else {
+                    newStory.text = text;
+                    newStory.asset.alt = alt;
+                    loadAdditionalTab();
+                }
+            })
         };
         loadAndOpenNewTab(textEntryUrl, containerHeight, function() {
             $("div.new-entry input#title").val(newStory.title);
@@ -1049,11 +1067,14 @@ function loadTextTab(mediaType) {
                     newStory.asset.id = data.id;
                     newStory.asset.uniqueId = data.unique_id;
                     var putImageUrl = django_js_utils.urls.resolve("asset-sources", {pk: newStory.asset.id});
-                    uploadImage(fileInput, putImageUrl, newStory.asset.uniqueId, function (data) {
+                    uploadFile(fileInput, putImageUrl, newStory.asset.uniqueId, function (data) {
                         if (data !== undefined) {
-                            // uploaded image
+                            // uploaded a new asset
                             newStory.asset.url = data["url"];
-                            $("div.new-entry img.entry-image").attr("src", newStory.asset.url).show();
+                            var assetUrl = django_js_utils.urls.resolve("asset-view", {pk: newStory.asset.id});
+                            $.get(assetUrl, function(data) {
+                                $("div.new-entry div.asset").html(data);
+                            });
                         }
                         finishUploading()
                     });
@@ -1066,9 +1087,85 @@ function loadTextTab(mediaType) {
 }
 
 /**
+ * Loads the tab for additional entry information.
+ */
+function loadAdditionalTab() {
+    var additonalTabUrl = django_js_utils.urls.resolve("new-story-additional");
+    loadAndOpenNewTab(additonalTabUrl, containerHeight, function() {
+        $("div.new-entry span#next-additional").click(function() {
+            var name = $("div.new-entry input#name").val();
+            var email = $("div.new-entry input#email").val();
+            var dateFrom = $("div.new-entry input#datefrom").val();
+            var dateTo = $("div.new-entry input#dateto").val();
+            if (name === "") {
+                alertBox(gettext("Sie müssen einen Namen angeben."));
+                return;
+            }
+            if (email === "") {
+                alertBox(gettext("Sie müssen eine E-Mail-Adresse angeben."));
+                return;
+            }
+            if (dateFrom === "") {
+                alertBox(gettext("Sie müssen ein Datum eingeben."));
+                return;
+            }
+            if (new Date().parseDate(dateFrom) === null) {
+                alertBox(gettext("Sie müssen das Datum im korrekten Format (TT.MM.JJJJ) eingeben."));
+                return;
+            }
+            newStory.author = name;
+            newStory.authorEmail = email;
+            newStory.dateStart = new Date().parseDate(dateFrom);
+            newStory.dateFinish = new Date().parseDate(dateTo);
+            loadPreviewTab(function() {
+                $("div.new-entry img#load-more-entry").hide();
+                var entryUrl = django_js_utils.urls.resolve("entry-view", {pk: newStory.id});
+                $.get(entryUrl, function(data) {
+                    $("div.new-entry div.entry").html(data);
+                });
+            });
+            return false;
+        })
+    });
+}
+
+/**
+ * Loads the preview tab and calls a callback.
+ * @param callback
+ */
+function loadPreviewTab(callback) {
+    var previewEntryTab = django_js_utils.urls.resolve("new-story-preview");
+    loadAndOpenNewTab(previewEntryTab, containerHeight, function() {
+        updateWholeStory(callback);
+    });
+}
+
+/**
+ * Updates the whole story and asset and calls a callback.
+ * @param callback
+ */
+function updateWholeStory(callback) {
+    var updateStoryUrl = django_js_utils.urls.resolve("get-story", {pk: newStory.id});
+    var updateAssetUrl = django_js_utils.urls.resolve("get-asset", {pk: newStory.asset.id});
+    ajaxRequestWithCSRF(updateAssetUrl, "PUT", {
+        "unique_id": newStory.asset.uniqueId,
+        "alt": newStory.asset.alt
+    });
+    ajaxRequestWithCSRF(updateStoryUrl, "PUT", {
+        "unique_id": newStory.uniqueId,
+        "title": newStory.title,
+        "text": newStory.text,
+        "abstract": "temporary",
+        "author": 1,
+        "time_start": new Date().toFormattedString(newStory.dateStart),
+        "time_end": new Date().toFormattedString(newStory.dateFinish)
+    }, callback)
+}
+
+/**
  * Uploads an image and calls a callback
  */
-function uploadImage(fileInput, url, uniqueId, callback) {
+function uploadFile(fileInput, url, uniqueId, callback) {
     var formData = new FormData();
     var file = fileInput.files[0];
     if (!file) {
@@ -1076,9 +1173,20 @@ function uploadImage(fileInput, url, uniqueId, callback) {
     }
     formData.append("file", file);
     formData.append("unique_id", uniqueId);
+    var progressBar = $("span#progress");
     ajaxRequestWithCSRF(url, "POST", formData, callback, {
         contentType: false,
-        processData: false
+        processData: false,
+        xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function (event) {
+                if (event.lengthComputable) {
+                    var percentage = Math.round(event.loaded / event.total * 100);
+                    progressBar.text(percentage);
+                }
+            }, false);
+            return xhr;
+        }
     });
 }
 
@@ -1133,22 +1241,36 @@ $(function() {
             var newEntryFormURL;
             var openFooterHeight;
             var onFinish;
-            newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
-            openFooterHeight = footerHeight * 2;
             newEntryMode = true;
-            onFinish = function(mediaType) {
+            var loadMediaTitleTab = function(mediaType) {
                 return function() {
                     loadTitleTab(mediaType);
                 }
             }(mediaType);
+            if (channel === "mobile") {
+                newEntryFormURL = django_js_utils.urls.resolve("new-story-intro");
+                onFinish = function() {
+                    $("div.new-entry span#next-intro").click(function(event) {
+                        var titleTabUrl = django_js_utils.urls.resolve("new-story-location");
+                        loadAndOpenNewTab(titleTabUrl, footerHeight * 1.75, loadMediaTitleTab);
+                        event.stopPropagation();
+                        return false;
+                    });
+                };
+                openFooterHeight = containerHeight * 0.75;
+            } else {
+                newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
+                onFinish = loadMediaTitleTab;
+                openFooterHeight = footerHeight * 2;
+            }
             openArticleBox(openFooterHeight);
+            $("section#article-section div.close").show();
+            $("section#article-section div.close img").click(closeBoxes);
             $.get(newEntryFormURL, function (data) {
                 userLocation.currentInfobox = "dummy";
                 var listEntry = $("<li>");
                 listEntry.html(data);
                 entryList.html(listEntry);
-                $("section#article-section div.close").show();
-                $("section#article-section div.close img").click(closeBoxes);
                 jQueryEntryList.unslider();
                 if (onFinish !== undefined) {
                     onFinish();

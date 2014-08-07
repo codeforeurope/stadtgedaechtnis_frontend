@@ -34,5 +34,12 @@ urlpatterns = patterns(
    url(r'^forms/video/$', NewStoryMediaFormView.as_view(
            form_class=NewStoryVideoForm), name="new-story-vid"),
    url(r'^forms/text/$', TemplateView.as_view(
-       template_name='stadtgedaechtnis/new_entry_story.html'), name="new-story-txt")
+       template_name="stadtgedaechtnis/new_entry_story.html"), name="new-story-txt"),
+   url(r'^asset/(?P<pk>\d+)/$', AssetView.as_view(), name="asset-view"),
+   url(r'^forms/intro/$', TemplateView.as_view(
+       template_name='stadtgedaechtnis/new_entry_intro.html'), name="new-story-intro"),
+   url(r'^forms/additional/$', TemplateView.as_view(
+       template_name='stadtgedaechtnis/new_entry_additional.html'), name='new-story-additional'),
+   url(r'^forms/preview/$', TemplateView.as_view(
+       template_name='stadtgedaechtnis/new_entry_preview.html'), name='new-story-preview'),
    )

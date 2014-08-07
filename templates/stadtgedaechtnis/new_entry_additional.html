@@ -1,0 +1,14 @@
+{% load i18n %}
+<div class="new-entry">
+    <h3>{% trans "Einen neuen Beitrag hinzufügen" %}</h3>
+    <p>{% trans "Weitere Informationen zu Ihrem Beitrag" %}</p>
+    <form>
+        <p><label for="name">{% trans "Ihr Name" %}:</label><input type="text" id="name"></p>
+        <p><label for="email">{% trans "Ihre E-Mail-Adresse" %}:</label><input type="email" id="email"></p>
+        <p>{% trans "Zeitraum Ihrer Geschichte:" %}
+        <label for="datefrom">{% trans "Von" %} {% trans "(Format TT.MM.JJJJ)" %}:</label><input type="date" id="datefrom">
+        <label for="dateto">{% trans "Bis" %} {% trans "(Format TT.MM.JJJJ, nicht erforderlich)" %}:</label><input type="date" id="dateto">
+        </p>
+        <p><a href="#"><span class="next hide-text" id="next-additional">{% trans "Weiter" %}</span></a></p>
+    </form>
+</div>

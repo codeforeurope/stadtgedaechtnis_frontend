@@ -1,0 +1,15 @@
+{% if asset.type == "img" %}
+    <img src="{{ asset.sources.first.file.url }}" alt="{{ asset.alt }}">
+{% elif asset.type == "aud" %}
+    <audio controls preload="metadata">
+        {% for source in asset.sources.all %}
+            <source src="{{ source.file.url }}" type="{{ source.get_mime_type }}">
+        {% endfor %}
+    </audio>
+{% elif asset.type == "vid" %}
+    <video controls preload="metadata">
+        {% for source in asset.sources.all %}
+            <source src="{{ source.file.url }}" type="{{ source.get_mime_type }}">
+        {% endfor %}
+    </video>
+{% endif %}

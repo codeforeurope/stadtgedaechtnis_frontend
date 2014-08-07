@@ -64,6 +64,7 @@ div.message {
   z-index: 9999;
   background: white;
   padding: 0 .5rem;
+  opacity: 1;
   border: solid black 2px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.70);
   -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.70);
@@ -357,10 +358,7 @@ section#article-section {
 
     form {
       p {
-        border-color: black;
-        border-radius: 3px;
-        border-style: solid;
-        border-width: 1px;
+        background: url("../img/bg2.jpg") repeat scroll 0 0 transparent;
         margin-top: .75rem;
         padding: 0.25rem;
         float: left;
@@ -474,13 +472,23 @@ div.new-entry {
     text-align: center;
   }
 
-  input[type="text"], textarea {
+  audio, video {
+    width: 100%;
+  }
+
+  input[type="text"], input[type="email"], input[type="date"], textarea {
     width: 100%;
     border-style: none none solid;
     border-width: 0 0 1px;
     border-color: black;
     font-weight: bold;
     background: transparent;
+  }
+
+  input[type="text"].alt {
+    width: 80%;
+    font-size: .8rem;
+    text-align: center;
   }
 
   textarea {

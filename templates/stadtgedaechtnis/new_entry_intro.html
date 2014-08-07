@@ -1,0 +1,18 @@
+{% load i18n %}
+<div class="new-entry">
+    <h3>{% trans "Einen neuen Beitrag hinzufügen" %}</h3>
+    <p>
+        {% trans "Vielen Dank, dass Sie beim mobilen Stadtgedächtnis teilnehmen möchten." %}
+    </p>
+    <p>
+        {% trans 'Nach Tippen auf "Weiter" können Sie durch Tippen einen Ort auswählen, mit dem Sie Ihre persönliche Geschichte verbinden wollen.' %}
+        {% trans "Ist der gewünschte Ort nicht vorhanden, tippen Sie auf das Plus und ziehen den Marker an den gewünschten Ort." %}
+    </p>
+    <p>
+        {% trans "Im Anschluss können Sie Ihre persönliche Geschichte eingeben, weitere Medien hinzufügen und persönliche Daten ergänzen." %}
+    </p>
+    <form>
+        <p>
+        <a href="#"><span class="next hide-text" id="next-intro">{% trans "Weiter" %}</span></a></p>
+    </form>
+</div>
