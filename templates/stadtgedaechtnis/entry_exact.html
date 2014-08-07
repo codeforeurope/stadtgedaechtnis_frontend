@@ -1,0 +1,31 @@
+{% load i18n %}
+<div class="center">
+    <h3>{{ story.title }}</h3>
+</div>
+{% for asset in story.assets.all %}
+    {% if asset.type == "img" %}
+        <img src="{{ asset.sources.first.file.url }}" alt="{{ asset.alt }}">
+        <p class="image-description">{{ asset.alt|safe }}</p>
+    {% endif %}
+{% endfor %}
+<p class="date">{{ story.time_start }}{% if story.time_end %}&nbsp;{% trans "bis" %}&nbsp;{{ story.time_end }}{% endif %}</p>
+{% if story.text %}
+{{ story.text|safe }}
+{% endif %}
+{% for media_object in story.get_additional_media %}
+	{% if media_object.type == "aud" %}
+		<audio controls preload="metadata">
+		{% for source in media_object.sources.all %}
+			<source src="{{ source.file.url }}" type="{{ source.get_mime_type }}">
+		{% endfor %}
+		</audio>
+	{% elif media_object.type == "vid" %}
+		<video controls preload="metadata">
+		{% for source in media_object.sources.all %}
+			<source src="{{ source.file.url }}" type="{{ source.get_mime_type }}">
+		{% endfor %}
+		</video>
+	{% endif %}
+{% endfor %}
+<p class="sources">{% trans "Quellen" %}:&nbsp;{{ story.sources }}</p>
+<p class="author">{% trans "Autor_in" %}:&nbsp;{{ story.author.first_name }} {{ story.author.last_name }}</p>

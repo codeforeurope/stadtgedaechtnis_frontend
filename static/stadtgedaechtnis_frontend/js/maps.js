@@ -1050,7 +1050,7 @@ function loadTextTab(mediaType) {
                     alertBox(gettext("Sie müssen einen Text für Ihre persönliche Geschichte eingeben."));
                 } else {
                     newStory.text = text;
-                    newStory.asset.alt = alt;
+                    newStory.asset.alt = alt === "" ? "temporary" : alt;
                     loadAdditionalTab();
                 }
             })
@@ -1119,9 +1119,9 @@ function loadAdditionalTab() {
             newStory.dateFinish = new Date().parseDate(dateTo);
             loadPreviewTab(function() {
                 $("div.new-entry img#load-more-entry").hide();
-                var entryUrl = django_js_utils.urls.resolve("entry-view", {pk: newStory.id});
+                var entryUrl = django_js_utils.urls.resolve("entry-view-exact", {pk: newStory.id});
                 $.get(entryUrl, function(data) {
-                    $("div.new-entry div.entry").html(data);
+                    $("div.new-entry article.entry-more").html(data);
                 });
             });
             return false;
@@ -1147,19 +1147,54 @@ function loadPreviewTab(callback) {
 function updateWholeStory(callback) {
     var updateStoryUrl = django_js_utils.urls.resolve("get-story", {pk: newStory.id});
     var updateAssetUrl = django_js_utils.urls.resolve("get-asset", {pk: newStory.asset.id});
-    ajaxRequestWithCSRF(updateAssetUrl, "PUT", {
-        "unique_id": newStory.asset.uniqueId,
-        "alt": newStory.asset.alt
+    var findUserUrl = django_js_utils.urls.resolve("search-user", {query: newStory.author});
+    var createUserUrl = django_js_utils.urls.resolve("create-new-user");
+    var onDone = function() {
+        ajaxRequestWithCSRF(updateAssetUrl, "PUT", {
+            "unique_id": newStory.asset.uniqueId,
+            "alt": newStory.asset.alt
+        }, function(data) {
+            newStory.asset.uniqueId = data.unique_id;
+        });
+        ajaxRequestWithCSRF(updateStoryUrl, "PUT", {
+            "unique_id": newStory.uniqueId,
+            "title": newStory.title,
+            "text": newStory.text,
+            "abstract": "temporary",
+            "author": newStory.author,
+            "time_start": newStory.dateStart.toFormattedString(),
+            "time_end": newStory.dateFinish !== null ? newStory.dateFinish.toFormattedString() : null,
+            "assets": newStory.asset.id
+        }, function(data) {
+            newStory.uniqueId = data.unique_id;
+            callback(data);
+        });
+    };
+    $.ajax(findUserUrl).done(function(data) {
+        if (data.length === 0) {
+            // no user found
+            var firstName = newStory.author.split(" ")[0];
+            var lastName = newStory.author.split(" ")[1];
+            var userName = newStory.author.split(" ").join("");
+            $.ajax(createUserUrl, {
+                data: {
+                    "first_name": firstName,
+                    "last_name": lastName,
+                    "username": userName,
+                    "password": "temporary",
+                    "email": newStory.authorEmail
+                },
+                type: "POST"
+            }).done(function(data) {
+                newStory.author = data.id;
+                onDone();
+            });
+        } else {
+            // use first found user as author
+            newStory.author = data[0].id;
+            onDone();
+        }
     });
-    ajaxRequestWithCSRF(updateStoryUrl, "PUT", {
-        "unique_id": newStory.uniqueId,
-        "title": newStory.title,
-        "text": newStory.text,
-        "abstract": "temporary",
-        "author": 1,
-        "time_start": new Date().toFormattedString(newStory.dateStart),
-        "time_end": new Date().toFormattedString(newStory.dateFinish)
-    }, callback)
 }
 
 /**

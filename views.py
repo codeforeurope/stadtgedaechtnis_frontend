@@ -13,6 +13,12 @@ class EntryView(DetailView):
     model = Story
 
 
+class ExactEntryView(DetailView):
+
+    template_name = "stadtgedaechtnis/entry_exact.html"
+    model = Story
+
+
 class AssetView(DetailView):
     template_name = "stadtgedaechtnis/asset.html"
     model = Asset
