@@ -10,6 +10,7 @@
 	<div class="asset">
 	</div>
     <form>
+		{% csrf_token %}
         <p class="center" id="alt_input"><input type="text" id="alt" placeholder="{% trans 'Unterschrift' %}" class="alt"></p>
         <p><input type="text" id="title" readonly="readonly"></p>
         <p><label for="text">{% trans "Ihre persönliche Geschichte:" %}</label><textarea id="text"></textarea></p>

@@ -13,6 +13,7 @@
         </p>
     </div>
     <form>
+		{% csrf_token %}
 		<p><label>{% trans "Ausgewählter Ort" %}:</label><span id="selected-location"></span>&nbsp;<a href="#"><span class="new hide-text">{% trans "Neuer Ort" %}</span></a></p>
     	<p><span id="no-location"><a href="#">{% trans "Ohne Ort fortfahren" %}</a></span>
 		<a href="#"><span class="next hide-text" id="next-location">{% trans "Weiter" %}</span></a></p>
