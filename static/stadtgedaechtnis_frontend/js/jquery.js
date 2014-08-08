@@ -178,13 +178,20 @@ Date.prototype.toFormattedString = function () {
 
 Date.prototype.parseDate = function(input) {
     var parts = input.split('.');
-    if (parts.length === 3 && isNumber(parts[0]) && isNumber(parts[1]) && isNumber(parts[2])) {
-        return new Date(parts[2], parts[1] - 1, parts[0]);
+    if (parts.length === 1) {
+        parts = input.split('-');
+        if (parts.length === 3 && isNumber(parts[0]) && isNumber(parts[1]) && isNumber(parts[2])) {
+            return new Date(parts[0], parts[1] - 1, parts[2]);
+        }
+    } else {
+        if (parts.length === 3 && isNumber(parts[0]) && isNumber(parts[1]) && isNumber(parts[2])) {
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
     }
     return null;
 };
 
-function isNumber(obj) { return !isNaN(parseFloat(obj)) };
+function isNumber(obj) { return !isNaN(parseFloat(obj)) }
 
 /**
  * $(document).ready
