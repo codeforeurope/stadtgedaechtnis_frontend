@@ -1044,6 +1044,10 @@ function loadTextTab(mediaType) {
         var textEntryUrl = django_js_utils.urls.resolve("new-story-txt");
         var finishUploading = function() {
             $("div.new-entry div.upload-advice").hide();
+            if (newStory.asset.id === null) {
+                // no picture uploaded
+                $("div.new-entry p#alt_input").hide(); // hide first paragraph (with alt input)
+            }
             $("div.new-entry span#next-story").click(function() {
                 var text = $("div.new-entry textarea#text").val();
                 var alt = $("div.new-entry input#alt").val();
