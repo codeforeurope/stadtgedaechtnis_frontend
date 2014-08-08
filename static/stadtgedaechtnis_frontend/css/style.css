@@ -635,6 +635,10 @@ section#list-section ul li:nth-child(odd) {
   background: #e5e5e5;
 }
 
+span.required {
+  color: red;
+}
+
 span.hide-text {
   display: block;
   text-indent: -999px;

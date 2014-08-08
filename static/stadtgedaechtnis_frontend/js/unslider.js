@@ -26,7 +26,7 @@
 			speed: 500,
 			delay: f, // f for no autoplay
 			complete: f, // when a slide's finished
-			keys: !f, // keyboard shortcuts - disable if it breaks things
+			keys: f, // keyboard shortcuts - disable if it breaks things
 			dots: f, // display ••••o• pagination
 			fluid: f // is it a percentage width?,
 		};

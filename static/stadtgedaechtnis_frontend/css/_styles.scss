@@ -285,6 +285,10 @@ section#list-section {
 
 }
 
+span.required {
+  color: red;
+}
+
 span.hide-text {
   display: block;
   text-indent: -999px;

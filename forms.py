@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Jan'
-
+from django.utils.safestring import mark_safe
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -60,7 +60,7 @@ class NewStoryTitleForm(forms.Form):
     """
     title = forms.CharField(
         widget=PlaceHolderInput(placeholder=_("z.Bsp. Sambafest in Coburg")),
-        label=_("Titel"))
+        label=mark_safe(_("Titel<span class='required'>*</span>")))
 
     def get_media_type(self):
         return ""
