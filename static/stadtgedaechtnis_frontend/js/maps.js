@@ -557,10 +557,6 @@ function closeArticleBox(both) {
     if (newEntryMode) {
         newEntryMode = false;
 
-        if (resetOldMarker !== undefined) {
-            resetOldMarker();
-        }
-
         var deleteNewAsset = function() {
             var deleteNewAssetUrl = django_js_utils.urls.resolve("get-asset", {pk: newStory.asset.id});
             ajaxRequestWithCSRF(deleteNewAssetUrl, "DELETE", {
@@ -583,8 +579,10 @@ function closeArticleBox(both) {
                     unique_id: newStory.location.unique_id
                 }, function () {
                     newStory = null;
-                    userLocation.newLocationMarker.setMap(null);
-                    userLocation.newLocationMarker = undefined;
+
+                    if (resetOldMarker !== undefined) {
+                        resetOldMarker();
+                    }
                 });
             }
         };
