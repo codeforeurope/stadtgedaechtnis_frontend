@@ -889,6 +889,7 @@ function Story() {
     this.dateStart = null;
     this.dateFinish = null;
     this.uniqueId = null;
+    this.sources = null;
     this.id = null;
     this.asset = new Asset();
     this.media = [];
@@ -1097,6 +1098,7 @@ function loadAdditionalTab() {
             var email = $("div.new-entry input#email").val();
             var dateFrom = $("div.new-entry input#datefrom").val();
             var dateTo = $("div.new-entry input#dateto").val();
+            var sources = $("div.new-entry input#sources").val();
             if (name === "") {
                 alertBox(gettext("Sie müssen einen Namen angeben."));
                 return;
@@ -1117,6 +1119,7 @@ function loadAdditionalTab() {
             newStory.authorEmail = email;
             newStory.dateStart = new Date().parseDate(dateFrom);
             newStory.dateFinish = new Date().parseDate(dateTo);
+            newStory.sources = sources;
             loadPreviewTab(function() {
                 $("div.new-entry img#load-more-entry").hide();
                 var entryUrl = django_js_utils.urls.resolve("entry-view-exact", {pk: newStory.id});
@@ -1164,6 +1167,7 @@ function updateWholeStory(callback) {
             "author": newStory.author,
             "time_start": newStory.dateStart.toFormattedString(),
             "time_end": newStory.dateFinish !== null ? newStory.dateFinish.toFormattedString() : null,
+            "sources": newStory.sources,
             "assets": newStory.asset.id
         }, function(data) {
             newStory.uniqueId = data.unique_id;
