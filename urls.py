@@ -7,7 +7,7 @@ Created on 26.02.2014
 from django.conf.urls import patterns, url, include
 from django.conf import settings
 from stadtgedaechtnis_frontend.views import *
-from stadtgedaechtnis_frontend.forms import NewStoryAudioForm, NewStoryImageForm, NewStoryVideoForm
+from stadtgedaechtnis_frontend.forms import NewStoryAudioForm, NewStoryImageForm, NewStoryVideoForm, NewStoryTitleForm
 
 js_info_dict = {
     'packages': ('stadtgedaechtnis_frontend',),
@@ -34,8 +34,10 @@ urlpatterns = patterns(
            form_class=NewStoryAudioForm), name="new-story-aud"),
    url(r'^forms/video/$', NewStoryMediaFormView.as_view(
            form_class=NewStoryVideoForm), name="new-story-vid"),
-   url(r'^forms/text/$', TemplateView.as_view(
-       template_name="stadtgedaechtnis/new_entry_story.html"), name="new-story-txt"),
+   url(r'^forms/text/$', NewStoryMediaFormView.as_view(
+           form_class=NewStoryTitleForm), name="new-story-txt"),
+   url(r'^forms/entry/$', TemplateView.as_view(
+       template_name="stadtgedaechtnis/new_entry_story.html"), name="new-story-text"),
    url(r'^asset/(?P<pk>\d+)/$', AssetView.as_view(), name="asset-view"),
    url(r'^forms/intro/$', TemplateView.as_view(
        template_name='stadtgedaechtnis/new_entry_intro.html'), name="new-story-intro"),

@@ -1,9 +1,13 @@
 {% load i18n %}
 <div class="new-entry">
     <h3>{% trans "Einen neuen Beitrag hinzufügen" %}</h3>
-    <p>{% trans "Bitte geben Sie einen Titel für Ihren neuen Beitrag ein, wählen " %}{{ media_type }}{% trans ' aus und klicken Sie auf "Weiter".' %}</p>
+    <p>{% trans "Bitte geben Sie einen Titel für Ihren neuen Beitrag ein" %}
+		{% if media_type != "" %}
+		{% trans ", wählen " %}{{ media_type }}{% trans ' aus ' %}
+		{% endif %}
+		{% trans 'und klicken Sie auf "Weiter".' %}</p>
     <form>{% csrf_token %}
         {{ form.as_p }}
-        <a href="#"><span class="next hide-text" id="next-text">{% trans "Weiter" %}</span></a>
+        <p><a href="#"><span class="next hide-text" id="next-text">{% trans "Weiter" %}</span></a></p>
     </form>
 </div>

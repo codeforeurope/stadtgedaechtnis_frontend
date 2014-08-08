@@ -1039,7 +1039,7 @@ function loadTextTab(mediaType) {
     }, function(data) {
         newStory.id = data.id;
         newStory.uniqueId = data.unique_id;
-        var textEntryUrl = django_js_utils.urls.resolve("new-story-txt");
+        var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
         var finishUploading = function() {
             $("div.new-entry div.upload-advice").hide();
             if (newStory.asset.id === null) {
@@ -1062,7 +1062,7 @@ function loadTextTab(mediaType) {
             $("div.new-entry input#title").val(newStory.title);
             var fileInput = $("div.new-entry input#id_file")[0];
             var newAssetUrl = django_js_utils.urls.resolve("get-story-with-asset", {pk: newStory.id});
-            if (fileInput.files.length > 0) {
+            if (fileInput && fileInput.files.length > 0) {
                 ajaxRequestWithCSRF(newAssetUrl, "POST", {
                     type: mediaType,
                     alt: "temporary"

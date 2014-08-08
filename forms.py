@@ -54,7 +54,19 @@ class VideoFileInput(MediaFileInput):
     accept_type = "video/*"
 
 
-class NewStoryImageForm(forms.Form):
+class NewStoryTitleForm(forms.Form):
+    """
+    Form with a title to enter
+    """
+    title = forms.CharField(
+        widget=PlaceHolderInput(placeholder=_("z.Bsp. Sambafest in Coburg")),
+        label=_("Titel"))
+
+    def get_media_type(self):
+        return ""
+
+
+class NewStoryImageForm(NewStoryTitleForm):
     """
     Form for initial uploading of media for a new entry.
     """
@@ -64,9 +76,6 @@ class NewStoryImageForm(forms.Form):
     # overwrite this with the correct lazy translation for the input widget
     file_label = _(u"Bild auswählen:")
 
-    title = forms.CharField(
-        widget=PlaceHolderInput(placeholder=_("z.Bsp. Sambafest in Coburg")),
-        label=_("Titel"))
     file = forms.FileField(widget=input_widget, label=file_label)
 
     def get_media_type(self):

@@ -364,6 +364,19 @@ section#article-section {
         float: left;
         width: 100%;
       }
+
+      p.form {
+        width: 45%;
+      }
+
+      p.form-right {
+        float: right;
+      }
+
+      p.form-left {
+        float: left;
+        min-height: 36px;
+      }
     }
 
     label {
