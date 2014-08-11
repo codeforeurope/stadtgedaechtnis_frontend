@@ -26,6 +26,9 @@ urlpatterns = patterns(
    url(r'^imprint.html$', TemplateView.as_view(
        template_name='stadtgedaechtnis/imprint.html'
    ), name="imprint"),
+   url(r'^privacy.html$', TemplateView.as_view(
+       template_name='stadtgedaechtnis/privacy.html'
+   ), name="privacy"),
    url(r'^jsurls.js$', 'django_js_utils.views.jsurls', {}, 'jsurls'),
    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
    url(r'^forms/location/$', TemplateView.as_view(

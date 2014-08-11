@@ -217,10 +217,6 @@ header[role="banner"] {
 
 }
 
-section.imprint {
-  width: 50%;
-}
-
 section.imprint-german {
   float: left;
 }
@@ -686,6 +682,10 @@ div.new-entry {
   // Desktop styles from here on
   .mobile {
     display: none;
+  }
+
+  section.imprint {
+    width: 50%;
   }
 
   div.overlay {
