@@ -33,10 +33,13 @@ div.overlay {
   background-color: rgba(0, 0, 0, 0);
   z-index: 1;
   color: white;
+  height: 100%;
+  width: 100%;
 
   div.greeting {
-    margin: 30% 10% 0% 10%;
     opacity: 0;
+    max-height: 60%;
+    overflow: auto;
 
     a {
       padding: .3rem;
@@ -47,6 +50,37 @@ div.overlay {
       border-style: solid;
       color: black;
       font-size: 1.7rem;
+    }
+  }
+
+  div.imprint {
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    bottom: 0;
+    padding: .25rem;
+    text-align: right;
+    color: black;
+    opacity: 0;
+
+    ul {
+      float: left;
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+
+      li {
+        float: left;
+
+        a {
+          text-decoration: none;
+          text-transform: uppercase;
+        }
+
+        a.current {
+          text-decoration: underline;
+        }
+      }
     }
   }
 
@@ -158,23 +192,12 @@ header[role="banner"] {
   }
 
   nav {
-    ul {
+    img.show-overlay {
       float: left;
-      padding: 0;
-      list-style-type: none;
+    }
 
-      li {
-        float: left;
-
-        a {
-          text-decoration: none;
-          text-transform: uppercase;
-        }
-
-        a.current {
-          text-decoration: underline;
-        }
-      }
+    img.list-articles {
+      margin-right: 1rem;
     }
   }
 
@@ -463,7 +486,7 @@ main, .max_map {
   float: left;
 }
 
-img.list-articles, img.add-articles {
+img.list-articles, img.add-articles, img.show-overlay {
   z-index: 2;
   cursor: pointer;
 }
@@ -528,6 +551,10 @@ div.new-entry {
     div.list-advice {
       left: 3.5rem;
       top: 3.1rem;
+    }
+
+    div.greeting {
+      margin: 30% 10% 0% 10%;
     }
 
     span.genericon-list-entries:before {
@@ -635,6 +662,10 @@ div.new-entry {
     div.list-advice {
       left: 0.8rem;
       top: 2.2rem;
+    }
+
+    div.greeting {
+      margin: 10% 40%;
     }
 
     span.genericon-list-entries, span.genericon-new-entry {

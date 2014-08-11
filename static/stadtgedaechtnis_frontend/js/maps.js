@@ -741,7 +741,7 @@ function loadAndOpenNewTab(url, resizeContainerHeight, callback) {
  */
 function showOverlay() {
     var overlay = $("div.overlay");
-    var greeting = $("div.greeting, div.advice");
+    var greeting = $("div.greeting, div.advice, div.imprint");
     var link = $("div.greeting a");
     overlay.show();
     link.click(function(event) {
@@ -751,6 +751,7 @@ function showOverlay() {
     });
     overlay.transition({backgroundColor: "rgba(0, 0, 0, 0.7)"}, 2000, "cubic-bezier(.37,.96,.61,.95)");
     greeting.transition({opacity: "1"}, 2000, "cubic-bezier(.85,.07,.51,.93)");
+    return false;
 }
 
 var OVERLAY_COOKIE = "overlay";
@@ -761,7 +762,7 @@ var OVERLAY_COOKIE_HIDDEN = "hidden";
  */
 function closeOverlay() {
     var overlay = $("div.overlay");
-    var greeting = $("div.greeting, div.advice");
+    var greeting = $("div.greeting, div.advice, div.imprint");
     greeting.transition({opacity: "0"}, 1000, "cubic-bezier(.02,.53,.28,.96)");
     overlay.transition({backgroundColor: "rgba(0, 0, 0, 0)"}, 1500, "cubic-bezier(.37,.96,.61,.95)", function() {
         overlay.hide();
@@ -1328,4 +1329,5 @@ $(function() {
         showOverlay();
     }
     $("div.message div.close").click(closeAlertBox);
+    $("nav[role='navigation'] img.show-overlay").click(showOverlay);
 });
