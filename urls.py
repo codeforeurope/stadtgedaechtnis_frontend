@@ -19,10 +19,13 @@ urlpatterns = patterns(
        template_name='stadtgedaechtnis/index.html',
        extra_context={
            "GOOGLE_API_KEY": settings.GOOGLE_API_KEY
-       })),
+       }), name="home"),
    url(r'^i18n/', include('django.conf.urls.i18n')),
    url(r'^entry/(?P<pk>\d+)/$', EntryView.as_view(), name="entry-view"),
    url(r'^entry-exact/(?P<pk>\d+)/$', ExactEntryView.as_view(), name="entry-view-exact"),
+   url(r'^imprint.html$', TemplateView.as_view(
+       template_name='stadtgedaechtnis/imprint.html'
+   ), name="imprint"),
    url(r'^jsurls.js$', 'django_js_utils.views.jsurls', {}, 'jsurls'),
    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
    url(r'^forms/location/$', TemplateView.as_view(

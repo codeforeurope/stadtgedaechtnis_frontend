@@ -1,0 +1,138 @@
+{% load i18n %}
+{% load static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" class="imprint">
+<head>
+    <meta charset="utf-8">
+    <title>{% trans "Mobiles Stadtged&auml;chtnis" %}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link href="{%static "stadtgedaechtnis_frontend/css/style.css" %}" rel="stylesheet" media="all">
+    <!--[if lt IE 9]><script src="{%static "stadtgedaechtnis_frontend/js/html5shiv-printshiv.js" %}" media="all"></script><![endif]-->
+</head>
+<body>
+<div id="wrapper">
+    <header role="banner">
+        <div class="search-box"></div>
+        <div class="nav-box">
+            <nav role="navigation">
+                <a href="{% url 'stadtgedaechtnis_frontend:home' %}">
+                    <img class="home" src="{% static 'stadtgedaechtnis_frontend/img/home.png' %}">
+                </a>
+            </nav>
+            <h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
+        </div>
+        <div class="clear"></div>
+    </header>
+    <main role="main">
+        <section class="imprint imprint-german">
+            <article class="imprint">
+                <h2>Impressum</h2>
+                <p>Das Fraunhofer-Institut für Offene Kommunikationssysteme<br>
+                    Kaiserin-Augusta-Allee 31<br>
+                    10589 Berlin</p>
+                <p>ist eine rechtlich nicht selbstständige Einrichtung der</p>
+                <p>Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.<br>
+                    Hansastraße 27 c<br>
+                    80686 München<br>
+                    Telefon: +49 89 1205 - 0<br>
+                    Telefax: +49 89 1205 - 7531<br>
+                    <a href="http://www.fraunhofer.de">www.fraunhofer.de</a></p>
+                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: DE 129515865</p>
+                <p>Registergericht<br>
+                    Amtsgericht München<br>
+                    Eingetragener Verein<br>
+                    Register-Nr. VR 4461
+                </p>
+                <p>Verantwortlicher Redakteur:<br>
+                    Jan-Christopher Pien<br>
+                    <a href="mailto:jan-christopher.pien@fokus.fraunhofer.de">jan-christopher.pien@fokus.fraunhofer.de</a>
+                </p>
+                <p>Vorstand:</p>
+                <p>
+                    Prof. Dr.-Ing. Reimund Neugebauer, Präsident, Unternehmenspolitik<br>
+                    Prof. Dr.-Ing. Alexander Verl, Technologiemarketing und Geschäftsmodelle<br>
+                    Prof. Dr. Alexander Kurz, Personal, Recht und Verwertung<br>
+                    Prof. (Univ. Stellenbosch) Dr. Alfred Gossner, Finanzen, Controlling (inkl. Betriebswirtschaft, Einkauf, Liegenschaften) und IT<br>
+                </p>
+                <p>Nutzungsrechte:</p>
+                <p>Copyright by Fraunhofer-Gesellschaft</p>
+                <p>Alle Rechte vorbehalten.<br>Die Urheberrechte dieser Webseite liegen vollständig bei der Fraunhofer-Gesellschaft.</p>
+                <p>Ein Download oder Ausdruck dieser Veröffentlichungen ist ausschließlich für den persönlichen Gebrauch gestattet. Alle darüber hinaus gehenden Verwendungen, insbesondere die kommerzielle Nutzung und Verbreitung, sind grundsätzlich nicht gestattet und bedürfen der schriftlichen Genehmigung. Anfragen richten Sie bitte an folgende Adresse:</p>
+                <p>Fraunhofer-Institut für Offene Kommunikationssysteme<br>
+                    Kaiserin-Augusta-Allee 31<br>
+                    10589 Berlin</p>
+                <p>
+                    Ein Download oder Ausdruck ist darüber hinaus lediglich zum Zweck der Berichterstattung über die Fraunhofer-Gesellschaft und ihrer Institute nach Maßgabe untenstehender Nutzungsbedingungen gestattet:<br>
+                    Grafische Veränderungen an Bildmotiven - außer zum Freistellen des Hauptmotivs - sind nicht gestattet. Es ist stets die Quellenangabe und Übersendung von zwei kostenlosen Belegexemplaren an die oben genannte Adresse erforderlich. Die Verwendung ist honorarfrei.
+                </p>
+                <p>
+                    Haftungshinweis:
+                </p>
+                <p>
+                    Wir übernehmen keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.<br>
+                    Wir sind bemüht, das Webangebot stets aktuell und inhaltlich richtig sowie vollständig anzubieten. Dennoch ist das Auftreten von Fehlern nicht völlig auszuschließen. Das Fraunhofer-Institut bzw. die Fraunhofer-Gesellschaft übernimmt keine Haftung für die Aktualität, die inhaltliche Richtigkeit sowie für die Vollständigkeit der in ihrem Webangebot eingestellten Informationen. Dies bezieht sich auf eventuelle Schäden
+                    materieller oder ideeller Art Dritter, die durch die Nutzung dieses Webangebotes verursacht wurden.<br>
+                    Geschützte Marken und Namen, Bilder und Texte werden auf unseren Seiten in der Regel nicht als solche kenntlich gemacht. Das Fehlen einer solchen Kennzeichnung bedeutet jedoch nicht, dass es sich um einen freien Namen, ein freies Bild oder einen freien Text im Sinne des Markenzeichenrechts handelt.
+                </p>
+            </article>
+        </section>
+        <section class="imprint imprint-english">
+            <article class="imprint">
+                <h2>Imprint</h2>
+                <p>The Fraunhofer Institute for Open Communication Systems<br>
+                    Kaiserin-Augusta-Allee 31<br>
+                    10589 Berlin</p>
+                <p>is a constituent entity of the Fraunhofer-Gesellschaft, and as such has no separate legal status.</p>
+                <p>Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.<br>
+                    Hansastraße 27 c<br>
+                    80686 München<br>
+                    Telefon: +49 89 1205 - 0<br>
+                    Telefax: +49 89 1205 - 7531<br>
+                    <a href="http://www.fraunhofer.de">www.fraunhofer.de</a></p>
+                <p>VAT Identification Number in accordance with §27a VAT Tax Act: DE 129515865</p>
+                <p>Court of jurisdiction<br>
+                    Amtsgericht München (district court)<br>
+                    Registered nonprofit association <br>
+                    Registration no. VR 4461
+                </p>
+                <p>Responsible editor:<br>
+                    Jan-Christopher Pien<br>
+                    <a href="mailto:jan-christopher.pien@fokus.fraunhofer.de">jan-christopher.pien@fokus.fraunhofer.de</a>
+                </p>
+                <p>Executive Board:</p>
+                <p>
+                    Prof. Dr.-Ing. Reimund Neugebauer, President, Corporate Policy and Research Management<br>
+                    Prof. Dr.-Ing. Alexander Verl, Technology Marketing and Business Models<br>
+                    Prof. Dr. Alexander Kurz, Human Resources, Legal Affairs and IP Management<br>
+                    Prof. (Univ. Stellenbosch) Dr. Alfred Gossner, Finance, Controlling (incl. Business Administration, Purchasing and Real Estate) and Information Systems
+                    <br>
+                </p>
+                <p>Usage rights:</p>
+                <p>Copyright by Fraunhofer-Gesellschaft</p>
+                <p>All rights reserved.<br>All copyright for this Web site are owned in full by the Fraunhofer-Gesellschaft.</p>
+                <p>Permission is granted to download or print material published on this site for personal use only. Its use for any other purpose, and in particular its commercial use or distribution, are strictly forbidden in the absence of prior written approval. Please address your requests for approval to:</p>
+                <p>Fraunhofer-Institut for Open Communication Systems<br>
+                    Kaiserin-Augusta-Allee 31<br>
+                    10589 Berlin</p>
+                <p>
+                    Notwithstanding this requirement, material may be downloaded or printed for use in connection with press reports on the activities of the Fraunhofer-Gesellschaft and its constituent institutes, on condition that the following terms are complied with:<br>
+                    No alterations may be made to pictorial content, with the exception of framing modifications to emphasize the central motif. The source must be quoted and two free reference copies must be sent to the above-mentioned address. Such usage is free of charge.
+                </p>
+                <p>
+                    Disclaimer:
+                </p>
+                <p>
+                    We cannot assume any liability for the content of external pages. Solely the operators of those linked pages are responsible for their content. <br>
+                    We make every reasonable effort to ensure that the content of this Web site is kept up to date, and that it is accurate and complete. Nevertheless, the possibility of errors cannot be entirely ruled out. We do not give any warranty in respect of the timeliness, accuracy or completeness of material published on this Web site, and disclaim all liability for (material or non-material) loss or damage incurred by third parties arising from the use of content obtained from the Web site.<br>
+                    Registered trademarks and proprietary names, and copyrighted text and images, are not generally indicated as such on our Web pages. But the absence of such indications in no way implies that these names, images or text belong to the public domain in the context of trademark or copyright law.
+                </p>
+            </article>
+        </section>
+    </main>
+</div>
+</body>
+</html>

@@ -3,6 +3,16 @@ html {
   overflow: hidden;
 }
 
+html.imprint {
+  height: auto;
+  overflow: auto;
+
+  body {
+    height: auto;
+    overflow: auto;
+  }
+}
+
 body {
   font-family: Trebuchet MS, Arial, sans-serif;
   height: 100%;
@@ -196,11 +206,27 @@ header[role="banner"] {
       float: left;
     }
 
+    img.home {
+      float: left;
+    }
+
     img.list-articles {
       margin-right: 1rem;
     }
   }
 
+}
+
+section.imprint {
+  width: 50%;
+}
+
+section.imprint-german {
+  float: left;
+}
+
+section.imprint-english {
+  float: right;
 }
 
 div.add-articles {
@@ -489,6 +515,10 @@ main, .max_map {
 img.list-articles, img.add-articles, img.show-overlay {
   z-index: 2;
   cursor: pointer;
+}
+
+article.imprint {
+  padding: 1rem;
 }
 
 div.close {
