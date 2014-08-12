@@ -587,17 +587,19 @@ function closeArticleBox(both) {
             }
         };
 
-        if (newStory.asset.id !== null) {
-            deleteNewAsset();
-        }
-        if (newStory.id !== null) {
-            // new story was created, delete this story
-            deleteNewStory(function() {
-                // delete new location afterwards
+        if (newStory !== null) {
+            if (newStory.asset.id !== null) {
+                deleteNewAsset();
+            }
+            if (newStory.id !== null) {
+                // new story was created, delete this story
+                deleteNewStory(function () {
+                    // delete new location afterwards
+                    deleteNewLocation();
+                })
+            } else {
                 deleteNewLocation();
-            })
-        } else {
-            deleteNewLocation();
+            }
         }
     }
 }
@@ -1292,6 +1294,7 @@ $(function() {
             if (channel === "mobile") {
                 newEntryFormURL = django_js_utils.urls.resolve("new-story-intro");
                 onFinish = function() {
+                    $("div.entry-list ul li").css("overflow-y", "auto");
                     $("div.new-entry span#next-intro").click(function(event) {
                         var titleTabUrl = django_js_utils.urls.resolve("new-story-location");
                         loadAndOpenNewTab(titleTabUrl, footerHeight * 1.75, loadMediaTitleTab);
@@ -1299,7 +1302,7 @@ $(function() {
                         return false;
                     });
                 };
-                openFooterHeight = containerHeight * 0.75;
+                openFooterHeight = containerHeight;
             } else {
                 newEntryFormURL = django_js_utils.urls.resolve("new-story-location");
                 onFinish = loadMediaTitleTab;
