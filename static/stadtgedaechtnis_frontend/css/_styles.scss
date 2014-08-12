@@ -567,6 +567,27 @@ div.new-entry {
   }
 }
 
+@media screen and (max-width: 360px) {
+  // very small styles
+  header[role="banner"] {
+
+    h1 {
+      font-size: 1.2rem;
+      margin: 0.1rem 0.5rem 0 0;
+    }
+  }
+
+  body {
+    font-size: .9rem;
+  }
+
+  div.overlay {
+    div.greeting {
+      max-height: 50%;
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
   // Mobile only styles from here on
   .desktop {
