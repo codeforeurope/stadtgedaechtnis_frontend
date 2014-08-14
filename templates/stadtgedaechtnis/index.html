@@ -64,7 +64,9 @@
         </div>
         <div class="nav-box">
             <nav role="navigation">
-                <img class="list-articles desktop" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
+                <div class="list-articles desktop">
+                    <img class="list-articles" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
+                </div>
                 <img class="show-overlay" src="{% static "stadtgedaechtnis_frontend/img/frage.png" %}">
             </nav>
             <h1>{% trans "Stadtged&auml;chtnis Coburg" %}</h1>
@@ -99,7 +101,9 @@
             </div>
         </section>
         <section class="max_map">
-            <img class="list-articles mobile" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
+            <div class="list-articles mobile">
+                <img class="list-articles" src="{%static "stadtgedaechtnis_frontend/img/list.png" %}">
+            </div>
             <div class="add-articles mobile">
                 <img class="add-articles" src="{%static "stadtgedaechtnis_frontend/img/plus.png" %}">
                 <ul>

@@ -588,7 +588,7 @@ function closeArticleBox(both) {
         };
 
         if (newStory !== null) {
-            if (newStory.asset.id !== null) {
+            if (newStory.asset !== null && newStory.asset.id !== null) {
                 deleteNewAsset();
             }
             if (newStory.id !== null) {
@@ -1267,13 +1267,13 @@ function ajaxRequestWithCSRF(url, method, data, callback, additionalParams) {
  * initialize jQuery hooks
  */
 $(function() {
-    $("img.list-articles").click(toggleAllEntries);
+    $("div.list-articles").off("click").click(toggleAllEntries);
     $("section#list-section div.close").click(function() {
         closeListBox(false);
         return false;
     });
     $("input#search-input").bind('input', createSearchTimeout);
-    $("div.add-articles.mobile").click(function() {
+    $("div.add-articles.mobile").off("click").click(function() {
         $(this).toggleClass("hover");
     });
     $("div.add-articles ul li").each(function(index, item) {
