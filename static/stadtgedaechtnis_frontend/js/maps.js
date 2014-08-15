@@ -512,38 +512,37 @@ function loadAllEntries() {
  */
 function closeArticleBox(both) {
     var footer = $("section#article-section");
+    var entryList = $("div.entry-list ul");
+
+    var onFinish = function() {
+        google.maps.event.trigger(userLocation.map, "resize");
+        entryList.empty();
+    };
 
     if (channel === "mobile") {
         //mobile
         var main = $("main");
         footer.transition({height: 0}, 200, "ease", function() {
             footer.css("padding", "0rem");
-            $("div.entry-list ul").removeAttr("style");
+            entryList.removeAttr("style");
         });
-        main.transition({paddingBottom: "0px", marginBottom: "0px"}, 200, "ease", function() {
-            google.maps.event.trigger(userLocation.map, "resize");
-        });
+        main.transition({paddingBottom: "0px", marginBottom: "0px"}, 200, "ease", onFinish);
     } else {
         //desktop
         var map = $("section.max_map");
         var mapWidth = map.width();
-        var list = $("div.entry-list ul");
         footer.transition({width: "0%"}, 200, "ease", function() {
             footer.css({
                 height: "100%",
                 padding: "0rem",
                 width: "auto"
             });
-            list.removeAttr("style");
+            entryList.removeAttr("style");
         });
         if (!both || both === undefined) {
-            map.transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
-                google.maps.event.trigger(userLocation.map, "resize");
-            });
+            map.transition({width: mapWidth + 380 + "px"}, 200, "ease", onFinish);
         } else {
-            map.transition({width: containerWidth + "px"}, 200, "ease", function() {
-                google.maps.event.trigger(userLocation.map, "resize");
-            });
+            map.transition({width: containerWidth + "px"}, 200, "ease", onFinish);
         }
     }
 
