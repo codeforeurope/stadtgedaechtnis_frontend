@@ -50,6 +50,7 @@ div.overlay {
     opacity: 0;
     max-height: 60%;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
 
     a {
       padding: .3rem;
@@ -378,6 +379,7 @@ section#article-section {
       margin: 0;
       width: 100%;
       height: 100%;
+      -webkit-overflow-scrolling: touch;
 
       li {
         float: left;
