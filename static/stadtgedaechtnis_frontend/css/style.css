@@ -481,8 +481,6 @@ div.overlay div.advice {
 div.message {
   position: absolute;
   top: -10rem;
-  width: 80%;
-  left: 10%;
   z-index: 9999;
   background: white;
   padding: 0 .5rem;
@@ -490,6 +488,9 @@ div.message {
   border: solid black 2px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
   -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.7);
+}
+div.message p {
+  width: 90%;
 }
 
 div.infowindow {
@@ -957,6 +958,11 @@ div.new-entry img.entry-image {
     -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
   }
 
+  div.message {
+    width: 80%;
+    left: 10%;
+  }
+
   header[role="banner"] {
     width: 200%;
   }
@@ -1031,6 +1037,11 @@ div.new-entry img.entry-image {
   div.overlay div.plus-advice {
     top: 2.2rem;
     right: 18.8rem;
+  }
+
+  div.message {
+    width: 30%;
+    left: 35%;
   }
 
   header[role="banner"] {

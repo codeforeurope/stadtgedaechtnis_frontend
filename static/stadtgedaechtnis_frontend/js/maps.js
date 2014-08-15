@@ -41,9 +41,9 @@ function addMarker (location) {
     if (!userLocation.locations.hasOwnProperty(location.id)) {
         var icon = {
             url: "/static/stadtgedaechtnis_frontend/img/marker_" + entryCount + ".png",
-            size: null,
+            size: new google.maps.Size(34, 44),
             origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(48, 28),
+            anchor: new google.maps.Point(17, 44),
             scaledSize: new google.maps.Size(34, 44)
         };
 
@@ -112,6 +112,14 @@ function createInfobox(location) {
     return location;
 }
 
+var selectedMarkerIcon =  {
+    url: "/static/stadtgedaechtnis_frontend/img/marker_selected.png",
+    size: new google.maps.Size(34, 44),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(17, 44),
+    scaledSize: new google.maps.Size(34, 44)
+};
+
 /**
  * Selects a location for the new entry box.
  * @param location
@@ -131,7 +139,7 @@ function selectNewLocation(location) {
         location.marker.setIcon(oldMarkerIcon);
     };
     userLocation.selectedLocation = location;
-    location.marker.setIcon("/static/stadtgedaechtnis_frontend/img/marker_selected.png");
+    location.marker.setIcon(selectedMarkerIcon);
 }
 
 /**
@@ -943,7 +951,7 @@ function newLocation() {
     userLocation.newLocationMarker = new google.maps.Marker({
         map: userLocation.map,
         position: userLocation.map.getCenter(),
-        icon: "/static/stadtgedaechtnis_frontend/img/marker_selected.png",
+        icon: selectedMarkerIcon,
         animation: google.maps.Animation.DROP,
         draggable: true
     });
@@ -1138,6 +1146,15 @@ function loadAdditionalTab() {
                 $.get(entryUrl, function(data) {
                     $("div.new-entry article.entry-more").html(data);
                 });
+                $("span#next-preview").click(function() {
+                    var postEntryUrl = django_js_utils.urls.resolve("entry-send-mail", {pk: newStory.id});
+                    ajaxRequestWithCSRF(postEntryUrl, "POST", {
+                        unique_id: newStory.uniqueId
+                    }, function() {
+                        closeArticleBox(false);
+                        alertBox(gettext("Ihr Beitrag wurde abgesendet und von den Mitarbeiter_Innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
+                    })
+                })
             });
             return false;
         })
@@ -1165,12 +1182,14 @@ function updateWholeStory(callback) {
     var findUserUrl = django_js_utils.urls.resolve("search-user", {query: newStory.author});
     var createUserUrl = django_js_utils.urls.resolve("create-new-user");
     var onDone = function() {
-        ajaxRequestWithCSRF(updateAssetUrl, "PUT", {
-            "unique_id": newStory.asset.uniqueId,
-            "alt": newStory.asset.alt
-        }, function(data) {
-            newStory.asset.uniqueId = data.unique_id;
-        });
+        if (newStory.asset !== null && newStory.asset.id !== null) {
+            ajaxRequestWithCSRF(updateAssetUrl, "PUT", {
+                "unique_id": newStory.asset.uniqueId,
+                "alt": newStory.asset.alt
+            }, function (data) {
+                newStory.asset.uniqueId = data.unique_id;
+            });
+        }
         ajaxRequestWithCSRF(updateStoryUrl, "PUT", {
             "unique_id": newStory.uniqueId,
             "title": newStory.title,
