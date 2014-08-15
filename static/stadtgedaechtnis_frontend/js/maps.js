@@ -587,18 +587,21 @@ function closeArticleBox(both) {
         };
 
         var deleteNewLocation = function() {
-            // new location was created, delete this location
+            // new location was mode
             if (userLocation.newLocationMarker !== undefined) {
-                var deleteNewLocationUrl = django_js_utils.urls.resolve("get-location", {pk: newStory.location.id});
-                ajaxRequestWithCSRF(deleteNewLocationUrl, "DELETE", {
-                    unique_id: newStory.location.unique_id
-                }, function () {
-                    newStory = null;
+                if (newStory.location !== null) {
+                    // delete newly created location
+                    var deleteNewLocationUrl = django_js_utils.urls.resolve("get-location", {pk: newStory.location.id});
+                    ajaxRequestWithCSRF(deleteNewLocationUrl, "DELETE", {
+                        unique_id: newStory.location.unique_id
+                    }, function () {
+                        newStory = null;
+                    });
+                }
 
-                    if (resetOldMarker !== undefined) {
-                        resetOldMarker();
-                    }
-                });
+                if (resetOldMarker !== undefined) {
+                    resetOldMarker();
+                }
             }
         };
 
