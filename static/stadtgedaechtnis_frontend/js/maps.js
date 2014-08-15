@@ -704,7 +704,7 @@ function searchForEntries () {
         var min_lat = bounds.getSouthWest().lat().toFixed(10);
         var min_lon = bounds.getSouthWest().lng().toFixed(10);
         // get nearby locations
-        var locationsUrl = django_js_utils.urls.resolve("get-locations-with-stories-image", {
+        var locationsUrl = django_js_utils.urls.resolve("get-area-locations-with-stories-image", {
             lat: min_lat,
             lon: min_lon,
             maxlat: max_lat,
