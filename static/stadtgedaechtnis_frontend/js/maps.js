@@ -1287,8 +1287,8 @@ $(function() {
             var onFinish;
             newEntryMode = true;
             var loadMediaTitleTab = function(mediaType) {
-                $("div#desktop-only-advice").addClass("desktop"); // fix for iOS
                 return function() {
+                    $("div#desktop-only-advice").addClass("desktop"); // fix for iOS
                     loadTitleTab(mediaType);
                 }
             }(mediaType);
