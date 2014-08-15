@@ -157,6 +157,11 @@ a, a:hover, a:visited, a:active, a:focus {
   clear: both;
 }
 
+img.button {
+  width: 28px;
+  height: 28px;
+}
+
 /* Header style */
 header[role="banner"] {
   background-image: url(../img/header.png);
@@ -254,18 +259,26 @@ div.add-articles {
 
     li#img {
       background-image: url(../img/bild.png);
+      background-size: 28px 28px;
+      -webkit-background-size: 28px 28px;
     }
 
     li#txt {
       background-image: url(../img/text.png);
+      background-size: 28px 28px;
+      -webkit-background-size: 28px 28px;
     }
 
     li#aud {
       background-image: url(../img/audio.png);
+      background-size: 28px 28px;
+      -webkit-background-size: 28px 28px;
     }
 
     li#vid {
       background-image: url(../img/video.png);
+      background-size: 28px 28px;
+      -webkit-background-size: 28px 28px;
     }
   }
 }
@@ -444,6 +457,8 @@ section#article-section {
     span.next {
       float: right;
       background: url("../img/next.png") no-repeat;
+      background-size: 28px 28px;
+      -webkit-background-size: 28px 28px;
       height: 28px;
       width: 28px;
     }
@@ -451,6 +466,8 @@ section#article-section {
     span.new {
       float: right;
       background: url("../img/plus.png") no-repeat;
+      background-size: 28px 28px;
+      -webkit-background-size: 28px 28px;
       height: 28px;
       width: 28px;
     }
@@ -458,6 +475,8 @@ section#article-section {
     span.edit {
       float: right;
       background: url("../img/edit.png") no-repeat;
+      background-size: 28px 28px;
+      -webkit-background-size: 28px 28px;
       height: 28px;
       width: 28px;
     }
