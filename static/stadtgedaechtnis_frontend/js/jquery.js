@@ -148,15 +148,11 @@ function alertBox(message, callback) {
     // animate sliding
     var messageBox = $("div.message");
     messageBox.css("opacity", 1);
-    messageBox.animate({"top": "3rem",
-        duration: 800,
-        easing: "easeOutBounce",
-        queue: false,
-        complete: function() {
-            if (callback !== undefined) {
-                callback();
-            }
-        }});
+    messageBox.animate({"top": "3rem"}, 800, "easeOutBounce", function() {
+        if (callback !== undefined) {
+            callback();
+        }
+    });
 }
 
 /**
