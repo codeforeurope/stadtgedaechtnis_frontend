@@ -1296,8 +1296,9 @@ $(function() {
                 onFinish = function() {
                     $("div.entry-list ul li").css("overflow-y", "auto");
                     $("div.new-entry span#next-intro").click(function(event) {
-                        var titleTabUrl = django_js_utils.urls.resolve("new-story-location");
-                        loadAndOpenNewTab(titleTabUrl, footerHeight * 1.75, loadMediaTitleTab);
+                        var locationTabUrl = django_js_utils.urls.resolve("new-story-location");
+                        // var locationTabHeight = containerHeight > 400 ? footerHeight *
+                        loadAndOpenNewTab(locationTabUrl, footerHeight * 1.75, loadMediaTitleTab);
                         event.stopPropagation();
                         return false;
                     });
