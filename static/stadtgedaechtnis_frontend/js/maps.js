@@ -1294,7 +1294,11 @@ $(function() {
             if (channel === "mobile") {
                 newEntryFormURL = django_js_utils.urls.resolve("new-story-intro");
                 onFinish = function() {
-                    $("div.entry-list ul li").css("overflow-y", "auto");
+                    $("div.entry-list ul li").css({
+                            "overflow-y": "auto",
+                            "overflow-x": "hidden"
+                        }
+                    );
                     $("div.new-entry span#next-intro").click(function(event) {
                         var locationTabUrl = django_js_utils.urls.resolve("new-story-location");
                         // var locationTabHeight = containerHeight > 400 ? footerHeight *
