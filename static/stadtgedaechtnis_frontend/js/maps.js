@@ -1287,6 +1287,7 @@ $(function() {
             var onFinish;
             newEntryMode = true;
             var loadMediaTitleTab = function(mediaType) {
+                $("div#desktop-only-advice").addClass("desktop"); // fix for iOS
                 return function() {
                     loadTitleTab(mediaType);
                 }
