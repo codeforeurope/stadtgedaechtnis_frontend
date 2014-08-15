@@ -39,11 +39,19 @@ function addMarker (location) {
     }
     // if not already on the map, display marker
     if (!userLocation.locations.hasOwnProperty(location.id)) {
+        var icon = {
+            url: "/static/stadtgedaechtnis_frontend/img/marker_" + entryCount + ".png",
+            size: null,
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(48, 28),
+            scaledSize: new google.maps.Size(34, 44)
+        };
+
         location.marker = new google.maps.Marker({
             map: userLocation.map,
             position: new google.maps.LatLng(latitude, longitude),
             title: location.label,
-            icon: "/static/stadtgedaechtnis_frontend/img/marker_" + entryCount + ".png",
+            icon: icon,
             animation: google.maps.Animation.DROP
         });
 
