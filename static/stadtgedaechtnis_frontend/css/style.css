@@ -542,7 +542,7 @@ header[role="banner"] {
 header[role="banner"] h1 {
   text-transform: uppercase;
   font-size: 1.3rem;
-  margin: 0 .5rem 0 0;
+  margin: .2rem .5rem 0 0;
   text-align: right;
   float: right;
 }
@@ -881,7 +881,6 @@ div.new-entry img.entry-image {
 @media screen and (max-width: 360px) {
   header[role="banner"] h1 {
     font-size: 1.2rem;
-    margin: 0.1rem 0.5rem 0 0;
   }
 
   body {
