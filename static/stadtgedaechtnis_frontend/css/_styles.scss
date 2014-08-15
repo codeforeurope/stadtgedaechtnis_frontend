@@ -821,9 +821,9 @@ div.new-entry {
 
     div.list-box {
       height: calc(100% - 3rem);
-      width: -moz-calc(100% - 3rem);
-      width: -webkit-calc(100% - 3rem);
-      width: -o-calc(100% - 3rem);
+      height: -moz-calc(100% - 3rem);
+      height: -webkit-calc(100% - 3rem);
+      height: -o-calc(100% - 3rem);
     }
   }
 
