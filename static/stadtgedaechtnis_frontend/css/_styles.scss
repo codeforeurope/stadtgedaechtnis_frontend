@@ -632,6 +632,9 @@ div.new-entry {
 
     div.list-box {
       height: calc(100% - 3rem);
+      height: -moz-calc(100% - 3rem);
+      height: -webkit-calc(100% - 3rem);
+      height: -o-calc(100% - 3rem);
     }
   }
 
@@ -735,10 +738,16 @@ div.new-entry {
 
   header[role="banner"] {
     width: calc(100% + 380px);
+    width: -moz-calc(100% + 380px);
+    width: -webkit-calc(100% + 380px);
+    width: -o-calc(100% + 380px);
 
     div.nav-box {
       left: -380px;
       width: calc(100% - 380px);
+      width: -moz-calc(100% - 380px);
+      width: -webkit-calc(100% - 380px);
+      width: -o-calc(100% - 380px);
 
       div.add-articles {
         z-index: 500;
@@ -789,6 +798,9 @@ div.new-entry {
 
     div.list-box {
       height: calc(100% - 3rem);
+      width: -moz-calc(100% - 3rem);
+      width: -webkit-calc(100% - 3rem);
+      width: -o-calc(100% - 3rem);
     }
   }
 
