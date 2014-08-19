@@ -598,10 +598,10 @@ function closeArticleBox(both) {
                         newStory = null;
                     });
                 }
+            }
 
-                if (resetOldMarker !== undefined) {
-                    resetOldMarker();
-                }
+            if (resetOldMarker !== undefined) {
+                resetOldMarker();
             }
         };
 
@@ -1122,7 +1122,7 @@ function loadAdditionalTab() {
             var dateFrom = $("div.new-entry input#datefrom").val();
             var dateTo = $("div.new-entry input#dateto").val();
             var sources = $("div.new-entry input#sources").val();
-            if (name === "") {
+            if (name === "" || name.split(" ").length < 2) {
                 alertBox(gettext("Sie müssen einen Namen angeben."));
                 return;
             }
@@ -1155,7 +1155,7 @@ function loadAdditionalTab() {
                         unique_id: newStory.uniqueId
                     }, function() {
                         closeArticleBox(false);
-                        alertBox(gettext("Ihr Beitrag wurde abgesendet und von den Mitarbeiter_Innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
+                        alertBox(gettext("Ihr Beitrag wurde abgesendet und wird nun von den Mitarbeiter_Innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
                     })
                 })
             });
@@ -1214,16 +1214,13 @@ function updateWholeStory(callback) {
             var firstName = newStory.author.split(" ")[0];
             var lastName = newStory.author.split(" ")[1];
             var userName = newStory.author.split(" ").join("");
-            $.ajax(createUserUrl, {
-                data: {
-                    "first_name": firstName,
-                    "last_name": lastName,
-                    "username": userName,
-                    "password": "temporary",
-                    "email": newStory.authorEmail
-                },
-                type: "POST"
-            }).done(function(data) {
+            ajaxRequestWithCSRF(createUserUrl, "POST", {
+                "first_name": firstName,
+                "last_name": lastName,
+                "username": userName,
+                "password": "temporary",
+                "email": newStory.authorEmail
+            }, function(data) {
                 newStory.author = data.id;
                 onDone();
             });
