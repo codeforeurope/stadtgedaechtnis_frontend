@@ -465,6 +465,15 @@ section#article-section {
       width: 28px;
     }
 
+    span.previous {
+      float: left;
+      background: url("../img/previous.png") no-repeat;
+      background-size: 28px 28px;
+      -webkit-background-size: 28px 28px;
+      height: 28px;
+      width: 28px;
+    }
+
     span.new {
       float: right;
       background: url("../img/plus.png") no-repeat;

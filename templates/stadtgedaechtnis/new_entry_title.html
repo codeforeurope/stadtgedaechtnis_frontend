@@ -8,6 +8,7 @@
 		{% trans 'und klicken Sie auf "Weiter".' %}</p>
     <form>{% csrf_token %}
         {{ form.as_p }}
-        <p><a href="#"><span class="next hide-text" id="next-text">{% trans "Weiter" %}</span></a></p>
+        <p class="form form-left"><a href="#"><span class="previous hide-text" id="previous-text">{% trans "Zurück" %}</span></a></p>
+        <p class="form form-right"><a href="#"><span class="next hide-text" id="next-text">{% trans "Weiter" %}</span></a></p>
     </form>
 </div>
