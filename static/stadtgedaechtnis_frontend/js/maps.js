@@ -26,19 +26,20 @@ function errorLocationCallback (error) {
  * @param location
  */
 function addMarker (location) {
-    // calculate latitude and longitude
-    var latitude = parseFloat(location.latitude);
-    var longitude = parseFloat(location.longitude);
-
-    var entryCount = location.stories.length;
-    if (entryCount === 0) {
-        entryCount = 1;
-    }
-    if (entryCount > 9) {
-        entryCount = 0;
-    }
     // if not already on the map, display marker
     if (!userLocation.locations.hasOwnProperty(location.id)) {
+        // calculate latitude and longitude
+        var latitude = parseFloat(location.latitude);
+        var longitude = parseFloat(location.longitude);
+
+        var entryCount = location.stories.length;
+        if (entryCount === 0) {
+            entryCount = 1;
+        }
+        if (entryCount > 9) {
+            entryCount = 0;
+        }
+
         var icon = {
             url: "/static/stadtgedaechtnis_frontend/img/marker_" + entryCount + ".png",
             size: new google.maps.Size(34, 44),
@@ -95,10 +96,8 @@ function createInfobox(location) {
     });
     google.maps.event.clearListeners(location.marker, 'click');
     google.maps.event.addListener(location.marker, 'click', function () {
-        if (newEntryMode) {
-            if (newStory.location === null) {
-                selectNewLocation(location);
-            }
+        if (newEntryMode && selectLocationMode) {
+            selectNewLocation(location);
         } else {
             if (location.stories.length > 0) {
                 openEntry(location);
@@ -571,6 +570,10 @@ function closeArticleBox(both) {
 
     if (newEntryMode) {
         newEntryMode = false;
+        titleTabLoaded = false;
+        textTabLoaded = false;
+        additionalTabLoaded = false;
+        previewTabLoaded = false;
 
         var deleteNewAsset = function() {
             var deleteNewAssetUrl = django_js_utils.urls.resolve("get-asset", {pk: newStory.asset.id});
@@ -979,200 +982,252 @@ var newStory = null;
  * Loads the title tab for the new entry routine.
  * @param mediaType
  */
+var titleTabLoaded = false;
 function loadTitleTab(mediaType) {
     newStory = new Story();
-    $("div.new-entry span.new").click(newLocation);
-    $("span#next-location").click(function(event) {
-        if (userLocation.newLocationMarker !== undefined) {
-            var lat = userLocation.newLocationMarker.getPosition().lat().toFixed(13);
-            var lon = userLocation.newLocationMarker.getPosition().lng().toFixed(13);
-            var title = $("span#selected-location").text();
-            var postNewLocationUrl = django_js_utils.urls.resolve("list-locations");
-            ajaxRequestWithCSRF(postNewLocationUrl, "POST", {
-                latitude: lat,
-                longitude: lon,
-                label: title,
-                altitude: 0
-            }, function(data) {
-                newStory.location = data;
-                openTitleTab(mediaType);
-            });
-        } else {
-            if (userLocation.selectedLocation !== null) {
-                newStory.location = userLocation.selectedLocation;
-                openTitleTab(mediaType);
+    if (!titleTabLoaded) {
+        $("div.new-entry span.new").click(newLocation);
+        $("span#next-location").click(function (event) {
+            selectLocationMode = false;
+            if (userLocation.newLocationMarker !== undefined) {
+                var lat = userLocation.newLocationMarker.getPosition().lat().toFixed(13);
+                var lon = userLocation.newLocationMarker.getPosition().lng().toFixed(13);
+                var title = $("span#selected-location").text();
+                var postNewLocationUrl = django_js_utils.urls.resolve("list-locations");
+                ajaxRequestWithCSRF(postNewLocationUrl, "POST", {
+                    latitude: lat,
+                    longitude: lon,
+                    label: title,
+                    altitude: 0
+                }, function (data) {
+                    newStory.location = data;
+                    openTitleTab(mediaType);
+                });
             } else {
-                alertBox(gettext("Sie müssen einen Ort auswählen, um fortfahren zu können, oder auf 'Ohne Ort fortfahren' klicken."));
+                if (userLocation.selectedLocation !== null) {
+                    newStory.location = userLocation.selectedLocation;
+                    openTitleTab(mediaType);
+                } else {
+                    alertBox(gettext("Sie müssen einen Ort auswählen, um fortfahren zu können, oder auf 'Ohne Ort fortfahren' klicken."));
+                }
             }
-        }
-        event.stopPropagation();
-        return false;
-    });
-    $("span#no-location").click(function(event) {
-        newStory.location = null;
-        openTitleTab(mediaType);
-        event.stopPropagation();
-        return false;
-    });
+            event.stopPropagation();
+            return false;
+        });
+        $("span#no-location").click(function (event) {
+            newStory.location = null;
+            openTitleTab(mediaType);
+            event.stopPropagation();
+            return false;
+        });
+    }
 }
 /**
  * Opens the title tab for a new story.
  * @param mediaType
  */
 function openTitleTab(mediaType) {
-    var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
-    loadAndOpenNewTab(titleEntryUrl, containerHeight * 0.75, function() {
-        if (newStory.location) {
-            userLocation.map.panTo(new google.maps.LatLng(newStory.location.latitude, newStory.location.longitude));
-            userLocation.map.setZoom(17);
-        }
-        $("span#next-text").click(function(event) {
-            var title = $("input#id_title").val();
-            if (title === "") {
-                alertBox(gettext("Sie müssen einen Titel für Ihre Geschichte eingeben."));
-            } else {
-                newStory.title = title;
-                loadTextTab(mediaType);
-            }
-            event.stopPropagation();
-            return false;
-        })
-    });
+    if (newStory.location) {
+        userLocation.map.panTo(new google.maps.LatLng(newStory.location.latitude, newStory.location.longitude));
+        userLocation.map.setZoom(17);
+    }
+    if (!titleTabLoaded) {
+        var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
+        loadAndOpenNewTab(titleEntryUrl, containerHeight * 0.75, function () {
+            $("span#next-text").click(function (event) {
+                var title = $("input#id_title").val();
+                if (title === "") {
+                    alertBox(gettext("Sie müssen einen Titel für Ihre Geschichte eingeben."));
+                } else {
+                    newStory.title = title;
+                    loadTextTab(mediaType);
+                }
+                event.stopPropagation();
+                return false;
+            });
+            $("span#previous-text").click(function (event) {
+                $("section#article-section div.entry-list").data("unslider").prev();
+                selectLocationMode = true;
+                event.stopPropagation();
+                return false;
+            });
+            titleTabLoaded = true;
+        });
+    } else {
+        $("section#article-section div.entry-list").data("unslider").next();
+    }
 }
 
 /**
  * Loads the tab to enter a text for a new entry.
  */
+var textTabLoaded = false;
 function loadTextTab(mediaType) {
-    var postNewStoryUrl = django_js_utils.urls.resolve("get-all-stories");
-    var date = new Date();
-    var dateString = date.toFormattedString();
-    var locationId = null;
-    if (newStory.location !== null) {
-        locationId = newStory.location.id;
-    }
-    ajaxRequestWithCSRF(postNewStoryUrl, "POST", {
-        title: newStory.title,
-        abstract: "temporary",
-        author: 1,
-        time_start: dateString,
-        location: locationId
-    }, function(data) {
-        newStory.id = data.id;
-        newStory.uniqueId = data.unique_id;
-        var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
-        var finishUploading = function() {
-            $("div.new-entry div.upload-advice").hide();
-            if (newStory.asset.id === null) {
-                // no picture uploaded
-                $("div.new-entry p#alt_input").hide(); // hide first paragraph (with alt input)
-            }
-            $("div.new-entry span#next-story").click(function() {
-                var text = $("div.new-entry textarea#text").val();
-                var alt = $("div.new-entry input#alt").val();
-                if (text === "") {
-                    alertBox(gettext("Sie müssen einen Text für Ihre persönliche Geschichte eingeben."));
-                } else {
-                    newStory.text = text;
-                    newStory.asset.alt = alt === "" ? "temporary" : alt;
-                    loadAdditionalTab();
+    if (!textTabLoaded) {
+        var postNewStoryUrl = django_js_utils.urls.resolve("get-all-stories");
+        var date = new Date();
+        var dateString = date.toFormattedString();
+        var locationId = null;
+        if (newStory.location !== null) {
+            locationId = newStory.location.id;
+        }
+        ajaxRequestWithCSRF(postNewStoryUrl, "POST", {
+            title: newStory.title,
+            abstract: "temporary",
+            author: 1,
+            time_start: dateString,
+            location: locationId
+        }, function (data) {
+            newStory.id = data.id;
+            newStory.uniqueId = data.unique_id;
+            var textEntryUrl = django_js_utils.urls.resolve("new-story-text");
+            var finishUploading = function () {
+                $("div.new-entry div.upload-advice").hide();
+                if (newStory.asset.id === null) {
+                    // no picture uploaded
+                    $("div.new-entry p#alt_input").hide(); // hide first paragraph (with alt input)
                 }
-            })
-        };
-        loadAndOpenNewTab(textEntryUrl, containerHeight, function() {
-            $("div.new-entry input#title").val(newStory.title);
-            var fileInput = $("div.new-entry input#id_file")[0];
-            var newAssetUrl = django_js_utils.urls.resolve("get-story-with-asset", {pk: newStory.id});
-            if (fileInput && fileInput.files.length > 0) {
-                ajaxRequestWithCSRF(newAssetUrl, "POST", {
-                    type: mediaType,
-                    alt: "temporary"
-                }, function (data) {
-                    newStory.asset.id = data.id;
-                    newStory.asset.uniqueId = data.unique_id;
-                    var putImageUrl = django_js_utils.urls.resolve("asset-sources", {pk: newStory.asset.id});
-                    uploadFile(fileInput, putImageUrl, newStory.asset.uniqueId, function (data) {
-                        if (data !== undefined) {
-                            // uploaded a new asset
-                            newStory.asset.url = data["url"];
-                            var assetUrl = django_js_utils.urls.resolve("asset-view", {pk: newStory.asset.id});
-                            $.get(assetUrl, function(data) {
-                                $("div.new-entry div.asset").html(data);
-                            });
-                        }
-                        finishUploading()
-                    });
+                $("div.new-entry span#next-story").click(function () {
+                    var text = $("div.new-entry textarea#text").val();
+                    var alt = $("div.new-entry input#alt").val();
+                    if (text === "") {
+                        alertBox(gettext("Sie müssen einen Text für Ihre persönliche Geschichte eingeben."));
+                    } else {
+                        newStory.text = text;
+                        newStory.asset.alt = alt === "" ? "temporary" : alt;
+                        loadAdditionalTab();
+                    }
                 });
-            } else {
-                finishUploading();
-            }
+                $("div.new-entry span#previous-story").click(function(event) {
+                    $("div.new-entry input#id_file").attr("disabled", "disabled");
+                    $("section#article-section div.entry-list").data("unslider").prev();
+                    event.stopPropagation();
+                    return false;
+                })
+            };
+            loadAndOpenNewTab(textEntryUrl, containerHeight, function () {
+                $("div.new-entry input#title").val(newStory.title);
+                var fileInput = $("div.new-entry input#id_file")[0];
+                var newAssetUrl = django_js_utils.urls.resolve("get-story-with-asset", {pk: newStory.id});
+                if (fileInput && fileInput.files.length > 0) {
+                    ajaxRequestWithCSRF(newAssetUrl, "POST", {
+                        type: mediaType,
+                        alt: "temporary"
+                    }, function (data) {
+                        newStory.asset.id = data.id;
+                        newStory.asset.uniqueId = data.unique_id;
+                        var putImageUrl = django_js_utils.urls.resolve("asset-sources", {pk: newStory.asset.id});
+                        uploadFile(fileInput, putImageUrl, newStory.asset.uniqueId, function (data) {
+                            if (data !== undefined) {
+                                // uploaded a new asset
+                                newStory.asset.url = data["url"];
+                                var assetUrl = django_js_utils.urls.resolve("asset-view", {pk: newStory.asset.id});
+                                $.get(assetUrl, function (data) {
+                                    $("div.new-entry div.asset").html(data);
+                                });
+                            }
+                            finishUploading()
+                        });
+                    });
+                } else {
+                    finishUploading();
+                }
+                textTabLoaded = true;
+            });
         });
-    });
+    } else {
+        $("div.new-entry input#title").val(newStory.title);
+        $("section#article-section div.entry-list").data("unslider").next();
+    }
 }
 
 /**
  * Loads the tab for additional entry information.
  */
+var additionalTabLoaded = false;
 function loadAdditionalTab() {
-    var additonalTabUrl = django_js_utils.urls.resolve("new-story-additional");
-    loadAndOpenNewTab(additonalTabUrl, containerHeight, function() {
-        $("div.new-entry span#next-additional").click(function() {
-            var name = $("div.new-entry input#name").val();
-            var email = $("div.new-entry input#email").val();
-            var dateFrom = $("div.new-entry input#datefrom").val();
-            var dateTo = $("div.new-entry input#dateto").val();
-            var sources = $("div.new-entry input#sources").val();
-            if (name === "" || name.split(" ").length < 2) {
-                alertBox(gettext("Sie müssen einen Namen angeben."));
-                return;
-            }
-            if (email === "") {
-                alertBox(gettext("Sie müssen eine E-Mail-Adresse angeben."));
-                return;
-            }
-            if (dateFrom === "") {
-                alertBox(gettext("Sie müssen ein Datum eingeben."));
-                return;
-            }
-            if (new Date().parseDate(dateFrom) === null) {
-                alertBox(gettext("Sie müssen das Datum im korrekten Format (TT.MM.JJJJ) eingeben."));
-                return;
-            }
-            newStory.author = name;
-            newStory.authorEmail = email;
-            newStory.dateStart = new Date().parseDate(dateFrom);
-            newStory.dateFinish = new Date().parseDate(dateTo);
-            newStory.sources = sources;
-            loadPreviewTab(function() {
-                $("div.new-entry img#load-more-entry").hide();
-                var entryUrl = django_js_utils.urls.resolve("entry-view-exact", {pk: newStory.id});
-                $.get(entryUrl, function(data) {
-                    $("div.new-entry article.entry-more").html(data);
-                });
-                $("span#next-preview").click(function() {
-                    var postEntryUrl = django_js_utils.urls.resolve("entry-send-mail", {pk: newStory.id});
-                    ajaxRequestWithCSRF(postEntryUrl, "POST", {
-                        unique_id: newStory.uniqueId
-                    }, function() {
-                        closeArticleBox(false);
-                        alertBox(gettext("Ihr Beitrag wurde abgesendet und wird nun von den Mitarbeiter_Innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
+    if (!additionalTabLoaded) {
+        var additionalTabUrl = django_js_utils.urls.resolve("new-story-additional");
+        loadAndOpenNewTab(additionalTabUrl, containerHeight, function () {
+            $("div.new-entry span#next-additional").click(function () {
+                var name = $("div.new-entry input#name").val();
+                var email = $("div.new-entry input#email").val();
+                var dateFrom = $("div.new-entry input#datefrom").val();
+                var dateTo = $("div.new-entry input#dateto").val();
+                var sources = $("div.new-entry input#sources").val();
+                if (name === "" || name.split(" ").length < 2) {
+                    alertBox(gettext("Sie müssen einen Namen angeben."));
+                    return;
+                }
+                if (email === "") {
+                    alertBox(gettext("Sie müssen eine E-Mail-Adresse angeben."));
+                    return;
+                }
+                if (dateFrom === "") {
+                    alertBox(gettext("Sie müssen ein Datum eingeben."));
+                    return;
+                }
+                if (new Date().parseDate(dateFrom) === null) {
+                    alertBox(gettext("Sie müssen das Datum im korrekten Format (TT.MM.JJJJ) eingeben."));
+                    return;
+                }
+                newStory.author = name;
+                newStory.authorEmail = email;
+                newStory.dateStart = new Date().parseDate(dateFrom);
+                newStory.dateFinish = new Date().parseDate(dateTo);
+                newStory.sources = sources;
+                loadPreviewTab(function () {
+                    $("div.new-entry img#load-more-entry").hide();
+                    var entryUrl = django_js_utils.urls.resolve("entry-view-exact", {pk: newStory.id});
+                    $.get(entryUrl, function (data) {
+                        $("div.new-entry article.entry-more").html(data);
+                    });
+                    $("div.new-entry span#next-preview").click(function () {
+                        var postEntryUrl = django_js_utils.urls.resolve("entry-send-mail", {pk: newStory.id});
+                        ajaxRequestWithCSRF(postEntryUrl, "POST", {
+                            unique_id: newStory.uniqueId
+                        }, function () {
+                            closeArticleBox(false);
+                            alertBox(gettext("Ihr Beitrag wurde abgesendet und wird nun von den Mitarbeiter_Innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
+                        })
+                    });
+                    $("div.new-entry span#previous-preview").click(function(event) {
+                        $("section#article-section div.entry-list").data("unslider").prev();
+                        event.stopPropagation();
+                        return false;
                     })
-                })
+                });
+                return false;
             });
-            return false;
-        })
-    });
+            $("div.new-entry span#previous-additional").click(function(event) {
+                $("section#article-section div.entry-list").data("unslider").prev();
+                event.stopPropagation();
+                return false;
+            });
+            additionalTabLoaded = true;
+        });
+    } else {
+        $("section#article-section div.entry-list").data("unslider").next();
+    }
 }
 
 /**
  * Loads the preview tab and calls a callback.
  * @param callback
  */
+var previewTabLoaded = false;
 function loadPreviewTab(callback) {
     var previewEntryTab = django_js_utils.urls.resolve("new-story-preview");
-    loadAndOpenNewTab(previewEntryTab, containerHeight, function() {
+    if (!previewTabLoaded) {
+        loadAndOpenNewTab(previewEntryTab, containerHeight, function () {
+            updateWholeStory(callback);
+            previewTabLoaded = true;
+        });
+    } else {
+        $("div.new-entry img#load-more-entry").show();
+        $("section#article-section div.entry-list").data("unslider").next();
         updateWholeStory(callback);
-    });
+    }
 }
 
 /**
@@ -1199,6 +1254,7 @@ function updateWholeStory(callback) {
             "text": newStory.text,
             "abstract": "temporary",
             "author": newStory.author,
+            "location": newStory.location.id,
             "time_start": newStory.dateStart.toFormattedString(),
             "time_end": newStory.dateFinish !== null ? newStory.dateFinish.toFormattedString() : null,
             "sources": newStory.sources,
@@ -1287,6 +1343,7 @@ function ajaxRequestWithCSRF(url, method, data, callback, additionalParams) {
     });
 }
 
+var selectLocationMode = false;
 /**
  * $(document).ready
  *
@@ -1327,9 +1384,12 @@ $(function() {
                         }
                     );
                     $("div.new-entry span#next-intro").click(function(event) {
-                        var locationTabUrl = django_js_utils.urls.resolve("new-story-location");
-                        // var locationTabHeight = containerHeight > 400 ? footerHeight *
-                        loadAndOpenNewTab(locationTabUrl, footerHeight * 1.75, loadMediaTitleTab);
+                        selectLocationMode = false;
+                        if (!titleTabLoaded) {
+                            var locationTabUrl = django_js_utils.urls.resolve("new-story-location");
+                            // var locationTabHeight = containerHeight > 400 ? footerHeight *
+                            loadAndOpenNewTab(locationTabUrl, footerHeight * 1.75, loadMediaTitleTab);
+                        }
                         event.stopPropagation();
                         return false;
                     });
@@ -1349,6 +1409,7 @@ $(function() {
                 listEntry.html(data);
                 entryList.html(listEntry);
                 jQueryEntryList.unslider();
+                selectLocationMode = true;
                 if (onFinish !== undefined) {
                     onFinish();
                 }
