@@ -1027,13 +1027,13 @@ function loadTitleTab(mediaType) {
  * @param mediaType
  */
 function openTitleTab(mediaType) {
-    if (newStory.location) {
-        userLocation.map.panTo(new google.maps.LatLng(newStory.location.latitude, newStory.location.longitude));
-        userLocation.map.setZoom(17);
-    }
     if (!titleTabLoaded) {
         var titleEntryUrl = django_js_utils.urls.resolve("new-story-" + mediaType);
         loadAndOpenNewTab(titleEntryUrl, containerHeight * 0.75, function () {
+            if (newStory.location) {
+                userLocation.map.panTo(new google.maps.LatLng(newStory.location.latitude, newStory.location.longitude));
+                userLocation.map.setZoom(17);
+            }
             $("span#next-text").click(function (event) {
                 var title = $("input#id_title").val();
                 if (title === "") {
@@ -1046,6 +1046,7 @@ function openTitleTab(mediaType) {
                 return false;
             });
             $("span#previous-text").click(function (event) {
+                resizeArticleBox(footerHeight * 1.75);
                 $("section#article-section div.entry-list").data("unslider").prev();
                 selectLocationMode = true;
                 event.stopPropagation();
@@ -1054,7 +1055,12 @@ function openTitleTab(mediaType) {
             titleTabLoaded = true;
         });
     } else {
+        resizeArticleBox(containerHeight * 0.75);
         $("section#article-section div.entry-list").data("unslider").next();
+        if (newStory.location) {
+            userLocation.map.panTo(new google.maps.LatLng(newStory.location.latitude, newStory.location.longitude));
+            userLocation.map.setZoom(17);
+        }
     }
 }
 
@@ -1099,6 +1105,7 @@ function loadTextTab(mediaType) {
                     }
                 });
                 $("div.new-entry span#previous-story").click(function(event) {
+                    resizeArticleBox(containerHeight * 0.75);
                     $("div.new-entry input#id_file").attr("disabled", "disabled");
                     $("section#article-section div.entry-list").data("unslider").prev();
                     event.stopPropagation();
@@ -1137,6 +1144,7 @@ function loadTextTab(mediaType) {
         });
     } else {
         $("div.new-entry input#title").val(newStory.title);
+        resizeArticleBox(containerHeight);
         $("section#article-section div.entry-list").data("unslider").next();
     }
 }
