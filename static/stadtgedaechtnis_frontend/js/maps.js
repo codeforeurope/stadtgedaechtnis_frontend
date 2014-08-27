@@ -622,6 +622,10 @@ function closeArticleBox(both) {
                 deleteNewLocation();
             }
         }
+    } else {
+        if (resetOldMarker !== undefined) {
+            resetOldMarker();
+        }
     }
 }
 
@@ -1195,6 +1199,7 @@ function loadAdditionalTab() {
                         ajaxRequestWithCSRF(postEntryUrl, "POST", {
                             unique_id: newStory.uniqueId
                         }, function () {
+                            newEntryMode = false;
                             closeArticleBox(false);
                             alertBox(gettext("Ihr Beitrag wurde abgesendet und wird nun von den Mitarbeiter_Innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
                         })
