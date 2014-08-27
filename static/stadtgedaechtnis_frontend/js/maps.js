@@ -1415,10 +1415,9 @@ $(function() {
                         }
                     );
                     $("div.new-entry span#next-intro").click(function(event) {
-                        selectLocationMode = false;
+                        selectLocationMode = true;
                         if (!titleTabLoaded) {
                             var locationTabUrl = django_js_utils.urls.resolve("new-story-location");
-                            // var locationTabHeight = containerHeight > 400 ? footerHeight *
                             loadAndOpenNewTab(locationTabUrl, footerHeight * 1.75, loadMediaTitleTab);
                         }
                         event.stopPropagation();
