@@ -31,8 +31,15 @@ function addMarker (location) {
         // calculate latitude and longitude
         var latitude = parseFloat(location.latitude);
         var longitude = parseFloat(location.longitude);
+        var temporaryStories = 0;
 
-        var entryCount = location.stories.length;
+        for (var i = 1; i < location.stories.length; i++) {
+            if (location.stories[i].temporary) {
+                temporaryStories++;
+            }
+        }
+
+        var entryCount = location.stories.length - temporaryStories;
         if (entryCount === 0) {
             entryCount = 1;
         }
@@ -72,11 +79,15 @@ function createInfobox(location) {
         if (location.stories.length > 1) {
             infoBoxContent = "<div class='infowindow' id='infowindow'><ul>";
             for (var i = 0; i < location.stories.length; i++) {
-                infoBoxContent += "<li><a href='#' class='switch-entry' data-entry='" + i + "'>" + location.stories[i].title + "</a></li>";
+                if (!location.stories[i].temporary) {
+                    infoBoxContent += "<li><a href='#' class='switch-entry' data-entry='" + i + "'>" + location.stories[i].title + "</a></li>";
+                }
             }
             infoBoxContent += "</ul></div>";
         } else {
-            infoBoxContent = "<div class='infowindow' id='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
+            if (!location.stories[0].temporary) {
+                infoBoxContent = "<div class='infowindow' id='infowindow'><p>" + location.stories[0].abstract + "</p></div>";
+            }
         }
     } else {
         infoBoxContent = "<div class='infowindow' id='infowindow'><p>" + location.label + "</p></div>";
@@ -1189,12 +1200,16 @@ function loadAdditionalTab() {
                 newStory.dateFinish = new Date().parseDate(dateTo);
                 newStory.sources = sources;
                 loadPreviewTab(function () {
-                    $("div.new-entry img#load-more-entry").hide();
+                    var loadMoreImg = $("div.new-entry img#load-more-entry");
+                    var entryMoreContent = $("div.new-entry article.entry-more");
+                    loadMoreImg.hide();
                     var entryUrl = django_js_utils.urls.resolve("entry-view-exact", {pk: newStory.id});
                     $.get(entryUrl, function (data) {
-                        $("div.new-entry article.entry-more").html(data);
+                        entryMoreContent.html(data);
                     });
                     $("div.new-entry span#next-preview").click(function () {
+                        entryMoreContent.empty();
+                        loadMoreImg.show();
                         var postEntryUrl = django_js_utils.urls.resolve("entry-send-mail", {pk: newStory.id});
                         ajaxRequestWithCSRF(postEntryUrl, "POST", {
                             unique_id: newStory.uniqueId
@@ -1261,18 +1276,21 @@ function updateWholeStory(callback) {
                 newStory.asset.uniqueId = data.unique_id;
             });
         }
-        ajaxRequestWithCSRF(updateStoryUrl, "PUT", {
+        var storyData = {
             "unique_id": newStory.uniqueId,
             "title": newStory.title,
             "text": newStory.text,
             "abstract": "temporary",
             "author": newStory.author,
-            "location": newStory.location.id,
             "time_start": newStory.dateStart.toFormattedString(),
             "time_end": newStory.dateFinish !== null ? newStory.dateFinish.toFormattedString() : null,
             "sources": newStory.sources,
             "assets": newStory.asset.id
-        }, function(data) {
+        };
+        if (newStory.location !== null) {
+            storyData["location"] = newStory.location.id;
+        }
+        ajaxRequestWithCSRF(updateStoryUrl, "PUT", storyData, function(data) {
             newStory.uniqueId = data.unique_id;
             callback(data);
         });
