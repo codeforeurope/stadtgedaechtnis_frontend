@@ -313,36 +313,43 @@ function resizeArticleBox(articleBoxHeight, callback) {
  */
 function loadAndOpenEntryBox(stories) {
     var entryList = "";
+    var storyCount = 0;
+    var temporaryCount = 0;
     for (var i = 0; i < stories.length; i++) {
         // create list of entrys for slider
-        entryList += '<li data-entry="' + i + '" data-id="' + stories[i].id + '">\
+        if (!stories[i].temporary) {
+            entryList += '<li data-entry="' + i + '" data-id="' + stories[i].id + '">\
                         <div class="article-heading">\
                             <div class="article-heading-row">';
-        if (i > 0) {
-            entryList += '    <a href="#" class="previous"><div class="article-heading-cell entry-slide previous">\
+            if (storyCount > 0) {
+                entryList += '    <a href="#" class="previous"><div class="article-heading-cell entry-slide previous">\
                 <img src="/static/stadtgedaechtnis_frontend/img/left.png">\
             </div></a>'
-        }
-        entryList += '<div class="article-heading-cell">\
+            }
+            entryList += '<div class="article-heading-cell">\
                                     <h3 id="article-heading-' + i + '">' + stories[i].title + '</h3>\
                                 </div>';
-        if (i < stories.length - 1) {
-            entryList += '<a href="#" class="next"><div class="article-heading-cell entry-slide next">\
+            if (storyCount < stories.length - temporaryCount - 1) {
+                entryList += '<a href="#" class="next"><div class="article-heading-cell entry-slide next">\
                 <img src="/static/stadtgedaechtnis_frontend/img/right.png">\
             </div></a>';
-        }
-        entryList += '</div>\
+            }
+            entryList += '</div>\
                         </div>';
-        if (stories[i].assets[0] !== undefined) {
-            entryList += '<img src="' + stories[i].assets[0].sources + '" alt="' + stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>' +
-                '<p class="image-description">' + stories[i].assets[0].alt + '</p>';
-        }
-        entryList += '<div class="center">\
+            if (stories[i].assets[0] !== undefined) {
+                entryList += '<img src="' + stories[i].assets[0].sources + '" alt="' + stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>' +
+                    '<p class="image-description">' + stories[i].assets[0].alt + '</p>';
+            }
+            entryList += '<div class="center">\
                             <img src="/static/stadtgedaechtnis_frontend/img/ajax-loader.gif" id="load-more-' + i + '" class="load-more">\
                         </div>\
                         <article class="entry-more" id="entry-more-' + i + '">\
                         </article>\
                     </li>';
+            storyCount++;
+        } else {
+            temporaryCount++;
+        }
     }
 
     $("div.entry-list ul").html(entryList);
