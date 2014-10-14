@@ -945,6 +945,7 @@ function Asset() {
     this.id = null;
     this.uniqueId = null;
     this.url = null;
+    this.type = null;
 }
 
 /**
@@ -1147,6 +1148,7 @@ function loadTextTab(mediaType) {
                     }, function (data) {
                         newStory.asset.id = data.id;
                         newStory.asset.uniqueId = data.unique_id;
+                        newStory.asset.type = mediaType;
                         var putImageUrl = django_js_utils.urls.resolve("asset-sources", {pk: newStory.asset.id});
                         uploadFile(fileInput, putImageUrl, newStory.asset.uniqueId, function (data) {
                             if (data !== undefined) {
@@ -1280,7 +1282,8 @@ function updateWholeStory(callback) {
         if (newStory.asset !== null && newStory.asset.id !== null) {
             ajaxRequestWithCSRF(updateAssetUrl, "PUT", {
                 "unique_id": newStory.asset.uniqueId,
-                "alt": newStory.asset.alt
+                "alt": newStory.asset.alt,
+                "type": newStory.asset.type
             }, function (data) {
                 newStory.asset.uniqueId = data.unique_id;
             });
