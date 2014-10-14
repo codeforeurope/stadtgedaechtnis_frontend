@@ -71,21 +71,23 @@ function initializeFooterSwiping() {
             }
             // handles the current swipe
             if ((up && direction === "down") || (!up && direction === "up")) {
+                var newPadding;
+                var footerPadding;
                 if (phase === "cancel") {
-                    var newPadding = (direction === "up" ? footerHeight + "px": maxPadding);
-                    var footerPadding = (direction === "up" ? "0.8rem 0.8rem 0 0.8rem" : "0.8rem");
+                    newPadding = (direction === "up" ? footerHeight + "px": maxPadding);
+                    footerPadding = (direction === "up" ? "0.8rem 0.8rem 0 0.8rem" : "0.8rem");
                     footer.css("padding", footerPadding);
                     slideElement(footer, container, newPadding);
                     footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
                 } else if (phase === "end") {
-                    var newPadding = (direction === "up" ? maxPadding : footerHeight + "px");
-                    var footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
+                    newPadding = (direction === "up" ? maxPadding : footerHeight + "px");
+                    footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
                     footer.css("padding", footerPadding);
                     slideElement(footer, container, newPadding);
                     $("div.entry-list ul li").css("overflow-y", direction === "up" ? "auto" : "hidden");
                     up = (direction === "up");
                 } else {
-                    var newPadding = footerSwipeHeight + (direction === "up" ? distance : -distance);
+                    newPadding = footerSwipeHeight + (direction === "up" ? distance : -distance);
                     container.css({
                         paddingBottom: newPadding + "px",
                         marginBottom: "-" + newPadding + "px"
