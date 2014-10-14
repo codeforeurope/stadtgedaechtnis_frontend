@@ -824,6 +824,9 @@ section#article-section p.image-description {
 section#article-section article.entry-more {
   clear: both;
 }
+section#article-section article.entry-more audio, section#article-section article.entry-more video {
+  width: 100%;
+}
 section#article-section article.entry-more * {
   margin-top: 10px;
 }

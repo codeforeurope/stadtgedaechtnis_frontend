@@ -505,6 +505,10 @@ section#article-section {
   article.entry-more {
     clear: both;
 
+    audio, video {
+      width: 100%;
+    }
+
     * {
       margin-top: 10px;
     }
