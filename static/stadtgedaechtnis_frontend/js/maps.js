@@ -1217,7 +1217,7 @@ function loadAdditionalTab() {
                     $("div.new-entry span#next-preview").click(function () {
                         entryMoreContent.empty();
                         loadMoreImg.show();
-                        var postEntryUrl = django_js_utils.urls.resolve("entry-send-mail", {pk: newStory.id});
+                        var postEntryUrl = django_js_utils.urls.resolve("entry-send-mail", {pk: newStory.id, email: newStory.authorEmail});
                         ajaxRequestWithCSRF(postEntryUrl, "POST", {
                             unique_id: newStory.uniqueId
                         }, function () {
