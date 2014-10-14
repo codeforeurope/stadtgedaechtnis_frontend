@@ -704,7 +704,9 @@ function closeListBox(both) {
 function closeBoxes(mouseEvent, force) {
     if (!newEntryMode || (force !== undefined && force)) {
         var addArticleMenu = $("div.add-articles");
-        mouseEvent !== undefined && mouseEvent.stop();
+        if (mouseEvent !== undefined) {
+            mouseEvent.stop();
+        }
         closeArticleBox(true);
         closeListBox(true);
         closeAlertBox();
