@@ -296,8 +296,8 @@ function resizeArticleBox(articleBoxHeight, callback) {
         var footer = $("section#article-section");
         var main = $("main");
         footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
-        footer.transition({height: articleBoxHeight + "px"}, 200, "ease");
-        main.transition({paddingBottom: articleBoxHeight + "px", marginBottom: "-" + articleBoxHeight + "px"}, 200, "ease", function () {
+        footer.stop().transition({height: articleBoxHeight + "px"}, 200, "ease");
+        main.stop().transition({paddingBottom: articleBoxHeight + "px", marginBottom: "-" + articleBoxHeight + "px"}, 200, "ease", function () {
             if (callback !== undefined && callback !== null) {
                 callback();
             }
