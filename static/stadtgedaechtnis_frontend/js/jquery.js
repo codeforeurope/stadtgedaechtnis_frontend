@@ -85,11 +85,8 @@ function initializeFooterSwiping() {
                     footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
                     footer.css("padding", footerPadding);
                     slideElement(footer, container, newPadding, function() {
-                        // Fix chrome (Android) bug not showing content
-                        entryList.css("overflow", "auto");
-                        entryList.css("overflow", "hidden");
+                        $("div.entry-list ul li").css("overflow-y", direction === "up" ? "auto" : "hidden");
                     });
-                    $("div.entry-list ul li").css("overflow-y", direction === "up" ? "auto" : "hidden");
                     up = (direction === "up");
                 } else {
                     newPadding = footerSwipeHeight + (direction === "up" ? distance : -distance);

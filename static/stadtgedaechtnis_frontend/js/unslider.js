@@ -67,7 +67,7 @@
 		this.setup = function() {
 			//  Set the main element
 			this.el.css({
-				//overflow: 'hidden'
+				overflow: 'hidden'
 				//width: _.max[0]
 				//height: this.items.first().outerHeight()
 			});
