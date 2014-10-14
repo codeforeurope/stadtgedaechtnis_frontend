@@ -59,7 +59,6 @@ function slideElement(slidingElement, containerElement, newSize, callback) {
 function initializeFooterSwiping() {
     var footer = $("section#article-section");
     var footerHeading = $("div.article-heading");
-    var entryList = $("div.entry-list");
     var container = $("main");
 
     var swipeThreshold = containerHeight * 0.3;
@@ -85,7 +84,14 @@ function initializeFooterSwiping() {
                     footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
                     footer.css("padding", footerPadding);
                     slideElement(footer, container, newPadding, function() {
-                        $("div.entry-list ul li").css("overflow-y", direction === "up" ? "auto" : "hidden");
+                        var entryList = $("div.entry-list ul li");
+                        if (direction === "up") {
+                            entryList.css("overflow-y", "auto");
+                        } else {
+                            entryList.css("overflow-y", "hidden");
+                            entryList.css("overflow-y", "auto");
+                            entryList.css("overflow-y", "hidden");
+                        }
                     });
                     up = (direction === "up");
                 } else {
