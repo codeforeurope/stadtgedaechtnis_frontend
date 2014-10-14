@@ -156,7 +156,7 @@ function alertBox(message, callback) {
     // animate sliding
     var messageBox = $("div.message");
     messageBox.css("opacity", 1);
-    messageBox.animate({"top": "3rm"}, 800, "easeOutBounce", function() {
+    messageBox.animate({"top": "3em"}, 800, "easeOutBounce", function() {
         if (callback !== undefined) {
             callback();
         }
@@ -168,7 +168,7 @@ function alertBox(message, callback) {
  */
 function closeAlertBox() {
     var messageBox = $("div.message");
-    $.when(messageBox.animate({top: "-10rm"}, {duration: 230, easing: "linear", queue: false})).done(function () {
+    $.when(messageBox.animate({top: "-10em"}, {duration: 230, easing: "linear", queue: false})).done(function () {
         messageBox.css("opacity", 0);
     });
 }
