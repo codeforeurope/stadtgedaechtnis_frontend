@@ -258,7 +258,7 @@ function openArticleBox(articleBoxHeight, callback) {
             });
             listEntries.css({
                 "overflow-y": "auto",
-                "overflow-x": "hidden"
+                "overflow-x": ""
             });
         }
     } else {
@@ -766,7 +766,7 @@ function loadAndOpenNewTab(url, resizeContainerHeight, callback) {
     $.get(url, function(data) {
         var newListEntry = $("<li>").html(data).css({
                 "overflow-y": "auto",
-                "overflow-x": "hidden"
+                "overflow-x": ""
             });
         newListEntry.appendTo(entryList);
         jQueryEntryList.unslider();
@@ -1418,7 +1418,7 @@ $(function() {
                 onFinish = function() {
                     $("div.entry-list ul li").css({
                             "overflow-y": "auto",
-                            "overflow-x": "hidden"
+                            "overflow-x": ""
                         }
                     );
                     $("div.new-entry span#next-intro").click(function(event) {
