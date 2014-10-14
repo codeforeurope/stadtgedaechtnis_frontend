@@ -88,9 +88,7 @@ function initializeFooterSwiping() {
                         if (direction === "up") {
                             entryList.css("overflow-y", "auto");
                         } else {
-                            entryList.css("overflow-y", "hidden");
-                            entryList.css("overflow-y", "auto");
-                            entryList.css("overflow-y", "hidden");
+                            entryList.css("overflow-y", "");
                         }
                     });
                     up = (direction === "up");
