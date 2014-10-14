@@ -171,7 +171,6 @@ function closeAlertBox() {
     messageBox.transition({opacity: 0},{
         duration: 130,
         easing: "linear",
-        queue: false,
         complete: function() {
             messageBox.css("top", "");
             messageBox.show();
