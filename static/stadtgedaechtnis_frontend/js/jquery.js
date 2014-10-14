@@ -168,13 +168,10 @@ function alertBox(message, callback) {
  */
 function closeAlertBox() {
     var messageBox = $("div.message");
-    messageBox.transition({opacity: 0},{
-        duration: 130,
-        easing: "linear",
-        complete: function() {
-            messageBox.css("top", "");
-            messageBox.show();
-        }});
+    $.when(messageBox.transition({opacity: 0}, {duration: 130, easing: "linear"})).done(function () {
+        messageBox.css("top", "");
+        messageBox.show();
+    });
 }
 
 Date.prototype.toFormattedString = function () {
