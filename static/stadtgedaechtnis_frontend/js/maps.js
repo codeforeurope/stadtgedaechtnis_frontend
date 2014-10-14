@@ -336,7 +336,7 @@ function loadAndOpenEntryBox(stories) {
             }
             entryList += '</div>\
                         </div>';
-            if (stories[i].assets[0] !== undefined) {
+            if (stories[i].assets[0] !== undefined && stories[i].assets[0].type === "img") {
                 entryList += '<img src="' + stories[i].assets[0].sources + '" alt="' + stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>' +
                     '<p class="image-description">' + stories[i].assets[0].alt + '</p>';
             }
@@ -1203,7 +1203,7 @@ function loadAdditionalTab() {
                     alertBox(gettext("Sie müssen ein Anfangsdatum eingeben."));
                     return;
                 }
-                if ((new Date().parseDate(dateFrom) === null) || (new Date().parseDate(dateTo) === null)) {
+                if (new Date().parseDate(dateFrom) === null) {
                     alertBox(gettext("Sie müssen das Datum im korrekten Format (TT.MM.JJJJ) eingeben."));
                     return;
                 }

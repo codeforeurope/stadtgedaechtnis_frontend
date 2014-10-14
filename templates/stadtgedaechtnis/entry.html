@@ -1,7 +1,21 @@
 {% load i18n %}
-{% for image in story.get_additional_images %}
-	<img src="{{ image.sources.first.file.url }}" alt="{{ image.alt }}">
-	<p class="image-description">{{ image.alt|safe }}</p>
+{% for media_object in story.get_additional_media %}
+	{% if media_object.type == "img" %}
+		<img src="{{ image.sources.first.file.url }}" alt="{{ image.alt }}">
+		<p class="image-description">{{ image.alt|safe }}</p>
+	{% elif media_object.type == "aud" %}
+		<audio controls preload="metadata">
+			{% for source in media_object.sources.all %}
+				<source src="{{ source.file.url }}" type="{{ source.get_mime_type }}">
+			{% endfor %}
+		</audio>
+	{% elif media_object.type == "vid" %}
+		<video controls preload="metadata">
+			{% for source in media_object.sources.all %}
+				<source src="{{ source.file.url }}" type="{{ source.get_mime_type }}">
+			{% endfor %}
+		</video>
+	{% endif %}
 {% endfor %}
 <p class="date">{{ story.time_start }}{% if story.time_end %}&nbsp;{% trans "bis" %}&nbsp;{{ story.time_end }}{% endif %}</p>
 {% if story.text %}
