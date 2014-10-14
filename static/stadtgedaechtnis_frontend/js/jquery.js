@@ -169,11 +169,11 @@ function alertBox(message, callback) {
 function closeAlertBox() {
     var messageBox = $("div.message");
     messageBox.transition({opacity: 0,
+        top: "-10rem",
         duration: 130,
         easing: "linear",
         queue: false,
         complete: function() {
-            messageBox.css("top", "-10rem");
             messageBox.show();
         }});
 }
