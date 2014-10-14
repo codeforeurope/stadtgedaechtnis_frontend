@@ -168,9 +168,8 @@ function alertBox(message, callback) {
  */
 function closeAlertBox() {
     var messageBox = $("div.message");
-    $.when(messageBox.animate({top: "-10rem"}, 230, "linear")).done(function () {
+    $.when(messageBox.animate({top: "-10rem"}, {duration: 230, easing: "linear", queue: false})).done(function () {
         messageBox.css("opacity", 0);
-        messageBox.show();
     });
 }
 
