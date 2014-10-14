@@ -59,6 +59,7 @@ function slideElement(slidingElement, containerElement, newSize, callback) {
 function initializeFooterSwiping() {
     var footer = $("section#article-section");
     var footerHeading = $("div.article-heading");
+    var entryList = $("div.entry-list");
     var container = $("main");
 
     var swipeThreshold = containerHeight * 0.3;
@@ -83,7 +84,11 @@ function initializeFooterSwiping() {
                     newPadding = (direction === "up" ? maxPadding : footerHeight + "px");
                     footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
                     footer.css("padding", footerPadding);
-                    slideElement(footer, container, newPadding);
+                    slideElement(footer, container, newPadding, function() {
+                        // Fix chrome (Android) bug not showing content
+                        entryList.css("overflow", "auto");
+                        entryList.css("overflow", "hidden");
+                    });
                     $("div.entry-list ul li").css("overflow-y", direction === "up" ? "auto" : "hidden");
                     up = (direction === "up");
                 } else {
