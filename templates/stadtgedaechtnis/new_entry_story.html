@@ -11,7 +11,7 @@
 	</div>
     <form>
 		{% csrf_token %}
-        <p class="center" id="alt_input"><input type="text" id="alt" placeholder="{% trans 'Unterschrift' %}" class="alt"></p>
+        <p class="center" id="alt_input"><input type="text" id="alt" placeholder="{% trans 'Untertitel' %}" class="alt"><span class="required">*</span></p>
         <p><input type="text" id="title" readonly="readonly"></p>
         <p><label for="text">{% trans "Ihre persönliche Geschichte" %}<span class="required">*</span>:</label><textarea id="text"></textarea></p>
         <p class="form form-left"><a href="#"><span class="previous hide-text" id="previous-story">{% trans "Zurück" %}</span></a></p>

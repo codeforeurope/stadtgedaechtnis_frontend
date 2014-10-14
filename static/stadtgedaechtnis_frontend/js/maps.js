@@ -1123,9 +1123,11 @@ function loadTextTab(mediaType) {
                     var alt = $("div.new-entry input#alt").val();
                     if (text === "") {
                         alertBox(gettext("Sie müssen einen Text für Ihre persönliche Geschichte eingeben."));
+                    } else if (alt === "") {
+                        alertBox(gettext("Sie müssen eine Unterschrift für Ihr(e) Bild/Video/Tonaufnahme eingeben."));
                     } else {
                         newStory.text = text;
-                        newStory.asset.alt = alt === "" ? "temporary" : alt;
+                        newStory.asset.alt = alt;
                         loadAdditionalTab();
                     }
                 });
@@ -1190,7 +1192,7 @@ function loadAdditionalTab() {
                 var dateTo = $("div.new-entry input#dateto").val();
                 var sources = $("div.new-entry input#sources").val();
                 if (name === "" || name.split(" ").length < 2) {
-                    alertBox(gettext("Sie müssen einen Namen angeben."));
+                    alertBox(gettext("Sie müssen einen Namen (Vor- und Nachname) angeben."));
                     return;
                 }
                 if (email === "") {
@@ -1198,10 +1200,10 @@ function loadAdditionalTab() {
                     return;
                 }
                 if (dateFrom === "") {
-                    alertBox(gettext("Sie müssen ein Datum eingeben."));
+                    alertBox(gettext("Sie müssen ein Anfangsdatum eingeben."));
                     return;
                 }
-                if (new Date().parseDate(dateFrom) === null) {
+                if ((new Date().parseDate(dateFrom) === null) || (new Date().parseDate(dateTo) === null)) {
                     alertBox(gettext("Sie müssen das Datum im korrekten Format (TT.MM.JJJJ) eingeben."));
                     return;
                 }
