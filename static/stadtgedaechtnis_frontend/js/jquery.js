@@ -155,7 +155,7 @@ function alertBox(message, callback) {
     $("div.message p").html(message);
     // animate sliding
     var messageBox = $("div.message");
-    messageBox.transition({"top": "3em"}, 800, "easeOutBounce", function() {
+    messageBox.animate({"top": "3em"}, 800, "easeOutBounce", function() {
         if (callback !== undefined) {
             callback();
         }
@@ -167,7 +167,7 @@ function alertBox(message, callback) {
  */
 function closeAlertBox() {
     var messageBox = $("div.message");
-    messageBox.transition({top: "-10em"}, {duration: 230, easing: "linear"});
+    messageBox.animate({top: "-10em"}, {duration: 230, easing: "linear", queue: false});
 }
 
 Date.prototype.toFormattedString = function () {
