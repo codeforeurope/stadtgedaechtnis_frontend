@@ -555,16 +555,16 @@ function closeArticleBox(both) {
     if (channel === "mobile") {
         //mobile
         var main = $("main");
-        footer.transition({height: 0}, 200, "ease", function() {
+        footer.stop().transition({height: 0}, 200, "ease", function() {
             footer.css("padding", "0rem");
             entryList.removeAttr("style");
         });
-        main.transition({paddingBottom: "0px", marginBottom: "0px"}, 200, "ease", onFinish);
+        main.stop().transition({paddingBottom: "0px", marginBottom: "0px"}, 200, "ease", onFinish);
     } else {
         //desktop
         var map = $("section.max_map");
         var mapWidth = map.width();
-        footer.transition({width: "0%"}, 200, "ease", function() {
+        footer.stop().transition({width: "0%"}, 200, "ease", function() {
             footer.css({
                 height: "100%",
                 padding: "0rem",
@@ -573,9 +573,9 @@ function closeArticleBox(both) {
             entryList.removeAttr("style");
         });
         if (!both || both === undefined) {
-            map.transition({width: mapWidth + 380 + "px"}, 200, "ease", onFinish);
+            map.stop().transition({width: mapWidth + 380 + "px"}, 200, "ease", onFinish);
         } else {
-            map.transition({width: containerWidth + "px"}, 200, "ease", onFinish);
+            map.stop().transition({width: containerWidth + "px"}, 200, "ease", onFinish);
         }
     }
 
@@ -662,11 +662,11 @@ function closeListBox(both) {
     if (channel === "mobile") {
         // mobile
         var main = $("main");
-        list.transition({height: 0}, 200, "ease");
-        searchBox.transition({left: "-50%"}, 200, "ease");
-        navBox.transition({left: "-50%"}, 200, "ease");
+        list.stop().transition({height: 0}, 200, "ease");
+        searchBox.stop().transition({left: "-50%"}, 200, "ease");
+        navBox.stop().transition({left: "-50%"}, 200, "ease");
         if (!both || both === undefined) {
-            main.transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease", function() {
+            main.stop().transition({marginTop: "-" + headerHeight + "px", paddingTop: headerHeight + "px"}, 200, "ease", function() {
                 if (allEntries.length > 0) {
                     allEntriesList = allEntries.detach();
                 }
@@ -677,15 +677,15 @@ function closeListBox(both) {
         // desktop
         var map = $("section.max_map");
         var mapWidth = map.width();
-        list.transition({width: "0%"}, 200, "ease");
-        searchBox.transition({left: "-380px"}, 200, "ease");
-        navBox.transition({left: "-380px", width: containerWidth + "px"}, 200, "ease");
+        list.stop().transition({width: "0%"}, 200, "ease");
+        searchBox.stop().transition({left: "-380px"}, 200, "ease");
+        navBox.stop().transition({left: "-380px", width: containerWidth + "px"}, 200, "ease");
         if (!both || both === undefined) {
-            map.transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
+            map.stop().transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
                 google.maps.event.trigger(userLocation.map, "resize");
             });
         } else {
-            map.transition({width: containerWidth + "px"}, 200, "ease", function() {
+            map.stop().transition({width: containerWidth + "px"}, 200, "ease", function() {
                 if (allEntries.length > 0) {
                     allEntriesList = allEntries.detach();
                 }
