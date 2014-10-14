@@ -49,8 +49,8 @@ function resizeContainer() {
  * @param [callback]
  */
 function slideElement(slidingElement, containerElement, newSize, callback) {
-    slidingElement.transition({height: newSize}, 200, "ease");
-    containerElement.transition({paddingBottom: newSize, marginBottom: "-" + newSize}, 200, "ease", callback);
+    slidingElement.stop().transition({height: newSize}, 200, "ease");
+    containerElement.stop().transition({paddingBottom: newSize, marginBottom: "-" + newSize}, 200, "ease", callback);
 }
 
 /**
