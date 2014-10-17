@@ -18,7 +18,11 @@ function errorLocationCallback (error) {
     // error callback
     userLocation.moveToLocation(userLocation.DEFAULT_LAT, userLocation.DEFAULT_LON);
     userLocation.locationAvailable = false;
-    alertBox(gettext("Ihre Position konnte nicht ermittelt werden. Nachricht: ") + error.message);
+    var message = "";
+    if (error.code === error.PERMISSION_DENIED) {
+            message = gettext("Um die Lokalisierungsfunktion zu nutzen, müssen Sie dieser Webseite Zugriff auf Ihren Standort geben.");
+    }
+    alertBox(gettext("Ihre Position konnte nicht ermittelt werden. ") + message);
 }
 
 /**
