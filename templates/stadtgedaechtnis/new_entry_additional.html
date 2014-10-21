@@ -6,13 +6,13 @@
         <p><label for="name">{% trans "Ihr Name" %}<span class="required">*</span>:</label><input type="text" id="name"></p>
         <p><label for="email">{% trans "Ihre E-Mail-Adresse" %}<span class="required">*</span>:</label><input type="email" id="email"></p>
         <p>{% trans "Zeitraum Ihrer Geschichte:" %}
-        <label for="datefrom">{% trans "Von" %} {% trans "(Format TT.MM.JJJJ)" %}<span class="required">*</span>:</label><input type="date" id="datefrom">
-        <label for="dateto">{% trans "Bis" %} {% trans "(Format TT.MM.JJJJ)" %}:</label><input type="date" id="dateto">
+        <label for="datefrom">{% trans "Von" %}<span class="required">*</span>:</label><input type="date" id="datefrom" placeholder="{% trans "(Format TT.MM.JJJJ)" %}">
+        <label for="dateto">{% trans "Bis" %}:</label><input type="date" id="dateto" placeholder="{% trans "(Format TT.MM.JJJJ)" %}">
         </p>
 		<p>
 			<label for="sources">{% trans "Ihre Quellen" %}:</label><input type="text" id="sources">
 		</p>
-        <p class="form form-left"><a href="#"><span class="previous hide-text" id="previous-additional">{% trans "Zurück" %}</span></a></p>
-        <p class="form form-right"><a href="#"><span class="next hide-text" id="next-additional">{% trans "Weiter" %}</span></a></p>
+		<p class="form form-left"><a href="#"><span class="previous hide-text" id="previous-additional"></span><span class="float-left">{% trans "Zurück" %}</span></a></p>
+		<p class="form form-right"><a href="#"><span class="next hide-text" id="next-additional"></span><span class="float-right">{% trans "Weiter" %}</span></a></p>
     </form>
 </div>

@@ -438,11 +438,23 @@ section#article-section {
 
       p.form-right {
         float: right;
+
+        span.float-right {
+          margin-right: 0.7rem;
+          margin-top: 0.2rem;
+          float: right;
+        }
       }
 
       p.form-left {
         float: left;
         min-height: 36px;
+
+        span.float-left {
+          margin-left: 0.7rem;
+          margin-top: 0.2rem;
+          float: left;
+        }
       }
     }
 

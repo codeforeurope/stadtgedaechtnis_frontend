@@ -770,9 +770,19 @@ section#article-section div.new-entry form p.form {
 section#article-section div.new-entry form p.form-right {
   float: right;
 }
+section#article-section div.new-entry form p.form-right span.float-right {
+  margin-right: 0.7rem;
+  margin-top: 0.2rem;
+  float: right;
+}
 section#article-section div.new-entry form p.form-left {
   float: left;
   min-height: 36px;
+}
+section#article-section div.new-entry form p.form-left span.float-left {
+  margin-left: 0.7rem;
+  margin-top: 0.2rem;
+  float: left;
 }
 section#article-section div.new-entry label {
   display: block;
