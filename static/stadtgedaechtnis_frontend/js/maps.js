@@ -717,20 +717,26 @@ function closeBoxes(mouseEvent, force) {
         userLocation.selectedLocation = null;
         addArticleMenu.removeClass("hover");
     } else {
-        var text = gettext("Wollen Sie den Vorgang wirklich abbrechen? Sämtliche bisherige Eingaben werden verworfen.").toString();
-        var yes = gettext("Ja").toString();
-        var no = gettext("Nein").toString();
-        alertBox(text + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="yes">' + yes + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="no">' + no + '</a>', function() {
-            $("div.message a#yes").click(function() {
-                closeAlertBox();
-                closeBoxes(undefined, true);
-                return false;
+        if (selectLocationMode) {
+            var lat = mouseEvent.latLng.lat();
+            var lon = mouseEvent.latLng.lng();
+            newLocation(lat, lon);
+        } else {
+            var text = gettext("Wollen Sie den Vorgang wirklich abbrechen? Sämtliche bisherige Eingaben werden verworfen.").toString();
+            var yes = gettext("Ja").toString();
+            var no = gettext("Nein").toString();
+            alertBox(text + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="yes">' + yes + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="no">' + no + '</a>', function () {
+                $("div.message a#yes").click(function () {
+                    closeAlertBox();
+                    closeBoxes(undefined, true);
+                    return false;
+                });
+                $("div.message a#no").click(function () {
+                    closeAlertBox();
+                    return false;
+                })
             });
-            $("div.message a#no").click(function() {
-                closeAlertBox();
-                return false;
-            })
-        });
+        }
     }
 }
 
@@ -861,7 +867,6 @@ function Location() {
     this.positionMarker = null;
     this.locations = {};
     this.currentInfobox = null;
-    this.locationAvailable = false;
     this.selectedLocation = null;
 }
 
@@ -894,24 +899,6 @@ Location.prototype.moveToLocation = function(lat, lng) {
         var position = new google.maps.LatLng(lat, lng);
         this.map.panTo(position);
         searchForEntries();
-    }
-};
-
-/**
- * Retrieves the current position without a callback.
- */
-Location.prototype.getCurrentLocation = function() {
-    if (userLocation.positionMarker) {
-        var googlePosition = userLocation.positionMarker.getPosition();
-        return ({
-            lat: googlePosition.lat(),
-            lon: googlePosition.lon()
-        });
-    } else {
-        return ({
-            lat: userLocation.DEFAULT_LAT,
-            lon: userLocation.DEFAULT_LON
-        });
     }
 };
 
@@ -967,8 +954,10 @@ function initializeMap() {
 
 /**
  * Enables the user to add a new location.
+ * @param [lat] latitude of the new location marker
+ * @param [lon] longitude of the new location marker
  */
-function newLocation() {
+function newLocation(lat, lon) {
     var newButton = $("div.new-entry span.new");
     var inputField = $("div.new-entry span#selected-location");
     var entryList = $("div.entry-list ul li");
@@ -983,14 +972,20 @@ function newLocation() {
             inputField.prop("contenteditable", "false");
         }
     };
+    if (lat === undefined) {
+        lat = userLocation.map.getCenter().lat();
+    }
+    if (lon === undefined) {
+        lon =  userLocation.map.getCenter().lng();
+    }
     userLocation.newLocationMarker = new google.maps.Marker({
         map: userLocation.map,
-        position: userLocation.map.getCenter(),
+        position: new google.maps.LatLng(lat, lon),
         icon: selectedMarkerIcon,
         animation: google.maps.Animation.DROP,
         draggable: true
     });
-    markerSetNewLocation(userLocation.map.getCenter().lat(), userLocation.map.getCenter().lng());
+    markerSetNewLocation(lat, lon);
     newButton.removeClass("new").addClass("edit").unbind("click").click(function() {
         entryList.unbind("mousedown");
         inputField.prop("contenteditable", "true").on("focus click", function() {
@@ -1450,7 +1445,10 @@ $(function() {
             }
             openArticleBox(openFooterHeight);
             $("section#article-section div.close").show();
-            $("section#article-section div.close img").click(closeBoxes);
+            $("section#article-section div.close img").click(function() {
+                selectLocationMode = false;
+                closeBoxes();
+            });
             $.get(newEntryFormURL, function (data) {
                 userLocation.currentInfobox = "dummy";
                 var listEntry = $("<li>");
