@@ -1126,11 +1126,13 @@ function loadTextTab(mediaType) {
                     var alt = $("div.new-entry input#alt").val();
                     if (text === "") {
                         alertBox(gettext("Sie müssen einen Text für Ihre persönliche Geschichte eingeben."));
-                    } else if (alt === "") {
-                        alertBox(gettext("Sie müssen eine Unterschrift für Ihr(e) Bild/Video/Tonaufnahme eingeben."));
+                    } else if (alt === "" && newStory.asset.id !== null) {
+                        alertBox(gettext("Sie müssen einen Untertitel für Ihr(e) Bild/Video/Tonaufnahme eingeben."));
                     } else {
                         newStory.text = text;
-                        newStory.asset.alt = alt;
+                        if (newStory.asset.id !== null) {
+                            newStory.asset.alt = alt;
+                        }
                         loadAdditionalTab();
                     }
                 });
