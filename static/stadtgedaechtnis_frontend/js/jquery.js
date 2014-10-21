@@ -201,7 +201,19 @@ function isNumber(obj) { return !isNaN(parseFloat(obj)) }
  *
  * initialize jQuery hooks
  */
+
+var windowWidth = $(window).width();
+
 $(function() {
     resizeContainer();
     $("img.load-more").hide();
+
+    $(window).resize(function() {
+        clearTimeout($.data(this, 'resizeTimer'));
+        $.data(this, 'resizeTimer', setTimeout(function() {
+            if(windowWidth != $(window).width()){
+                window.location.href = window.location.href;
+            }
+        }, 200));
+    });
 });
