@@ -307,7 +307,9 @@ function resizeArticleBox(articleBoxHeight, callback) {
             }
         });
     } else {
-        callback();
+        if (callback !== undefined && callback !== null) {
+            callback();
+        }
     }
 }
 /**
@@ -1039,6 +1041,7 @@ function loadTitleTab(mediaType) {
             return false;
         });
         $("span#no-location").click(function (event) {
+            $("span#selected-location").text("");
             selectLocationMode = false;
             if (resetOldMarker !== undefined) {
                 resetOldMarker();
