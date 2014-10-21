@@ -1223,6 +1223,7 @@ function loadAdditionalTab() {
                 loadPreviewTab(function () {
                     var loadMoreImg = $("div.new-entry img#load-more-entry");
                     var entryMoreContent = $("div.new-entry article.entry-more");
+                    var formButtons = $("div.new-entry p, div.new-entry form");
                     loadMoreImg.hide();
                     var entryUrl = django_js_utils.urls.resolve("entry-view-exact", {pk: newStory.id});
                     $.get(entryUrl, function (data) {
@@ -1230,6 +1231,7 @@ function loadAdditionalTab() {
                     });
                     $("div.new-entry span#next-preview").click(function () {
                         entryMoreContent.empty();
+                        formButtons.empty();
                         loadMoreImg.show();
                         var postEntryUrl = django_js_utils.urls.resolve("entry-send-mail", {pk: newStory.id, email: newStory.authorEmail});
                         ajaxRequestWithCSRF(postEntryUrl, "POST", {
