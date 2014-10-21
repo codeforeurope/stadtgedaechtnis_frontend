@@ -1039,6 +1039,10 @@ function loadTitleTab(mediaType) {
             return false;
         });
         $("span#no-location").click(function (event) {
+            selectLocationMode = false;
+            if (resetOldMarker !== undefined) {
+                resetOldMarker();
+            }
             newStory.location = null;
             openTitleTab(mediaType);
             event.stopPropagation();
