@@ -24,7 +24,9 @@
 {{ story.text|safe }}
 {% endif %}
 {% if story.sources %}<p class="sources">{% trans "Quellen" %}:&nbsp;{{ story.sources }}</p>{% endif %}
+{% if story.categories.count > 0 %}
 <p class="categories"><span class="category">{% trans "Kategorien" %}:&nbsp;</span>
     {{ story.categories.all|join:", " }}
 </p>
+{% endif %}
 <p class="author">{% trans "Autor_in" %}:&nbsp;{{ story.author.first_name }} {{ story.author.last_name }}</p>
