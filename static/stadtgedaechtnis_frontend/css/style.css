@@ -849,13 +849,16 @@ section#article-section article.entry-more p.sources {
   font-size: .8rem;
   font-style: italic;
 }
-section#article-section article.entry-more p.date {
+section#article-section article.entry-more p.date, section#article-section article.entry-more p.categories {
   background: white;
   border-left: 3px solid #999;
   font-size: 0.8rem;
   font-weight: bold;
   padding: 0 3px;
   margin-right: .5rem;
+}
+section#article-section article.entry-more p.date span.category, section#article-section article.entry-more p.categories span.category {
+  font-weight: normal;
 }
 section#article-section article.entry-more p.image-description {
   margin-top: 0;
