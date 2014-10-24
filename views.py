@@ -3,6 +3,7 @@ __author__ = 'jpi'
 from django.views.generic.detail import DetailView
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+
 from stadtgedaechtnis_backend.models import Story, Asset
 from stadtgedaechtnis_frontend.forms import NewStoryImageForm
 

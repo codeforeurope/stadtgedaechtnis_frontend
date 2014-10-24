@@ -6,8 +6,10 @@ Created on 26.02.2014
 
 from django.conf.urls import patterns, url, include
 from django.conf import settings
+
 from stadtgedaechtnis_frontend.views import *
 from stadtgedaechtnis_frontend.forms import NewStoryAudioForm, NewStoryImageForm, NewStoryVideoForm, NewStoryTitleForm
+
 
 js_info_dict = {
     'packages': ('stadtgedaechtnis_frontend',),
