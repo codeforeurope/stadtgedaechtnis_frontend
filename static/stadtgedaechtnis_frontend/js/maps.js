@@ -1114,7 +1114,6 @@ function loadTextTab(mediaType) {
         ajaxRequestWithCSRF(postNewStoryUrl, "POST", {
             title: newStory.title,
             abstract: "temporary",
-            author: 1,
             time_start: dateString,
             location: locationId
         }, function (data) {
