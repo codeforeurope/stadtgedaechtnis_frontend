@@ -443,8 +443,8 @@ function showAllEntries() {
         map.transition({width: mapWidth - 380 + "px"}, 200, "ease");
         listSection.transition({width: "380px"}, 200, "ease", function() {
             if (allEntriesList !== null) {
-                allEntriesList = null;
                 allEntriesList.appendTo(entryList);
+                allEntriesList = null;
                 $("img#load-more-list").hide();
             } else {
                 if (query === "") {
