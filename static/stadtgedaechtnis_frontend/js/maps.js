@@ -688,6 +688,9 @@ function closeListBox(both) {
         navBox.stop().transition({left: "-380px", width: containerWidth + "px"}, 200, "ease");
         if (!both || both === undefined) {
             map.stop().transition({width: mapWidth + 380 + "px"}, 200, "ease", function() {
+                if (allEntries.length > 0) {
+                    allEntriesList = allEntries.detach();
+                }
                 google.maps.event.trigger(userLocation.map, "resize");
             });
         } else {
