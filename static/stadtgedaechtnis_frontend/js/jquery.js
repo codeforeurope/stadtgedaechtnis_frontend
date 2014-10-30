@@ -211,7 +211,7 @@ $(function() {
     $(window).resize(function() {
         clearTimeout($.data(this, 'resizeTimer'));
         $.data(this, 'resizeTimer', setTimeout(function() {
-            if(windowWidth != $(window).width()){
+            if(windowWidth !== $(window).width() && !newEntryMode){
                 window.location.href = window.location.href;
             }
         }, 200));
