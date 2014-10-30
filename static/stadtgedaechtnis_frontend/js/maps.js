@@ -977,10 +977,10 @@ function newLocation(lat, lon) {
             inputField.prop("contenteditable", "false");
         }
     };
-    if (lat === undefined) {
+    if (lat === undefined || typeof lat !== "number") {
         lat = userLocation.map.getCenter().lat();
     }
-    if (lon === undefined) {
+    if (lon === undefined || typeof lon !== "number") {
         lon =  userLocation.map.getCenter().lng();
     }
     userLocation.newLocationMarker = new google.maps.Marker({
