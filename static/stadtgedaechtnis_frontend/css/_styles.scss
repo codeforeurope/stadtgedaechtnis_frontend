@@ -19,6 +19,32 @@ body {
   overflow: hidden;
 }
 
+body.dark {
+  section#article-section {
+    background: none repeat scroll 0 0 #4f4f4f;
+    color: #eeeeee;
+
+    article.entry-more {
+      p.date, p.categories {
+        color: black;
+      }
+    }
+  }
+}
+
+body.grey {
+  section#article-section {
+    background: none repeat scroll 0 0 #dadada;
+
+    article.entry-more {
+      p.date, p.categories {
+        background: none repeat scroll 0 0 gray;
+        color: white;
+      }
+    }
+  }
+}
+
 input:focus,
 select:focus,
 textarea:focus,
