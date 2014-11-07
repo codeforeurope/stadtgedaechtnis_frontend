@@ -1023,7 +1023,7 @@ function loadTitleTab(mediaType) {
     newStory = new Story();
     if (!titleTabLoaded) {
         $("div.new-entry span.new").click(newLocation);
-        $("span#next-location").click(function (event) {
+        $("p#next-location").click(function (event) {
             selectLocationMode = false;
             if (userLocation.newLocationMarker !== undefined) {
                 var lat = userLocation.newLocationMarker.getPosition().lat().toFixed(13);
@@ -1050,7 +1050,7 @@ function loadTitleTab(mediaType) {
             event.stopPropagation();
             return false;
         });
-        $("span#no-location").click(function (event) {
+        $("p#no-location").click(function (event) {
             $("span#selected-location").text("");
             selectLocationMode = false;
             if (resetOldMarker !== undefined) {
@@ -1075,7 +1075,7 @@ function openTitleTab(mediaType) {
                 userLocation.map.panTo(new google.maps.LatLng(newStory.location.latitude, newStory.location.longitude));
                 userLocation.map.setZoom(17);
             }
-            $("span#next-text").click(function (event) {
+            $("p#next-text").click(function (event) {
                 var title = $("input#id_title").val();
                 if (title === "") {
                     alertBox(gettext("Sie müssen einen Titel für Ihre Geschichte eingeben."));
@@ -1086,7 +1086,7 @@ function openTitleTab(mediaType) {
                 event.stopPropagation();
                 return false;
             });
-            $("span#previous-text").click(function (event) {
+            $("p#previous-text").click(function (event) {
                 resizeArticleBox(footerHeight * 1.75);
                 $("section#article-section div.entry-list").data("unslider").prev();
                 selectLocationMode = true;
@@ -1133,7 +1133,7 @@ function loadTextTab(mediaType) {
                     // no picture uploaded
                     $("div.new-entry p#alt_input").hide(); // hide first paragraph (with alt input)
                 }
-                $("div.new-entry span#next-story").click(function () {
+                $("div.new-entry p#next-story").click(function () {
                     var text = $("div.new-entry textarea#text").val();
                     var alt = $("div.new-entry input#alt").val();
                     if (text === "") {
@@ -1148,7 +1148,7 @@ function loadTextTab(mediaType) {
                         loadAdditionalTab();
                     }
                 });
-                $("div.new-entry span#previous-story").click(function(event) {
+                $("div.new-entry p#previous-story").click(function(event) {
                     resizeArticleBox(containerHeight * 0.75);
                     $("div.new-entry input#id_file").attr("disabled", "disabled");
                     $("section#article-section div.entry-list").data("unslider").prev();
@@ -1202,7 +1202,7 @@ function loadAdditionalTab() {
     if (!additionalTabLoaded) {
         var additionalTabUrl = django_js_utils.urls.resolve("new-story-additional");
         loadAndOpenNewTab(additionalTabUrl, containerHeight, function () {
-            $("div.new-entry span#next-additional").click(function () {
+            $("div.new-entry p#next-additional").click(function () {
                 var name = $("div.new-entry input#name").val();
                 var email = $("div.new-entry input#email").val();
                 var dateFrom = $("div.new-entry input#datefrom").val();
@@ -1238,7 +1238,7 @@ function loadAdditionalTab() {
                     $.get(entryUrl, function (data) {
                         entryMoreContent.html(data);
                     });
-                    $("div.new-entry span#next-preview").click(function () {
+                    $("div.new-entry p#next-preview").click(function () {
                         entryMoreContent.empty();
                         formButtons.empty();
                         loadMoreImg.show();
@@ -1255,7 +1255,7 @@ function loadAdditionalTab() {
                             alertBox(gettext("Ihr Beitrag wurde abgesendet und wird nun von den Mitarbeiter_Innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
                         })
                     });
-                    $("div.new-entry span#previous-preview").click(function(event) {
+                    $("div.new-entry p#previous-preview").click(function(event) {
                         $("section#article-section div.entry-list").data("unslider").prev();
                         event.stopPropagation();
                         return false;
@@ -1263,7 +1263,7 @@ function loadAdditionalTab() {
                 });
                 return false;
             });
-            $("div.new-entry span#previous-additional").click(function(event) {
+            $("div.new-entry p#previous-additional").click(function(event) {
                 $("section#article-section div.entry-list").data("unslider").prev();
                 event.stopPropagation();
                 return false;
@@ -1451,7 +1451,7 @@ $(function() {
                             "overflow-x": ""
                         }
                     );
-                    $("div.new-entry span#next-intro").click(function(event) {
+                    $("div.new-entry p#next-intro").click(function(event) {
                         selectLocationMode = true;
                         if (!titleTabLoaded) {
                             var locationTabUrl = django_js_utils.urls.resolve("new-story-location");
