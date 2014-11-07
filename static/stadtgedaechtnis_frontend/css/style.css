@@ -759,6 +759,33 @@ section#article-section p {
   -ms-hyphens: auto;
   hyphens: auto;
 }
+section#article-section div.new-entry h3 {
+  margin: .8rem 0 .8rem 0;
+  text-align: center;
+}
+section#article-section div.new-entry audio, section#article-section div.new-entry video {
+  width: 100%;
+}
+section#article-section div.new-entry input[type="text"], section#article-section div.new-entry input[type="email"], section#article-section div.new-entry input[type="date"], section#article-section div.new-entry textarea {
+  width: 100%;
+  border-style: none none solid;
+  border-width: 0 0 1px;
+  border-color: black;
+  font-weight: bold;
+  background: transparent;
+}
+section#article-section div.new-entry input[type="text"].alt {
+  width: 80%;
+  font-size: .8rem;
+  text-align: center;
+}
+section#article-section div.new-entry textarea {
+  height: 8rem;
+  margin-top: .5rem;
+}
+section#article-section div.new-entry img.entry-image {
+  display: none;
+}
 section#article-section div.new-entry p {
   -moz-hyphens: none;
   -o-hyphens: none;
@@ -904,34 +931,6 @@ div.close {
 
 div.close:hover {
   opacity: 1;
-}
-
-div.new-entry h3 {
-  margin: 0 0 .75rem 0;
-  text-align: center;
-}
-div.new-entry audio, div.new-entry video {
-  width: 100%;
-}
-div.new-entry input[type="text"], div.new-entry input[type="email"], div.new-entry input[type="date"], div.new-entry textarea {
-  width: 100%;
-  border-style: none none solid;
-  border-width: 0 0 1px;
-  border-color: black;
-  font-weight: bold;
-  background: transparent;
-}
-div.new-entry input[type="text"].alt {
-  width: 80%;
-  font-size: .8rem;
-  text-align: center;
-}
-div.new-entry textarea {
-  height: 8rem;
-  margin-top: .5rem;
-}
-div.new-entry img.entry-image {
-  display: none;
 }
 
 @media screen and (max-width: 360px) {

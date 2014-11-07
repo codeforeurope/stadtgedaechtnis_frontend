@@ -424,6 +424,39 @@ section#article-section {
   }
 
   div.new-entry {
+    h3 {
+      margin: .8rem 0 .8rem 0;
+      text-align: center;
+    }
+
+    audio, video {
+      width: 100%;
+    }
+
+    input[type="text"], input[type="email"], input[type="date"], textarea {
+      width: 100%;
+      border-style: none none solid;
+      border-width: 0 0 1px;
+      border-color: black;
+      font-weight: bold;
+      background: transparent;
+    }
+
+    input[type="text"].alt {
+      width: 80%;
+      font-size: .8rem;
+      text-align: center;
+    }
+
+    textarea {
+      height: 8rem;
+      margin-top: .5rem;
+    }
+
+    img.entry-image {
+      display: none;
+    }
+
     p {
       -moz-hyphens: none;
       -o-hyphens: none;
@@ -597,40 +630,7 @@ div.close:hover {
   opacity: 1;
 }
 
-div.new-entry {
-  h3 {
-    margin: 0 0 .75rem 0;
-    text-align: center;
-  }
 
-  audio, video {
-    width: 100%;
-  }
-
-  input[type="text"], input[type="email"], input[type="date"], textarea {
-    width: 100%;
-    border-style: none none solid;
-    border-width: 0 0 1px;
-    border-color: black;
-    font-weight: bold;
-    background: transparent;
-  }
-
-  input[type="text"].alt {
-    width: 80%;
-    font-size: .8rem;
-    text-align: center;
-  }
-
-  textarea {
-    height: 8rem;
-    margin-top: .5rem;
-  }
-
-  img.entry-image {
-    display: none;
-  }
-}
 
 @media screen and (max-width: 360px) {
   // very small styles
