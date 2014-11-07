@@ -166,8 +166,9 @@ function alertBox(message, callback) {
  * Closes the alert box.
  */
 function closeAlertBox() {
-    $("div.message").stop().transition({top: "-10rem"}, {duration: 230, easing: "linear", queue: false});
-    $("div.message p").html("");
+    $("div.message").stop().transition({top: "-10rem"}, {duration: 230, easing: "linear", queue: false, complete: function() {
+        $("div.message p").html("");
+    }});
 }
 
 Date.prototype.toFormattedString = function () {
