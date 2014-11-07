@@ -97,9 +97,9 @@ function initializeFooterSwiping() {
                         paddingBottom: newPadding + "px",
                         marginBottom: "-" + newPadding + "px"
                     });
-                    /*footer.css({
+                    footer.css({
                         height: newPadding + "px"
-                    })*/
+                    });
                 }
             }
         },
