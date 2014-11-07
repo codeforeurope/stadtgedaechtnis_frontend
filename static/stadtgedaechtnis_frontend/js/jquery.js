@@ -75,14 +75,13 @@ function initializeFooterSwiping() {
                 var footerPadding;
                 if (phase === "cancel") {
                     newPadding = (direction === "up" ? footerHeight + "px": maxPadding);
-                    footerPadding = (direction === "up" ? "0.8rem 0.8rem 0 0.8rem" : "0.8rem");
-                    footer.css("padding", footerPadding);
+                    //footerPadding = (direction === "up" ? "0.8rem 0.8rem 0 0.8rem" : "0.8rem");
+                    //footer.css("padding", footerPadding);
                     slideElement(footer, container, newPadding);
-                    footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
                 } else if (phase === "end") {
                     newPadding = (direction === "up" ? maxPadding : footerHeight + "px");
-                    footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
-                    footer.css("padding", footerPadding);
+                    //footerPadding = (direction === "up" ? "0.8rem" : "0.8rem 0.8rem 0 0.8rem");
+                    //footer.css("padding", footerPadding);
                     slideElement(footer, container, newPadding, function() {
                         var entryList = $("div.entry-list ul li");
                         if (direction === "up") {
@@ -98,9 +97,9 @@ function initializeFooterSwiping() {
                         paddingBottom: newPadding + "px",
                         marginBottom: "-" + newPadding + "px"
                     });
-                    footer.css({
+                    /*footer.css({
                         height: newPadding + "px"
-                    })
+                    })*/
                 }
             }
         },
