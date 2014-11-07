@@ -388,6 +388,7 @@ section#article-section {
         div.article-heading-click {
           flex-basis: 5%;
           -webkit-flex-basis: 5%;
+          min-width: 24px;
         }
 
         div.article-heading-click.next {

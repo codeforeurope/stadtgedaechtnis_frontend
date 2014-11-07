@@ -732,6 +732,7 @@ section#article-section div.entry-list div.article-heading div.flex-heading div.
 section#article-section div.entry-list div.article-heading div.flex-heading div.article-heading-click {
   flex-basis: 5%;
   -webkit-flex-basis: 5%;
+  min-width: 24px;
 }
 section#article-section div.entry-list div.article-heading div.flex-heading div.article-heading-click.next {
   text-align: right;
