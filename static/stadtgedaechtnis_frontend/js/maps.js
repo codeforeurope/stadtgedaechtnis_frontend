@@ -1252,7 +1252,7 @@ function loadAdditionalTab() {
                             additionalTabLoaded = false;
                             previewTabLoaded = false;
                             closeArticleBox(false);
-                            alertBox(gettext("Ihr Beitrag wurde abgesendet und wird nun von den Mitarbeiter_Innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
+                            alertBox(gettext("Ihr Beitrag wurde abgesendet und wird nun von den Mitarbeiter_innen des Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."));
                         })
                     });
                     $("div.new-entry p#previous-preview").click(function(event) {

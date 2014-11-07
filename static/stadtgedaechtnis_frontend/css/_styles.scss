@@ -811,6 +811,13 @@ div.close:hover {
     width: 30%;
     left: 35%;
   }
+  section#article-section {
+    div.new-entry {
+      h3 {
+        margin: 0 0 0.8rem 0;
+      }
+    }
+  }
 
   header[role="banner"] {
     width: calc(100% + 380px);
