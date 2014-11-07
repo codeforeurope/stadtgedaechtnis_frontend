@@ -299,7 +299,7 @@ function resizeArticleBox(articleBoxHeight, callback) {
         // only necessary in mobile view
         var footer = $("section#article-section");
         var main = $("main");
-        footer.css("padding", "0.8rem 0.8rem 0 0.8rem");
+        footer.css("padding", "0 0.8rem 0 0.8rem");
         footer.stop().transition({height: articleBoxHeight + "px"}, 200, "ease");
         main.stop().transition({paddingBottom: articleBoxHeight + "px", marginBottom: "-" + articleBoxHeight + "px"}, 200, "ease", function () {
             if (callback !== undefined && callback !== null) {
@@ -324,23 +324,30 @@ function loadAndOpenEntryBox(stories) {
     for (var i = 0; i < stories.length; i++) {
         // create list of entrys for slider
         if (!stories[i].temporary) {
-            entryList += '<li data-entry="' + i + '" data-id="' + stories[i].id + '">\
-                        <div class="article-heading">\
-                            <div class="article-heading-row">';
+            entryList += '<li data-entry="' + i + '" data-id="' + stories[i].id + '">\n\
+                        <div class="article-heading">\n\
+                            <div class="slide-heading">\n\
+                                <img src="static/stadtgedaechtnis_frontend/img/slide.png" class="mobile">\n\
+                            </div>\n\
+                            <div class="flex-heading">\
+                            <div class="article-heading-click previous">\n';
             if (storyCount > 0) {
-                entryList += '    <a href="#" class="previous"><div class="article-heading-cell entry-slide previous">\
-                <img src="/static/stadtgedaechtnis_frontend/img/left.png">\
-            </div></a>'
+                entryList += '<a href="#" class="previous">\n\
+                <img src="/static/stadtgedaechtnis_frontend/img/left.png">\n\
+            </a>\n'
             }
-            entryList += '<div class="article-heading-cell">\
-                                    <h3 id="article-heading-' + i + '">' + stories[i].title + '</h3>\
-                                </div>';
+            entryList += '</div>\n\
+            <div class="article-heading-flex">\n\
+                                    <h3 id="article-heading-' + i + '">' + stories[i].title + '</h3>\n\
+                                </div>\
+                                <div class="article-heading-click next">\n';
             if (storyCount < stories.length - temporaryCount - 1) {
-                entryList += '<a href="#" class="next"><div class="article-heading-cell entry-slide next">\
-                <img src="/static/stadtgedaechtnis_frontend/img/right.png">\
-            </div></a>';
+                entryList += '<a href="#" class="next">\n\
+                <img src="/static/stadtgedaechtnis_frontend/img/right.png">\n\
+            </a>\n';
             }
-            entryList += '</div>\
+            entryList += '</div>\n\
+            </div>\
                         </div>';
             if (stories[i].assets[0] !== undefined && stories[i].assets[0].type === "img") {
                 entryList += '<img src="' + stories[i].assets[0].sources + '" alt="' + stories[i].assets[0].alt + '" id="entry-first-' + i + '"/>' +
@@ -365,11 +372,11 @@ function loadAndOpenEntryBox(stories) {
     if (stories.length > 1) {
         // Show next and previous buttons
         $("div.entry-slide").show();
-        $("div.article-heading-row a.previous").unbind("click").click(function() {
+        $("div.article-heading-click.previous").unbind("click").click(function() {
             jQueryEntryList.data("unslider").prev();
             return false;
         });
-        $("div.article-heading-row a.next").unbind("click").click(function() {
+        $("div.article-heading-click.next").unbind("click").click(function() {
             jQueryEntryList.data("unslider").next();
             return false;
         });

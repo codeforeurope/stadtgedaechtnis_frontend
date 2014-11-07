@@ -123,20 +123,23 @@
                 <ul>
                     <li>
                         <div class="article-heading">
-                            <div class="article-heading-row">
-                                <a href="#" class="previous">
-                                    <div class="article-heading-cell entry-slide previous">
-                                        <img src="{%static "stadtgedaechtnis_frontend/img/left.png" %}">
-                                    </div>
-                                </a>
-                                <div class="article-heading-cell">
+							<div class="slide-heading">
+								<img src="{% static "stadtgedaechtnis_frontend/img/slide.png" %}" class="mobile">
+							</div>
+                            <div class="flex-heading">
+								<div class="article-heading-click">
+									<a href="#" class="previous">
+										<a href="#"><img src="{%static "stadtgedaechtnis_frontend/img/left.png" %}"></a>
+									</a>
+								</div>
+                                <div class="article-heading-flex">
                                     <h3></h3>
                                 </div>
-                                <a href="#" class="next">
-                                    <div class="article-heading-cell entry-slide next">
-                                        <a href="#"><img src="{%static "stadtgedaechtnis_frontend/img/right.png" %}"></a>
-                                    </div>
-                                </a>
+								<div class="article-heading-click">
+									<a href="#" class="next">
+										<a href="#"><img src="{%static "stadtgedaechtnis_frontend/img/right.png" %}"></a>
+									</a>
+								</div>
                             </div>
                         </div>
                         <img src="" alt="" id="entry-first"/>

@@ -637,23 +637,6 @@ div.add-articles ul li#vid {
   -webkit-background-size: 28px 28px;
 }
 
-div.article-heading {
-  width: 100%;
-  display: table;
-}
-div.article-heading div.article-heading-row {
-  display: table-row;
-}
-div.article-heading div.article-heading-row div.article-heading-cell {
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 .2em .5em .2em;
-  text-align: center;
-}
-div.article-heading div.article-heading-row div.article-heading-cell h3 {
-  margin: 0;
-}
-
 section.slide-in {
   margin: 0;
   padding: 0;
@@ -718,15 +701,40 @@ section#article-section div.entry-list {
   height: 100%;
   width: 100%;
 }
+section#article-section div.entry-list div.article-heading {
+  width: 100%;
+  margin-bottom: .5rem;
+}
+section#article-section div.entry-list div.article-heading div.slide-heading {
+  width: 100%;
+  text-align: center;
+}
 section#article-section div.entry-list div.article-heading img {
   padding-top: .4rem;
   width: auto;
   height: auto;
   cursor: pointer;
 }
-section#article-section div.entry-list div.article-heading div.entry-slide {
-  height: 24px;
-  width: 24px;
+section#article-section div.entry-list div.article-heading div.flex-heading {
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  -webkit-align-items: center;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+}
+section#article-section div.entry-list div.article-heading div.flex-heading div.article-heading-flex {
+  text-align: center;
+}
+section#article-section div.entry-list div.article-heading div.flex-heading div.article-heading-flex h3 {
+  margin: 0;
+}
+section#article-section div.entry-list div.article-heading div.flex-heading div.article-heading-click {
+  flex-basis: 5%;
+  -webkit-flex-basis: 5%;
+}
+section#article-section div.entry-list div.article-heading div.flex-heading div.article-heading-click.next {
+  text-align: right;
 }
 section#article-section div.entry-list ul {
   list-style: none;
