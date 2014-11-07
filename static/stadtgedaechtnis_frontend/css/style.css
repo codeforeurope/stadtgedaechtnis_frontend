@@ -404,22 +404,6 @@ body {
   overflow: hidden;
 }
 
-body.dark section#article-section {
-  background: none repeat scroll 0 0 #4f4f4f;
-  color: #eeeeee;
-}
-body.dark section#article-section article.entry-more p.date, body.dark section#article-section article.entry-more p.categories {
-  color: black;
-}
-
-body.grey section#article-section {
-  background: none repeat scroll 0 0 #dadada;
-}
-body.grey section#article-section article.entry-more p.date, body.grey section#article-section article.entry-more p.categories {
-  background: none repeat scroll 0 0 gray;
-  color: white;
-}
-
 input:focus,
 select:focus,
 textarea:focus,
@@ -723,7 +707,7 @@ section#article-section img.load-more, section#list-section img.load-more {
 
 section#article-section {
   cursor: grab;
-  background: url("../img/bg.jpg") repeat scroll 0 0 transparent;
+  background: none repeat scroll 0 0 white;
   overflow-x: hidden;
   overflow-y: hidden;
   height: 20%;
@@ -774,7 +758,9 @@ section#article-section div.new-entry p {
   hyphens: none;
 }
 section#article-section div.new-entry form p {
-  background: url("../img/bg2.jpg") repeat scroll 0 0 transparent;
+  background: none repeat scroll 0 0 #f6f6f6;
+  border: 1px solid darkgrey;
+  border-radius: 2px;
   margin-top: .75rem;
   padding: 0.25rem;
   float: left;
@@ -866,7 +852,8 @@ section#article-section article.entry-more p.sources {
   font-style: italic;
 }
 section#article-section article.entry-more p.date, section#article-section article.entry-more p.categories {
-  background: white;
+  background: none repeat scroll 0 0 gray;
+  color: white;
   border-left: 3px solid #999;
   font-size: 0.8rem;
   font-weight: bold;

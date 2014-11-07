@@ -19,32 +19,6 @@ body {
   overflow: hidden;
 }
 
-body.dark {
-  section#article-section {
-    background: none repeat scroll 0 0 #4f4f4f;
-    color: #eeeeee;
-
-    article.entry-more {
-      p.date, p.categories {
-        color: black;
-      }
-    }
-  }
-}
-
-body.grey {
-  section#article-section {
-    background: none repeat scroll 0 0 #dadada;
-
-    article.entry-more {
-      p.date, p.categories {
-        background: none repeat scroll 0 0 gray;
-        color: white;
-      }
-    }
-  }
-}
-
 input:focus,
 select:focus,
 textarea:focus,
@@ -389,7 +363,7 @@ section#article-section img.load-more, section#list-section img.load-more {
 
 section#article-section {
   cursor: grab;
-  background: url("../img/bg.jpg") repeat scroll 0 0 transparent;
+  background: none repeat scroll 0 0 white;
   overflow-x: hidden;
   overflow-y: hidden;
   height: 20%;
@@ -451,7 +425,9 @@ section#article-section {
 
     form {
       p {
-        background: url("../img/bg2.jpg") repeat scroll 0 0 transparent;
+        background: none repeat scroll 0 0 #f6f6f6;
+        border: 1px solid darkgrey;
+        border-radius: 2px;
         margin-top: .75rem;
         padding: 0.25rem;
         float: left;
@@ -563,7 +539,8 @@ section#article-section {
     }
 
     p.date, p.categories {
-      background: white;
+      background: none repeat scroll 0 0 gray;
+      color: white;
       border-left: 3px solid #999;
       font-size: 0.8rem;
       font-weight: bold;
