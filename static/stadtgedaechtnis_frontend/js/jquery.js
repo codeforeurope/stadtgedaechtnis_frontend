@@ -167,6 +167,7 @@ function alertBox(message, callback) {
  */
 function closeAlertBox() {
     $("div.message").stop().transition({top: "-10rem"}, {duration: 230, easing: "linear", queue: false});
+    $("div.message p").html("");
 }
 
 Date.prototype.toFormattedString = function () {
