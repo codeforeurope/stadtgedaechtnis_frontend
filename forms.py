@@ -60,7 +60,7 @@ class NewStoryTitleForm(forms.Form):
     """
     title = forms.CharField(
         widget=PlaceHolderInput(placeholder=_("z.Bsp. Sambafest in Coburg")),
-        label=mark_safe(_("Titel<span class='required'>*</span>")))
+        label=mark_safe(_("Titel") + "<span class='required'>*</span>"))
 
     def get_media_type(self):
         return ""

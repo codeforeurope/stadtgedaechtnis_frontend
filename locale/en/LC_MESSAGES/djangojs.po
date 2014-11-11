@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mobiles Stadtgedächtnis\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-11 15:01+0100\n"
+"PO-Revision-Date: 2014-11-11 15:04+0100\n"
+"Last-Translator: Jan-Christopher Pien <jan-christopher.pien@fokus.fraunhofer."
+"de>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:23
+msgid ""
+"Um die Lokalisierungsfunktion zu nutzen, müssen Sie dieser Webseite Zugriff "
+"auf Ihren Standort geben."
+msgstr ""
+"To use the geo-location function of our website, you must give it access to "
+"your location."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:25
+msgid "Ihre Position konnte nicht ermittelt werden. "
+msgstr "Your location could not be determined."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:737
+msgid ""
+"Wollen Sie den Vorgang wirklich abbrechen? Sämtliche bisherige Eingaben "
+"werden verworfen."
+msgstr ""
+"Do you really want to abort the process? Your inputs will not be saved."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:738
+msgid "Ja"
+msgstr "Yes"
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:739
+msgid "Nein"
+msgstr "No"
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1047
+msgid ""
+"Sie müssen einen Ort auswählen, um fortfahren zu können, oder auf 'Ohne Ort "
+"fortfahren' klicken."
+msgstr ""
+"You need to select a location before you can proceed, or click \"Continue "
+"without a location\"."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1081
+msgid "Sie müssen einen Titel für Ihre Geschichte eingeben."
+msgstr "You need to provide a title for your story."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1140
+msgid "Sie müssen einen Text für Ihre persönliche Geschichte eingeben."
+msgstr "You need to provide a text for your story."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1142
+msgid "Sie müssen einen Untertitel für Ihr(e) Bild/Video/Tonaufnahme eingeben."
+msgstr "You need to provide a subtitle for your image/video/audio recording."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1212
+msgid "Sie müssen einen Namen (Vor- und Nachname) angeben."
+msgstr "You need to provide your name (first and last name)."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1216
+msgid "Sie müssen eine E-Mail-Adresse angeben."
+msgstr "You need to provide an e-mail address."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1220
+msgid "Sie müssen ein Anfangsdatum eingeben."
+msgstr "You need to provide a \"From\" date."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1224
+msgid "Sie müssen das Datum im korrekten Format (TT.MM.JJJJ) eingeben."
+msgstr "You need to provide the date in the correct format (TT.MM.JJJJ)."
+
+#: .\static\stadtgedaechtnis_frontend\js\maps.js:1255
+msgid ""
+"Ihr Beitrag wurde abgesendet und wird nun von den Mitarbeiter_innen des "
+"Mobilen Stadtgedächtnisses redaktionell geprüft. Sie erhalten eine E-Mail, "
+"wenn Ihr Beitrag online zu sehen ist oder wir weitere Rückfragen haben."
+msgstr ""
+"Your entry has been submitted and will be reviewed by an employee of the "
+"mobile city history. You will receive an e-mail once your entry is online or "
+"if we have any further questions."

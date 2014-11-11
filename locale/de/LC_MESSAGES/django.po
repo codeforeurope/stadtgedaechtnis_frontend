@@ -1,102 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Stadtgedaechtnis\n"
+"Project-Id-Version: Mobiles Stadtgedächtnis\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-11 14:20+0100\n"
-"PO-Revision-Date: 2014-11-11 15:11+0100\n"
+"POT-Creation-Date: 2014-11-11 15:33+0100\n"
+"PO-Revision-Date: 2014-11-11 15:36+0100\n"
 "Last-Translator: Jan-Christopher Pien <jan-christopher.pien@fokus.fraunhofer."
 "de>\n"
-"Language-Team: \n"
-"Language: en\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.4\n"
-"X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-SearchPath-0: D:\\Work\\Stadtgedaechtnis\\stadtgedaechtnis\n"
+"X-Generator: Poedit 1.6.4\n"
 
 #: .\forms.py:62
 msgid "z.Bsp. Sambafest in Coburg"
-msgstr "e.g. Samba Festival in Coburg"
+msgstr "z.Bsp. Sambafest in Coburg"
 
 #: .\forms.py:63
 msgid "Titel"
-msgstr "Title"
+msgstr "Titel"
 
 #: .\forms.py:77
 msgid "Bild auswählen:"
-msgstr "Select an image:"
+msgstr "Bild auswählen:"
 
 #: .\forms.py:82
 msgid "ein Bild"
-msgstr "an image"
+msgstr "ein Bild"
 
 #: .\forms.py:87
 msgid "Video auswählen:"
-msgstr "Select a video:"
+msgstr "Video auswählen:"
 
 #: .\forms.py:91
 msgid "ein Video"
-msgstr "a video"
+msgstr "ein Video"
 
 #: .\forms.py:96
 msgid "Tonaufnahme auswählen:"
-msgstr "Select an audio recording:"
+msgstr "Tonaufnahme auswählen:"
 
 #: .\forms.py:100
 msgid "eine Tonaufnahme"
-msgstr "an audio recording"
+msgstr "eine Tonaufnahme"
 
 #: .\templates\stadtgedaechtnis\entry.html:22
 #: .\templates\stadtgedaechtnis\entry_exact.html:23
 #: .\templates\stadtgedaechtnis\entry_preview.html:47
 msgid "bis"
-msgstr "until"
+msgstr "bis"
 
 #: .\templates\stadtgedaechtnis\entry.html:26
 #: .\templates\stadtgedaechtnis\entry_exact.html:27
 #: .\templates\stadtgedaechtnis\entry_preview.html:51
 msgid "Quellen"
-msgstr "Sources"
+msgstr "Quellen"
 
 #: .\templates\stadtgedaechtnis\entry.html:28
 #: .\templates\stadtgedaechtnis\entry_exact.html:29
 #: .\templates\stadtgedaechtnis\entry_preview.html:53
 msgid "Kategorien"
-msgstr "Categories"
+msgstr "Kategorien"
 
 #: .\templates\stadtgedaechtnis\entry.html:32
 #: .\templates\stadtgedaechtnis\entry_exact.html:33
 #: .\templates\stadtgedaechtnis\entry_preview.html:57
 msgid "Autor_in"
-msgstr "Author"
+msgstr "Autor_in"
 
 #: .\templates\stadtgedaechtnis\entry_preview.html:9
 #: .\templates\stadtgedaechtnis\imprint.html:10
 #: .\templates\stadtgedaechtnis\index.html:9
 #: .\templates\stadtgedaechtnis\privacy.html:10
 msgid "Mobiles Stadtged&auml;chtnis"
-msgstr "Mobile City History"
+msgstr "Mobiles Stadtged&auml;chtnis"
 
 #: .\templates\stadtgedaechtnis\imprint.html:26
 #: .\templates\stadtgedaechtnis\index.html:72
 #: .\templates\stadtgedaechtnis\privacy.html:26
 msgid "Stadtged&auml;chtnis Coburg"
-msgstr "Mobile City History Coburg"
+msgstr "Stadtged&auml;chtnis Coburg"
 
 #: .\templates\stadtgedaechtnis\index.html:32
 msgid "Willkommen beim mobilen Stadtgedächtnis Coburg!"
-msgstr "Welcome to the mobile city history Coburg!"
+msgstr "Willkommen beim mobilen Stadtgedächtnis Coburg!"
 
 #: .\templates\stadtgedaechtnis\index.html:33
 msgid ""
 "Geschichte einmal anders ist das Ziel des Digitalen Stadtgedächtnisses. In "
 "einer multimedialen Zeitreise wird die Coburger Geschichte greifbar."
 msgstr ""
-"The goal of the digital city history is to relive your local history. The "
-"history of Coburg gets relived through a multimedia-based journey through "
-"time."
+"Geschichte einmal anders ist das Ziel des Digitalen Stadtgedächtnisses. In "
+"einer multimedialen Zeitreise wird die Coburger Geschichte greifbar."
 
 #: .\templates\stadtgedaechtnis\index.html:34
 msgid ""
@@ -104,39 +106,39 @@ msgid ""
 "Sie die Geschichte dieser Stadt, während Sie unterwegs sind und teilen Sie "
 "uns all Ihre Erlebnisse mit. Viel Spaß!"
 msgstr ""
-"Now you can experience the digital city memory on your mobile phone. Explore "
-"the history of our city, while you're out and about and share your personal "
-"stories! Have fun!"
+"Jetzt können Sie das Digitale Stadtgedächtnis auch mobil erleben. Entdecken "
+"Sie die Geschichte dieser Stadt, während Sie unterwegs sind und teilen Sie "
+"uns all Ihre Erlebnisse mit. Viel Spaß!"
 
 #: .\templates\stadtgedaechtnis\index.html:35
 msgid "Los geht's"
-msgstr "Go"
+msgstr "Los geht's"
 
 #: .\templates\stadtgedaechtnis\index.html:37
 msgid "Alle Einträge anzeigen"
-msgstr "Show all entries"
+msgstr "Alle Einträge anzeigen"
 
 #: .\templates\stadtgedaechtnis\index.html:38
 msgid "Neuen Eintrag hinzufügen"
-msgstr "Add a new entry"
+msgstr "Neuen Eintrag hinzufügen"
 
 #: .\templates\stadtgedaechtnis\index.html:52
 msgid "Datenschutzerklärung"
-msgstr "Data privacy statement"
+msgstr "Datenschutzerklärung"
 
 #: .\templates\stadtgedaechtnis\index.html:53
 msgid "Impressum"
-msgstr "Imprint"
+msgstr "Impressum"
 
 #: .\templates\stadtgedaechtnis\index.html:76
 #: .\templates\stadtgedaechtnis\index.html:110
 msgid "Bild"
-msgstr "Picture"
+msgstr "Bild"
 
 #: .\templates\stadtgedaechtnis\index.html:77
 #: .\templates\stadtgedaechtnis\index.html:111
 msgid "Audio"
-msgstr "Audio recording"
+msgstr "Audio"
 
 #: .\templates\stadtgedaechtnis\index.html:78
 #: .\templates\stadtgedaechtnis\index.html:112
@@ -150,7 +152,7 @@ msgstr "Text"
 
 #: .\templates\stadtgedaechtnis\index.html:90
 msgid "Liste aller Einträge"
-msgstr "List of all entries"
+msgstr "Liste aller Einträge"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:3
 #: .\templates\stadtgedaechtnis\new_entry_intro.html:3
@@ -158,27 +160,27 @@ msgstr "List of all entries"
 #: .\templates\stadtgedaechtnis\new_entry_story.html:4
 #: .\templates\stadtgedaechtnis\new_entry_title.html:3
 msgid "Einen neuen Beitrag hinzufügen"
-msgstr "Add a new entry"
+msgstr "Einen neuen Beitrag hinzufügen"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:4
 msgid "Weitere Informationen zu Ihrem Beitrag"
-msgstr "More information about your entry"
+msgstr "Weitere Informationen zu Ihrem Beitrag"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:6
 msgid "Ihr Name"
-msgstr "Your name"
+msgstr "Ihr Name"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:7
 msgid "Ihre E-Mail-Adresse"
-msgstr "Your e-mail-address"
+msgstr "Ihre E-Mail-Adresse"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:8
 msgid "Zeitraum Ihrer Geschichte:"
-msgstr "Period of time of your story:"
+msgstr "Zeitraum Ihrer Geschichte:"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:9
 msgid "Von"
-msgstr "From"
+msgstr "Von"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:9
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:10
@@ -187,40 +189,40 @@ msgstr "(Format TT.MM.JJJJ)"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:10
 msgid "Bis"
-msgstr "Until"
+msgstr "Bis"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:13
 msgid "Ihre Quellen"
-msgstr "Your sources"
+msgstr "Ihre Quellen"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:15
 #: .\templates\stadtgedaechtnis\new_entry_preview.html:11
 #: .\templates\stadtgedaechtnis\new_entry_story.html:17
-#: .\templates\stadtgedaechtnis\new_entry_title.html:11
+#: .\templates\stadtgedaechtnis\new_entry_title.html:7
 msgid "Zurück"
-msgstr "Back"
+msgstr "Zurück"
 
 #: .\templates\stadtgedaechtnis\new_entry_additional.html:16
 #: .\templates\stadtgedaechtnis\new_entry_intro.html:16
 #: .\templates\stadtgedaechtnis\new_entry_location.html:19
 #: .\templates\stadtgedaechtnis\new_entry_preview.html:12
 #: .\templates\stadtgedaechtnis\new_entry_story.html:18
-#: .\templates\stadtgedaechtnis\new_entry_title.html:12
+#: .\templates\stadtgedaechtnis\new_entry_title.html:8
 msgid "Weiter"
-msgstr "Next"
+msgstr "Weiter"
 
 #: .\templates\stadtgedaechtnis\new_entry_intro.html:5
 #: .\templates\stadtgedaechtnis\new_entry_location.html:6
 msgid "Vielen Dank, dass Sie beim mobilen Stadtgedächtnis teilnehmen möchten."
-msgstr "Thank you for wanting to participate in the mobile city history."
+msgstr "Vielen Dank, dass Sie beim mobilen Stadtgedächtnis teilnehmen möchten."
 
 #: .\templates\stadtgedaechtnis\new_entry_intro.html:8
 msgid ""
 "Nach Tippen auf \"Weiter\" können Sie durch Tippen einen Ort auswählen, mit "
 "dem Sie Ihre persönliche Geschichte verbinden wollen."
 msgstr ""
-"After clicking \"Next\", you can choose a location to associate your "
-"personal story with."
+"Nach Tippen auf \"Weiter\" können Sie durch Tippen einen Ort auswählen, mit "
+"dem Sie Ihre persönliche Geschichte verbinden wollen."
 
 #: .\templates\stadtgedaechtnis\new_entry_intro.html:9
 #: .\templates\stadtgedaechtnis\new_entry_location.html:9
@@ -228,8 +230,8 @@ msgid ""
 "Ist der gewünschte Ort nicht vorhanden, tippen Sie auf das Plus und ziehen "
 "den Marker an den gewünschten Ort."
 msgstr ""
-"If the desired location is not available, tap on the map or on the plus sign "
-"and drag the marker to the desired location."
+"Ist der gewünschte Ort nicht vorhanden, tippen Sie auf das Plus und ziehen "
+"den Marker an den gewünschten Ort."
 
 #: .\templates\stadtgedaechtnis\new_entry_intro.html:12
 #: .\templates\stadtgedaechtnis\new_entry_location.html:12
@@ -237,61 +239,65 @@ msgid ""
 "Im Anschluss können Sie Ihre persönliche Geschichte eingeben, weitere Medien "
 "hinzufügen und persönliche Daten ergänzen."
 msgstr ""
-"Afterwards, you can enter your personal story, add more media and personal "
-"information."
+"Im Anschluss können Sie Ihre persönliche Geschichte eingeben, weitere Medien "
+"hinzufügen und persönliche Daten ergänzen."
 
 #: .\templates\stadtgedaechtnis\new_entry_location.html:8
 msgid ""
 "Wählen Sie durch Tippen einen Ort aus, mit dem Sie Ihre persönliche "
 "Geschichte verbinden wollen."
-msgstr "Tap on the location that you want to associate your story with."
+msgstr ""
+"Wählen Sie durch Tippen einen Ort aus, mit dem Sie Ihre persönliche "
+"Geschichte verbinden wollen."
 
 #: .\templates\stadtgedaechtnis\new_entry_location.html:17
 msgid "Ausgewählter Ort"
-msgstr "Selected location"
+msgstr "Ausgewählter Ort"
 
 #: .\templates\stadtgedaechtnis\new_entry_location.html:17
 msgid "Neuer Ort"
-msgstr "New location"
+msgstr "Neuer Ort"
 
 #: .\templates\stadtgedaechtnis\new_entry_location.html:18
 msgid "Ohne Ort fortfahren"
-msgstr "Continue without a location"
+msgstr "Ohne Ort fortfahren"
 
 #: .\templates\stadtgedaechtnis\new_entry_preview.html:4
 msgid "Vorschau Ihres Eintrages"
-msgstr "Preview"
+msgstr "Vorschau Ihres Eintrages"
 
 #: .\templates\stadtgedaechtnis\new_entry_preview.html:9
 msgid ""
 "Wenn Sie Ihren Beitrag so abschicken möchten, tippen Sie bitte auf \"Weiter"
 "\"."
-msgstr "If you want to submit your entry like this, tap \"Next\"."
+msgstr ""
+"Wenn Sie Ihren Beitrag so abschicken möchten, tippen Sie bitte auf \"Weiter"
+"\"."
 
 #: .\templates\stadtgedaechtnis\new_entry_story.html:7
 msgid "Wird hochgeladen"
-msgstr "Uploading"
+msgstr "Wird hochgeladen"
 
 #: .\templates\stadtgedaechtnis\new_entry_story.html:14
 msgid "Untertitel"
-msgstr "Subtitle"
+msgstr "Untertitel"
 
 #: .\templates\stadtgedaechtnis\new_entry_story.html:16
 msgid "Ihre persönliche Geschichte"
-msgstr "Your personal story"
+msgstr "Ihre persönliche Geschichte"
 
 #: .\templates\stadtgedaechtnis\new_entry_title.html:4
 msgid "Bitte geben Sie einen Titel für Ihren neuen Beitrag ein"
-msgstr "Please enter a title for your story"
+msgstr "Bitte geben Sie einen Titel für Ihren neuen Beitrag ein"
 
-#: .\templates\stadtgedaechtnis\new_entry_title.html:6
+#: .\templates\stadtgedaechtnis\new_entry_title.html:4
 msgid ", wählen "
-msgstr ", choose "
+msgstr ", wählen "
 
-#: .\templates\stadtgedaechtnis\new_entry_title.html:6
+#: .\templates\stadtgedaechtnis\new_entry_title.html:4
 msgid " aus "
-msgstr " "
+msgstr " aus "
 
-#: .\templates\stadtgedaechtnis\new_entry_title.html:8
+#: .\templates\stadtgedaechtnis\new_entry_title.html:4
 msgid "und klicken Sie auf \"Weiter\"."
-msgstr "and click \"Next\"."
+msgstr "und klicken Sie auf \"Weiter\"."
