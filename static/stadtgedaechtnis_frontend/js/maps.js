@@ -1141,7 +1141,7 @@ function loadTextTab(mediaType) {
                     } else if (alt === "" && newStory.asset.id !== null) {
                         alertBox(gettext("Sie müssen einen Untertitel für Ihr(e) Bild/Video/Tonaufnahme eingeben."));
                     } else {
-                        newStory.text = text;
+                        newStory.text = text.split("\n").join("<br>");
                         if (newStory.asset.id !== null) {
                             newStory.asset.alt = alt;
                         }
